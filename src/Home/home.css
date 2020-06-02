@@ -2,7 +2,7 @@
 
 
 /** Page Overall**/
-#content {
+#home {
     max-width: 2000px;
 }
         
@@ -14,6 +14,7 @@
 
 /** Hero**/
 .hero {
+    margin-top: 70px;
     background-color: #FAFAFA;
     height: 70vh;
     overflow: hidden;
@@ -74,7 +75,7 @@
 /**Separator**/
 .separator{
     background-color: #E4E3FF;
-    height: 20vh;
+    height: 23vh;
     align-content: center;
     text-align: center;
 }
@@ -87,11 +88,21 @@
 /**Sensors**/
 .sensors{
 
-    height: 40vh;
+    height: 100vh;
     align-content: center;
     overflow: hidden;
-    margin-top: 45px;
-    
+    margin-top: 100px;
+    text-align: center;
+    align-items: center;
+}
+
+.sensors h1{
+    font-size: min(15vw, 100px);
+    padding-left: 10vw;
+    min-width: 100px;
+    max-height: 100px;
+    text-align: left;
+    margin-bottom: 7vh;
 }
 
 .sensors p{
@@ -100,8 +111,55 @@
     min-width: 100px;
     max-width: 80%;
     max-height: 100px;
+    text-align: left;
 }
 
 #sensors-img {
     height: 330px;
+}
+
+/**Patients**/
+.patients{
+    background-color: #837FDC;
+    color: #FFFFFF;
+    height: 100vh;
+    align-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+
+.patients h1{
+    font-size: min(15vw, 100px);
+    padding-left: 10vw;
+    min-width: 100px;
+    max-height: 100px;
+    text-align: left;
+    margin-bottom: 7vh;
+}
+
+.patients p{
+
+    padding-left: 10vw;
+    min-width: 100px;
+    max-width: 80%;
+    max-height: 100px;
+    text-align: left;
+}
+
+#phone-img {
+    height: 330px;
+}
+
+#appstore {
+    margin-top: ;
+    margin-left: 4vw;
+    margin-right: 2vw;
+    height: 40px;
+}
+
+#playstore {
+    margin-left: 2vw;
+    margin-right: 4vw;
+    height: 40px;
 }
