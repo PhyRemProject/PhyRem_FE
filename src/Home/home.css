@@ -1,0 +1,107 @@
+/* @import '/fonts/rawline.css'; */
+
+
+/** Page Overall**/
+#content {
+    max-width: 2000px;
+}
+        
+.navbar {
+    font-weight: 400 !important;
+    font-style: normal !important;
+}
+
+
+/** Hero**/
+.hero {
+    background-color: #FAFAFA;
+    height: 70vh;
+    overflow: hidden;
+}
+
+#medics {
+    padding: 10%;
+    align-content: center;
+    text-align: center;
+}
+
+#medics-img {
+    max-width: 50vw;
+    max-height: 40vh;
+}
+
+#subtitle {
+    background-image: url(./images/background_wave.svg);
+    background-position: right top;
+    background-repeat: no-repeat;
+    color: #736DFD;
+    font-weight: 300 !important;
+    padding-top: 3vh;
+    width: max-content;
+}
+
+
+/** Login **/
+#login {
+    background-color: #F0F0FC;
+}
+
+#login-form {
+    padding-left: 4vw;
+    padding-right: 4vw;
+    padding-top: 10vh;
+    padding-bottom: 10vh;
+}
+
+#login-options {
+    padding-top: 40px;
+}
+
+#login-button {
+    width: 48%;
+    background: linear-gradient(106.02deg, #5751DB -2.03%, #9B98E9 100%);
+    border-radius: 8px;
+}
+
+#forgot {
+    font-weight: 300;
+    font-size: 13px;
+    color: black;
+    margin-right: 20px;
+}
+
+
+/**Separator**/
+.separator{
+    background-color: #E4E3FF;
+    height: 20vh;
+    align-content: center;
+    text-align: center;
+}
+
+.separator b{
+    color: #736DFD;
+}
+
+
+/**Sensors**/
+.sensors{
+
+    height: 40vh;
+    align-content: center;
+    overflow: hidden;
+    margin-top: 45px;
+    
+}
+
+.sensors p{
+
+    padding-left: 10vw;
+    min-width: 100px;
+    max-width: 80%;
+    max-height: 100px;
+}
+
+#sensors-img {
+    height: 330px;
+}

@@ -10,6 +10,9 @@ import { Router } from 'react-router-dom';
 import history from './Global/Components/history'
 import { PersistGate } from 'redux-persist/integration/react';
 
+// Importing the Bootstrap CSS
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 ReactDOM.render(
 
   //Wrapping the App in a Provider so it has access to the Redux's store
