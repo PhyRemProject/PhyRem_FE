@@ -17,7 +17,6 @@ import {
 
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { sizing } from '@material-ui/system';
 
 import "./home.css"
 import logo from "./images/logo.png"
@@ -30,16 +29,19 @@ import UserReducer from '../User/UserReducer';
 
 function Home() {
 
+
     const [email, setEmail] = useState("doctor1@mail.com");
     const [password, setPassword] = useState("asdzxc");
-    const loading = useSelector((state: UserReducer) => state.UserReducer.isLogging)
+    const [status, setStatus] = useState("idle");
 
+    const loading = useSelector((state: UserReducer) => state.UserReducer.isLogging)
     const dispatch = useDispatch();
+
 
     const attemptLogin = (e: React.FormEvent) => {
         e.preventDefault();
         console.log("attempting login")
-        dispatch(AttemptLogin(email, password));
+        dispatch(AttemptLogin(email, password, setStatus));
     }
 
     return (
@@ -136,6 +138,11 @@ function Home() {
                                 onChange={e => setPassword(e.currentTarget.value)}
                             />
 
+                            {status === "failed" ?
+                                <p id="failed-login">Email ou password errados</p> :
+                                <></>
+                            }
+
                             <div id="login-options">
                                 <a id="forgot" href="/recover">Esqueceu-se da password?</a>
                                 <Button
@@ -146,10 +153,11 @@ function Home() {
                                     type="submit"
                                 >
                                     {
-                                        loading ?
+                                        status === "idle" && loading ?
                                             <Spinner animation="border" /> :
-                                            <>Entrar</>
-
+                                            status === "success" ?
+                                                <>✔</>
+                                                : <>Entrar</>
                                     }
                                 </Button>
                             </div>
@@ -206,7 +214,6 @@ function Home() {
 
 
             </Container>
-
 
         </>
     );

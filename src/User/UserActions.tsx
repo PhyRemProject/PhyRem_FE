@@ -14,7 +14,7 @@ import history from '../Global/Components/history'
 
 const BE_URL = "/api/"
 
-export const AttemptLogin = (email: string, password: string) => {
+export const AttemptLogin = (email: string, password: string, setStatus: Function) => {
 
     return (dispatch: Function) => {
         
@@ -34,14 +34,20 @@ export const AttemptLogin = (email: string, password: string) => {
                 let token = response.data.token;
                 localStorage.setItem('token', token)
                 let decoded: any = jwt(token);
+                setStatus("success")
+                console.log("login successful")
 
                 dispatch({
                     type: USER_LOGIN_COMPLETE,
                     payload: decoded.user
                 });
 
+                history.push("/dashboard");
+
             })
             .catch(function (error) {
+                console.log("login failed")
+                setStatus("failed")
                 dispatch({
                     type: USER_LOGIN_FAILED
                 });
