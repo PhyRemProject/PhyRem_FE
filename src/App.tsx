@@ -6,8 +6,8 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 import logo from './logo.svg';
 import './App.css';
-import Home from "./Home/Home"
-import Dashboard from './Dashboard/components/Dashboard';
+import Home from "./Home/components/Home"
+import Dashboard from './Global/components/Dashboard';
 
 
 function App() {

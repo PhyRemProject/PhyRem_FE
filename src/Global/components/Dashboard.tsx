@@ -5,20 +5,23 @@ import { Button, Container, Row, Col } from "react-bootstrap";
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 import logo from './logo.svg';
+import Sidebar from './Sidebar';
 
+import "../styles/dashboard.css"
 
 function Dashboard() {
 
     return (
-
-        <Container>
-            <Row>
-                <Col xs={12}>
-                    Dashboard
+        <div className="dashboard">
+            <Sidebar />
+            <Container fluid>
+                <Row>
+                    <Col xs={12}>
+                        Dashboard
                 </Col>
-            </Row>
-        </Container>
-
+                </Row>
+            </Container>
+        </div>
     );
 
 }

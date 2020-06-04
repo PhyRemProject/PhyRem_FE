@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AttemptLogin } from "../User/UserActions"
+import { AttemptLogin } from "../../User/UserActions"
 
 import Scroll from 'react-scroll';
 import {
@@ -18,14 +18,14 @@ import {
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
-import "./home.css"
-import logo from "./images/logo.png"
-import medic_img from "./images/undraw_doctors_hwty.svg"
-import sensors_img from "./images/sensor_illustration-01.svg"
-import phone_img from "./images/phone_illustration.svg"
-import appstore from "./images/appstore.svg"
-import playstore from "./images/playstore.svg"
-import UserReducer from '../User/UserReducer';
+import "../styles/home.css"
+import logo from "../images/logo.png"
+import medic_img from "../images/undraw_doctors_hwty.svg"
+import sensors_img from "../images/sensor_illustration-01.svg"
+import phone_img from "../images/phone_illustration.svg"
+import appstore from "../images/appstore.svg"
+import playstore from "../images/playstore.svg"
+import UserReducer from '../../User/UserReducer';
 
 function Home() {
 
@@ -140,7 +140,9 @@ function Home() {
 
                             {status === "failed" ?
                                 <p id="failed-login">Email ou password errados</p> :
-                                <></>
+                                status === "systemFail" ?
+                                    <p id="failed-login">Sistema Indisponível</p> :
+                                    <></>
                             }
 
                             <div id="login-options">

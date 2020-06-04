@@ -7,7 +7,7 @@ import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import Store from './Global/Redux/Store';
 import { Router } from 'react-router-dom';
-import history from './Global/Components/history'
+import history from './Global/components/history'
 import { PersistGate } from 'redux-persist/integration/react';
 
 // Importing the Bootstrap CSS

@@ -1,0 +1,43 @@
+.sidebar {
+    background-color: #F2F2FC;
+    height: 100vh !important;
+    width: min(25vw, 240px) !important;
+    border-radius: 0px 15px 15px 0px;
+}
+
+#logo {
+    height: 100px;
+    padding: 15px;
+    align-content: center;
+    text-align: center;
+}
+
+#logo img {
+    height: 100%;
+    width: auto;
+}
+
+.option {
+    height: 60px;
+    width: 100%;
+    padding: 10px;
+    align-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.option-logo {
+    margin-right: 15px;
+    margin-left: 20px;
+}
+
+#option-selected {
+    background: linear-gradient(91.51deg, rgba(87, 81, 219, 0.65) 25.28%, rgba(155, 152, 233, 0.65) 99.66%);
+    color: #FFFFFF;
+    font-weight: bold;
+}
+
+#option-not-selected {
+    
+    color: #736DFD;
+}

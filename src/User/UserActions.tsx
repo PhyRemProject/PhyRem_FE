@@ -10,7 +10,7 @@ import {
 } from './UserReducer'
 
 import Store from '../Global/Redux/Store';
-import history from '../Global/Components/history'
+import history from '../Global/components/history'
 
 const BE_URL = "/api/"
 
@@ -47,7 +47,11 @@ export const AttemptLogin = (email: string, password: string, setStatus: Functio
             })
             .catch(function (error) {
                 console.log("login failed")
-                setStatus("failed")
+                if((error.message as string).indexOf("500") > 0)
+                    setStatus("systemFail")
+                else
+                    setStatus("failed")
+                
                 dispatch({
                     type: USER_LOGIN_FAILED
                 });
