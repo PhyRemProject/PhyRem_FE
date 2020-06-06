@@ -1,22 +1,29 @@
+
+/**Overall styles**/
 .sidebar {
     background-color: #F2F2FC;
     height: 100vh !important;
-    width: min(25vw, 240px) !important;
+    width: min(30vw, 240px) !important;
     border-radius: 0px 15px 15px 0px;
+    position: relative;
 }
 
-#logo {
-    height: 100px;
-    padding: 15px;
+
+/**Logo**/
+.logo {
+    height: 75px;
+    padding: 9px;
     align-content: center;
     text-align: center;
 }
 
-#logo img {
+.logo img {
     height: 100%;
     width: auto;
 }
 
+
+/**Options**/
 .option {
     height: 60px;
     width: 100%;
@@ -37,7 +44,56 @@
     font-weight: bold;
 }
 
+#option-not-selected:hover{
+    background-color: rgb(227, 226, 255);
+}
+
 #option-not-selected {
-    
     color: #736DFD;
+}
+
+/**User card**/
+
+.user-card {
+    position: absolute;
+    bottom: 0;
+    height: 75px;
+    align-content: center;
+    padding: 10px;
+    background-color: #E2E1F8;
+    border-radius: 0px 0px 15px 0px;
+    display: flex;
+    width: 100%;
+}
+
+#user-image{
+    padding: 0px;
+    height: 50px;
+    width: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.username {
+    align-content: center;
+    overflow: hidden;
+    width: 70%;
+}
+#username {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100%;
+    display: block;
+    overflow: hidden;
+    font-weight: 500;
+}
+#specialty {
+    margin-top: 5px;
+    font-weight: normal;
+    font-size: 10px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100%;
+    display: block;
+    overflow: hidden;
 }

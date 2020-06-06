@@ -1,0 +1,24 @@
+.header {
+    height: 75px;
+    vertical-align:middle;
+    line-height: 75px;
+}
+
+#greetings {
+    float:left;
+    width: fit-content;
+}
+
+#greetings-day {
+    color: #928EE7;
+}
+
+#logout {
+    float: right;
+    border-radius: 5px;
+}
+
+#logout-button {
+    background-color: #FF94A9;
+    color: #FFFFFF;
+}

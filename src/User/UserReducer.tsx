@@ -9,10 +9,11 @@ export interface UserInterface {
     
     firstName: string | null,
     lastName: string | null,
+    gender: string | null,
     email: string | null,
     phone: string | null,
     address: string | null,
-    picture: string | null,
+    imageUrl: string | null,
     token: string | null
 
 }
@@ -73,10 +74,11 @@ export function UserReducer(state = userInitState, action: Action | LoginAction)
                     token: (action as LoginAction).payload.token,
                     firstName: null,
                     lastName: null,
+                    gender: null,
                     email: null,
                     phone: null,
                     address: null,
-                    picture: null
+                    imageUrl: "default_user.png"
                 }
             };
 

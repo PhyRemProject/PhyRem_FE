@@ -14,6 +14,7 @@ import {
     faCog
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import UserReducer from '../../User/UserReducer';
 
 interface OptionProps {
     name: string,
@@ -32,17 +33,30 @@ function Option(props: OptionProps) {
 
 function Sidebar() {
 
+    const user = useSelector((state: UserReducer) => state.UserReducer.user)
+
 
     return (
         <div className="sidebar">
-            <div id="logo">
-                <img id="logo" src={logo} />
+            <div className="logo">
+                <img className="logo" src={logo} />
             </div>
             <Option name="Visão Geral" logo={faWindowRestore} selected />
             <Option name="Consultas" logo={faCalendarAlt} selected={false} />
             <Option name="Pacientes" logo={faUser} selected={false} />
             <Option name="Definições" logo={faCog} selected={false} />
-
+            <div className="user-card">
+                <div className="username">
+                    <span id="username">
+                        {user?.gender === "male" ? "Dr." : "Dra."}
+                        {user?.firstName + " " + user?.lastName} 
+                    </span>
+                    <span id="specialty">
+                        {user?.specialty?.map((specialty) => {return (specialty) + " "})}
+                    </span>
+                </div>
+                <img id="user-image" src={"images/" + user?.imageUrl as string} />
+            </div>
         </div>
     );
 
