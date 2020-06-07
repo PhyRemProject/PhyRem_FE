@@ -7,10 +7,21 @@
 #greetings {
     float:left;
     width: fit-content;
+    font-weight: 500;
+    align-content: center;
+    text-align: center;
+
 }
 
 #greetings-day {
     color: #928EE7;
+    padding-left: 15px;
+}
+
+#weather-logo {
+    color: #928EE7;
+    width: 40px;
+    height: auto;
 }
 
 #logout {

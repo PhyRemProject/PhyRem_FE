@@ -6,6 +6,7 @@
     width: min(30vw, 240px) !important;
     border-radius: 0px 15px 15px 0px;
     position: relative;
+    margin-right: 15px;
 }
 
 

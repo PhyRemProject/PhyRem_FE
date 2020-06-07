@@ -1,4 +1,17 @@
 .dashboard {
     display: flex;
-    max-width: 2000px;
+    min-height: 100vh;
+    max-height: 100vh;
+    /* max-width: 2000px; */
+    padding: 0 !important;
 }
+
+.dashboard-content {
+    min-height: calc(100vh - 75px);
+    max-height: calc(100vh - 75px);
+    max-width: 2000px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    /* overflow: hidden; */
+}
+

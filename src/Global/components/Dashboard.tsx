@@ -15,15 +15,15 @@ function Dashboard() {
     return (
         <div className="dashboard">
             <Sidebar />
-            {/* Active view */}
             <Container fluid>
                 <Row>
                     <Col xs="12">
                         <Header />
                     </Col>
                 </Row>
-                <Row>
-                    <Col xs="12">
+            {/* Active view */}
+                <Row className="dashboard-content">
+                    <Col xs="12" className="dashboard-content">
                         <Overview />
                     </Col>
                 </Row>

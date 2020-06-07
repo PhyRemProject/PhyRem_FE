@@ -35,6 +35,7 @@
     background-image: url(../images/background_wave.svg);
     background-position: right top;
     background-repeat: no-repeat;
+    background-size: cover;
     color: #736DFD;
     font-weight: 300 !important;
     padding-top: 3vh;
