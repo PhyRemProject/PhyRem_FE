@@ -5,16 +5,9 @@
     margin-top: 15px;
 }
 
-.appointment, .patient-image {
-        padding: 0px;
-        height: 150px;
-        width: 150px;
-        object-fit: cover;
-        border-radius: 50%;
-}
-
 .appointment-hour {
-    min-width: 100%;
+    height: 40px;
+    font-size: 20px;
 }
 
 .appointment-data {
@@ -23,3 +16,4 @@
 .appointment-data p{
     font-size: 15px;
 }
+

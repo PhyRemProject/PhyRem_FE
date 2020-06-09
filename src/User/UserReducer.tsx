@@ -4,6 +4,7 @@ import { PURGE } from 'redux-persist'
 //Represents a User structure that will be part of the app state
 export interface UserInterface {
     _id: string | null,
+    token : string | null,
     role: string | null,
     specialty: [string] | null,
     
@@ -14,7 +15,6 @@ export interface UserInterface {
     phone: string | null,
     address: string | null,
     imageUrl: string | null,
-    token: string | null
 
 }
 

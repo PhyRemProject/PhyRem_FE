@@ -20,7 +20,17 @@ function App() {
       "fontWeightRegular": 400,
       "fontWeightMedium": 500,
       button: {
-        textTransform: "none"
+        textTransform: "none",
+        fontSize: 12
+      }
+    },
+    palette: {
+      primary: {
+        main: '#F9A825',
+        contrastText: '#FFFFFF'
+      },
+      secondary: {
+        main: '#6C63FF'
       }
     }
   });

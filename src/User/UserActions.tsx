@@ -39,7 +39,7 @@ export const AttemptLogin = (email: string, password: string, setStatus: Functio
 
                 dispatch({
                     type: USER_LOGIN_COMPLETE,
-                    payload: decoded.user
+                    payload: {...decoded.user, token}
                 });
 
                 history.push("/dashboard");
