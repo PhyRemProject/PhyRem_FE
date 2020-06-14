@@ -17,13 +17,13 @@ const BE_URL = "/api/"
 export const AttemptLogin = (email: string, password: string, setStatus: Function) => {
 
     return (dispatch: Function) => {
-        
+
         dispatch({
             type: USER_LOGIN
         });
 
         axios.post(BE_URL + 'login', null, {
-            params : {
+            params: {
                 "email": email,
                 "password": password,
                 "role": "PHYSICIAN"
@@ -37,21 +37,44 @@ export const AttemptLogin = (email: string, password: string, setStatus: Functio
                 setStatus("success")
                 console.log("login successful")
 
-                dispatch({
-                    type: USER_LOGIN_COMPLETE,
-                    payload: {...decoded.user, token}
-                });
+                const options = {
+                    headers: { "Authorization": "Bearer " + token }
+                }
 
-                history.push("/dashboard");
+                axios.get(BE_URL + 'physician/profile', options)
+                    .then(function (response) {
+
+
+                        console.log(response.data)
+
+                        dispatch({
+                            type: USER_LOGIN_COMPLETE,
+                            payload: { ...decoded.user, token, ...response.data }
+                        });
+
+                        history.push("/dashboard");
+                    })
+                    .catch(function (error) {
+                        console.log("user info fetch failed")
+                        if ((error.message as string).indexOf("500") > 0)
+                            setStatus("systemFail")
+                        else
+                            setStatus("failed")
+
+                        dispatch({
+                            type: USER_LOGIN_FAILED
+                        });
+                    })
+
 
             })
             .catch(function (error) {
                 console.log("login failed")
-                if((error.message as string).indexOf("500") > 0)
+                if ((error.message as string).indexOf("500") > 0)
                     setStatus("systemFail")
                 else
                     setStatus("failed")
-                
+
                 dispatch({
                     type: USER_LOGIN_FAILED
                 });
@@ -65,3 +88,16 @@ export const AttemptLogin = (email: string, password: string, setStatus: Functio
 }
 
 
+export const AttemptLogout = () => {
+
+    localStorage.removeItem('token')
+
+    Store.persistor.purge()
+        .then(() => {
+            history.push("/")
+        })
+        .catch(() => {
+            console.error("Redux state persistor purge failed")
+        });
+
+}

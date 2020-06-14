@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, useRouteMatch } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button, Container, Row, Col } from "react-bootstrap";
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -7,10 +7,13 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Sidebar from "./Sidebar";
 import Header from "./Header"
 import Overview from "../../Overview/components/Overview"
+import Appointments from "../../Appointments/components/Appointments"
 
 import "../styles/dashboard.css"
 
 function Dashboard() {
+
+    let {path, url} = useRouteMatch();
 
     return (
         <div className="dashboard">
@@ -21,10 +24,14 @@ function Dashboard() {
                         <Header />
                     </Col>
                 </Row>
-            {/* Active view */}
+                {/* Active view */}
                 <Row className="dashboard-content">
                     <Col xs="12" className="dashboard-content">
-                        <Overview />
+                        <Switch>
+                            <Route exact path={path} component={Overview} />
+                            <Route exact path={`${path}/appointments`} component={Appointments} />
+                        </Switch>
+
                     </Col>
                 </Row>
             </Container>

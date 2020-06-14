@@ -6,7 +6,10 @@ import jwt from 'jwt-decode'
 import {
     GET_TODAYS_APPOINTMENTS,
     GET_TODAYS_APPOINTMENTS_COMPLETE,
-    GET_TODAYS_APPOINTMENTS_FAILED
+    GET_TODAYS_APPOINTMENTS_FAILED,
+    GET_APPOINTMENTS_BETWEEN,
+    GET_APPOINTMENTS_BETWEEN_COMPLETE,
+    GET_APPOINTMENTS_BETWEEN_FAILED
 } from './AppointmentReducer'
 
 import Store from '../Global/Redux/Store';
@@ -19,9 +22,9 @@ export const getTodaysAppoints = (token: string) => {
     return (dispatch: Function) => {
 
         let options = {
-            headers : {"Authorization" : "Bearer " + token}
+            headers: { "Authorization": "Bearer " + token }
         }
-        
+
         dispatch({
             type: GET_TODAYS_APPOINTMENTS
         });
@@ -40,7 +43,7 @@ export const getTodaysAppoints = (token: string) => {
             })
             .catch(function (error) {
                 console.log("FETCH TODAYS APPOINTS FAILED")
-                
+
                 dispatch({
                     type: GET_TODAYS_APPOINTMENTS_FAILED
                 });
@@ -52,4 +55,49 @@ export const getTodaysAppoints = (token: string) => {
     }
 }
 
+export const getAppointsBetween = (startDate: Date, endDate: Date, token: string) => {
+
+    return (dispatch: Function) => {
+
+        let options = {
+            headers: { "Authorization": "Bearer " + token },
+            params: {
+                "startDate": startDate,
+                "endDate": endDate
+            }
+        }
+
+        dispatch({
+            type: GET_APPOINTMENTS_BETWEEN
+        });
+
+        axios.get(BE_URL + 'appointment/between', options)
+            .then(function (response) {
+
+                console.log(options)
+                console.log("RESPONSE:")
+                console.log(response.data)
+
+                dispatch({
+                    type: GET_APPOINTMENTS_BETWEEN_COMPLETE,
+                    payload: {
+                        appointments : response.data,
+                        interval : [startDate, endDate]
+                    }
+                });
+
+            })
+            .catch(function (error) {
+                console.log("GET BETWEEN FAILED")
+
+                dispatch({
+                    type: GET_APPOINTMENTS_BETWEEN_FAILED
+                });
+
+            })
+            .finally(function () {
+
+            });
+    }
+}
 

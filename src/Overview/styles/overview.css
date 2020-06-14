@@ -29,14 +29,29 @@
     padding-top: 10px !important;
 }
 
-#feed-title {
+/* #feed-title {
     position: fixed;
     font-weight: 600 !important;
     margin-top: -10px !important;
     padding-bottom: 20px !important;
     padding-top: 10px !important;
+} */
+
+#feed-title {
+    width: 100%;
+    color: #474481;
+    background-color: #F7F5FD;
+    font-weight: 600 !important;
+    margin-top: -10px !important;
+    padding-bottom: 10px !important;
+    padding-top: 10px !important;
+
 }
 
+#feed-cards {
+    overflow-y: scroll;
+    height: 100%;
+}
 
 .home {
     height: 100% !important;
@@ -47,13 +62,23 @@
     overflow-y: hidden;
 }
 
-.feed {
+/* .feed {
     height: 100% !important;
     margin-left: 10px;
     border-radius: 10px;
     background-color: #F7F5FD;
     padding: 10px;
     overflow-y: scroll;
+} */
+
+.feed {
+    height: 100% !important;
+    margin-right: 10px;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #F7F5FD;
+    overflow-y: hidden;
+
 }
 
 #appointments {

@@ -8,6 +8,7 @@ import logo from './logo.svg';
 import './App.css';
 import Home from "./Home/components/Home"
 import Dashboard from './Global/components/Dashboard';
+import Appointments from './Appointments/components/Appointments';
 
 
 function App() {
@@ -42,8 +43,8 @@ function App() {
         <div className="App">
 
           <Switch>
-            <Route exact={true} path="/" component={Home}/>
-            <Route exact={true} path="/dashboard" component={Dashboard}/>
+            <Route exact path="/" component={Home}/>
+            <Route path="/dashboard" component={Dashboard}/>
           </Switch>
 
         </div>

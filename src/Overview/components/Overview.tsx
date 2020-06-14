@@ -22,6 +22,7 @@ import "../styles/overview.css"
 import { UserReducer } from '../../User/UserReducer';
 import { getTodaysAppoints } from '../../Appointments/AppointmentActions';
 import { AppointmentReducer, AppointmentInterface } from '../../Appointments/AppointmentReducer';
+import { PatientInterface } from '../../User/components/Patients';
 
 function Overview() {
 
@@ -30,12 +31,12 @@ function Overview() {
     ptMoment.locale('pt');
 
     /** Token to use for requests**/
-    const token = useSelector((state: UserReducer) => state.UserReducer.user?.token)
+    const token = useSelector((state: UserReducer) => state.UserReducer.user?.token) as string
     const todaysAppoints = useSelector((state: AppointmentReducer) => state.AppointmentReducer.todaysAppointments)
     const dispatch = useDispatch();
 
     const fetchAppointmentList = () => {
-        dispatch(getTodaysAppoints(token as string))
+        dispatch(getTodaysAppoints(token))
     }
 
     useEffect(() => {
@@ -51,28 +52,26 @@ function Overview() {
                 <div className="home fill-height">
                     <h2 id="today-date">Hoje, {(ptMoment.format("DD") + " de " + ptMoment.format("MMMM"))}</h2>
                     <div id="appointments">
-                        {/* <p id="no-appointments">Não existem consultas agendadas para hoje</p> */}
+                        {todaysAppoints.length === 0 ?
+                            <p id="no-appointments">Não existem consultas agendadas para hoje 😄</p>
+                            : <></>
+                        }
 
-                        {todaysAppoints.map((appoint : AppointmentInterface, index : number) => {
+                        {todaysAppoints.map((appoint: AppointmentInterface, index: number) => {
 
-                            console.log("INDEX: ", index)
-                            console.log("APPOINT: ", appoint)
-
-                            return <AppointmentCard data={
+                            return <AppointmentCard key={index} data={
                                 {
                                     startDate: appoint.startDate as Date,
                                     endDate: appoint.endDate as Date,
-                                    patientName: appoint.patient as string,
-                                    patientContact: "TBD",
+                                    patientName: (appoint.patients_info as PatientInterface[])[0].name as string,
+                                    patientContact: (appoint.patients_info as PatientInterface[])[0].phoneNumber as string,
                                     patientAddress: appoint.location as string,
-                                    objective: "TBD",
-                                    diagnostic: "TBD",
-                                    treatment: "TBD"
+                                    objective: appoint.objective as string,
+                                    diagnostic: appoint.diagnostic as string,
+                                    treatment: appoint.treatment as string,
                                 }} />
-                            }
+                        }
                         )}
-
-
 
                         <div id="spacer">
                             <FontAwesomeIcon icon={faGripLines} id="weather-logo" />
@@ -85,9 +84,16 @@ function Overview() {
             <Col xs="12" md="4" className="p-0 fill-height">
                 <div className="feed">
                     <h5 id="feed-title">Actividade Recente</h5>
-                    <div id="spacer" ></div>
+                    <div id="feed-cards" >
+
+                        {/* content goes here */}
 
 
+                        <div id="spacer">
+                            <FontAwesomeIcon icon={faGripLines} id="weather-logo" />
+                        </div>
+
+                    </div>
                 </div>
             </Col>
         </Row>

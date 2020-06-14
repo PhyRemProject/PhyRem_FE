@@ -15,8 +15,14 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import "../styles/header.css"
+import { AttemptLogout } from '../../User/UserActions';
 
 function Header() {
+
+
+    const handleLogout = () => {
+        AttemptLogout()
+    }
 
     return (
         <div className="header">
@@ -31,6 +37,7 @@ function Header() {
                     variant="contained"
                     color="primary"
                     type="submit"
+                    onClick={handleLogout}
                 >
                     X Sair
                 </Button>

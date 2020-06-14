@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, useRouteMatch, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Container, Row, Col, Image } from "react-bootstrap";
+
+
+
 import moment from "moment"
 import 'moment/locale/pt';
 
@@ -27,7 +30,7 @@ interface AppointmentCardProps {
 
 function AppointmentCard(props: AppointmentCardProps) {
 
-
+    let location = useLocation().pathname;
 
     return (
         <Container className="appointment-card">
@@ -38,7 +41,7 @@ function AppointmentCard(props: AppointmentCardProps) {
             </Row>
             <Row>
                 <Col xs={3}>
-                    <Image src={"images/default_user.png"} roundedCircle fluid />
+                    <Image src={`${process.env.PUBLIC_URL}/images/default_user.png`} roundedCircle fluid />
                 </Col>
                 <Col xs={3}>
                     <span className="appointment-data">
