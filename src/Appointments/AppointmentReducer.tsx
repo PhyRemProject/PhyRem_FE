@@ -1,20 +1,20 @@
 import { Action } from 'redux'
 import { PURGE } from 'redux-persist'
-import {PatientInterface} from "../User/components/Patients"
+import { PatientInterface } from "../User/components/Patients"
 
 //Represents a User structure that will be part of the app state
 export interface AppointmentInterface {
-    _id: string ,
-    startDate: Date ,
-    endDate: Date ,
-    location: string ,
-    status: string ,
-    patient: string ,
-    physician: string ,
-    objective: string ,
-    diagnostic: string ,
-    treatment: string ,
-    patients_info : Array<PatientInterface>
+    _id: string,
+    startDate: Date,
+    endDate: Date,
+    location: string,
+    status: string,
+    patient: string,
+    physician: string,
+    objective: string,
+    diagnostic: string,
+    treatment: string,
+    patientsInfo: PatientInterface
 
 }
 
@@ -28,7 +28,7 @@ export interface AppointmentReducer {
 export interface AppointmentStateInterface {
     todaysAppointments: AppointmentInterface[],
     loadedAppoints: AppointmentInterface[],
-    loadedInterval : [Date | null, Date | null], //startDate endDate
+    loadedInterval: [Date | null, Date | null], //startDate endDate
     isUpdating: boolean,
     isFetching: boolean
 };
@@ -37,29 +37,36 @@ export interface AppointmentStateInterface {
 export const GET_TODAYS_APPOINTMENTS = "GET_TODAYS_APPOINTMENTS"
 export const GET_TODAYS_APPOINTMENTS_COMPLETE = "GET_TODAYS_APPOINTMENTS_COMPLETE"
 export const GET_TODAYS_APPOINTMENTS_FAILED = "GET_TODAYS_APPOINTMENTS_FAILED"
+
 export const GET_APPOINTMENTS_BETWEEN = "GET_APPOINTMENTS_BETWEEN"
 export const GET_APPOINTMENTS_BETWEEN_COMPLETE = "GET_APPOINTMENTS_BETWEEN_COMPLETE"
 export const GET_APPOINTMENTS_BETWEEN_FAILED = "GET_APPOINTMENTS_BETWEEN_FAILED"
+
+export const ACCEPT_APPOINTMENT = "ACCEPT_APPOINTMENT"
+export const ACCEPT_APPOINTMENT_COMPLETE = "ACCEPT_APPOINTMENT_COMPLETE"
+export const ACCEPT_APPOINTMENT_FAILED = "ACCEPT_APPOINTMENT_FAILED"
 
 // Interface for the actions above (required by TS)
 interface GetTodaysAppointAction extends Action {
     payload: AppointmentInterface[]
 }
 
-// Interface for the actions above (required by TS)
 interface GetAppointsBetweenAction extends Action {
     payload: {
-        appointments : AppointmentInterface[],
-        interval : [Date, Date]
+        appointments: AppointmentInterface[],
+        interval: [Date, Date]
     }
 }
 
+interface AcceptAppointmentAction extends Action {
+    payload: number
+}
 
 
 // Implementing the userStateInterface, setting the initial state
 const appointmentInitState = {
-    todaysAppointments: [] as AppointmentInterface[],
-    loadedAppoints: [] as AppointmentInterface[],
+    todaysAppointments: [],
+    loadedAppoints: [],
     loadedInterval: [null, null],
     isUpdating: false,
     isFetching: false
@@ -97,7 +104,6 @@ export function AppointmentReducer(state = appointmentInitState, action: Action 
                 isFetching: true
             };
 
-
         case GET_APPOINTMENTS_BETWEEN_COMPLETE:
             return {
                 ...state,
@@ -113,7 +119,29 @@ export function AppointmentReducer(state = appointmentInitState, action: Action 
                 isFetching: false
             };
 
-    
+        case ACCEPT_APPOINTMENT:
+            return {
+                ...state,
+                isUpdating: true
+            };
+
+        case ACCEPT_APPOINTMENT_COMPLETE:
+            return {
+                ...state,
+                isUpdating: false,
+                loadedAppoints: [...state.loadedAppoints.slice(0, (action as AcceptAppointmentAction).payload), 
+                    {
+                        ...state.loadedAppoints[(action as AcceptAppointmentAction).payload],
+                        status : "ACCEPTED"
+                    },
+                    ...state.loadedAppoints.slice((action as AcceptAppointmentAction).payload + 1),]
+            };
+
+        case ACCEPT_APPOINTMENT_FAILED:
+            return {
+                ...state,
+                isUpdating: false
+            };
 
         case PURGE:
             return appointmentInitState;

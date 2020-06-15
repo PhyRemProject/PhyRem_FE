@@ -2,11 +2,13 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Switch, Route } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
-    Button,
     Container,
     Row,
-    Col
+    Col,
+    Image
 } from "react-bootstrap";
+
+import Button from "@material-ui/core/Button";
 
 import { Calendar, momentLocalizer, Views } from "react-big-calendar"
 import moment from "moment"
@@ -18,6 +20,7 @@ import "../styles/appointments.css"
 import { getAppointsBetween } from '../AppointmentActions';
 import UserReducer from '../../User/UserReducer';
 import { PatientInterface } from '../../User/components/Patients';
+import AppointmentDetails from "./AppointmentDetails"
 
 
 interface CalendarEvent {
@@ -29,7 +32,6 @@ interface CalendarEvent {
 }
 
 function Event({ event }: any) {
-    console.log(event.status)
     return (
         <span>
             <strong>{event.title}</strong>
@@ -45,11 +47,12 @@ function Appointments() {
     const localizer = momentLocalizer(moment)
     const loadedAppoints = useSelector((state: AppointmentReducer) => state.AppointmentReducer.loadedAppoints)
     const loadedInterval = useSelector((state: AppointmentReducer) => state.AppointmentReducer.loadedInterval)
-    const isFetching = useSelector((state: AppointmentReducer) => state.AppointmentReducer.isFetching)
     const token = useSelector((state: UserReducer) => state.UserReducer.user?.token) as string
 
-    const [selectedAppoint, setSelectedAppoint] = useState<AppointmentInterface>();
-    const [normalizedAppointments, setNormalizedAppointments] = useState<CalendarEvent[]>();
+    const [selectedAppoint, setSelectedAppoint] = useState<number>();
+    const [currentFilter, setCurrentFilter] = useState("ALL");
+    const [normalizedAppointments, setNormalizedAppointments] = useState<CalendarEvent[]>([]);
+    const [displayedAppoints, setDisplayedAppoints] = useState<CalendarEvent[]>([]);
 
     const dispatch = useDispatch()
 
@@ -63,6 +66,25 @@ function Appointments() {
         convertAppointments()
 
     }, [])
+
+    useEffect(() => {
+        if (currentFilter === "ALL")
+            setDisplayedAppoints(normalizedAppointments)
+        else if (currentFilter === "ACCEPTED") {
+            let tempAppoints = normalizedAppointments.map((appoint, index) => {
+                if (appoint.status === "ACCEPTED")
+                    return appoint
+            })
+            setDisplayedAppoints(tempAppoints as any)
+        } else if (currentFilter === "REQUESTED") {
+            let tempAppoints = normalizedAppointments.map((appoint, index) => {
+                if (appoint.status === "REQUESTED")
+                    return appoint
+            })
+            setDisplayedAppoints(tempAppoints as any)
+        }
+
+    }, [currentFilter])
 
     const populateAppointments = (startDate: Date, endDate: Date) => {
 
@@ -88,29 +110,38 @@ function Appointments() {
             )
         }
         //Dates are inside of the loaded interval, no need to fetch
+
     }
 
 
     //Converts the raw appointments to React-Big-Calendar events 
     const convertAppointments = () => {
+
         let appoints = loadedAppoints.map((appoint: AppointmentInterface, index) => {
             return {
                 id: index,
-                title: appoint.patients_info.pop()?.name as string,
+                title: appoint.patientsInfo.name as string,
                 start: moment(appoint.startDate).toDate(),
                 end: moment(appoint.endDate).toDate(),
                 status: appoint.status
             }
         })
         setNormalizedAppointments(appoints)
+        setCurrentFilter("ALL")
+        setDisplayedAppoints(appoints)
     }
-
     useMemo(() => convertAppointments(), [loadedAppoints]);
 
 
-    const handleSelectAppointment = (event : CalendarEvent) => {
-        setSelectedAppoint(loadedAppoints[event.id])
+    const handleSelectAppointment = (event: CalendarEvent) => {
+        setSelectedAppoint(event.id)
     }
+
+    const handleFilterChange = (filter: string) => {
+        setCurrentFilter(filter)
+    }
+
+    console.log("SELECTEDAPPOINT: ", selectedAppoint)
 
     return (
         <Row className="overview">
@@ -118,7 +149,7 @@ function Appointments() {
 
                 <Calendar
                     localizer={localizer}
-                    events={normalizedAppointments || []}
+                    events={displayedAppoints || []}
                     defaultView={'week'}
                     views={['day', 'week']}
                     min={new Date(0, 0, 0, 8, 0, 0)}
@@ -150,49 +181,77 @@ function Appointments() {
                     onView={(view) => {
                     }}
 
-
                     eventPropGetter={
                         (event: CalendarEvent, start, end, isSelected) => {
-
                             if (event.status === "ACCEPTED")
-                                return {
-                                    style: { backgroundColor: "#EFAF48", color: "white" }
-                                };
+                                return { style: { backgroundColor: "#EFAF48", color: "white" } };
 
                             if (event.status === "REJECTED")
-                                return {
-                                    style: { backgroundColor: "#9D9CA9", color: "white" }
-                                };
+                                return { style: { backgroundColor: "#9D9CA9", color: "white" } };
 
                             if (event.status === "REQUESTED")
-                                return {
-                                    style: { backgroundColor: "#AAA7F2", color: "white" }
-                                };
+                                return { style: { backgroundColor: "#AAA7F2", color: "white" } };
 
                             return {}
-
                         }
                     }
-
 
                 />
             </Col>
             <Col xs="12" md="4" className="p-0 fill-height">
                 <div className="appoint-details">
+                    <Container fluid>
+                        <Row>
+                            <Col xs={4} className="p-0">
+                                <Button
+                                    className="form-elems w-100"
+                                    variant="contained"
+                                    color="secondary"
+                                    type="submit"
+                                    onClick={() => handleFilterChange("ALL")}
+                                >
+                                    Todos
+                </Button>
+                            </Col>
+                            <Col xs={4} className="p-0">
+
+                                <Button
+                                    className="form-elems w-100"
+                                    variant="contained"
+                                    color="secondary"
+                                    type="submit"
+                                    onClick={() => handleFilterChange("ACCEPTED")}
+                                >
+                                    Confirmados
+                </Button>
+                            </Col>
+
+                            <Col xs={4} className="p-0">
+
+                                <Button
+                                    className="form-elems w-100"
+                                    variant="contained"
+                                    color="secondary"
+                                    type="submit"
+                                    onClick={() => handleFilterChange("REQUESTED")}
+
+                                >
+                                    Pedidos
+                </Button>
+                            </Col>
+                        </Row>
+                    </Container>
+
+
                     <h5 id="details-title">Detalhes</h5>
                     <div id="details-info" >
 
-                    {selectedAppoint?.patient}
-                    {selectedAppoint?.startDate}
-                    {selectedAppoint?.endDate}
-                    {selectedAppoint?.objective}
-                    {selectedAppoint?.status}
-
+                        <AppointmentDetails selectedAppoint={selectedAppoint} loadedAppoints={loadedAppoints}/>
 
                     </div>
                 </div>
             </Col>
-        </Row>
+        </Row >
     );
 
 }

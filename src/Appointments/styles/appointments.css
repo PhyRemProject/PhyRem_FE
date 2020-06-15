@@ -32,3 +32,8 @@
 .rbc-timeslot-group {
     min-height: 90px;
 }
+
+.appoint-patient-image {
+    max-height: 180px;
+    text-align: center;
+}

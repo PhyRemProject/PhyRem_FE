@@ -92,9 +92,11 @@ export const AttemptLogout = () => {
 
     localStorage.removeItem('token')
 
+    history.push("/")
+
     Store.persistor.purge()
         .then(() => {
-            history.push("/")
+            console.log("LOGOUT")
         })
         .catch(() => {
             console.error("Redux state persistor purge failed")

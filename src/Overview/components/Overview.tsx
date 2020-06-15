@@ -63,8 +63,8 @@ function Overview() {
                                 {
                                     startDate: appoint.startDate as Date,
                                     endDate: appoint.endDate as Date,
-                                    patientName: (appoint.patients_info as PatientInterface[])[0].name as string,
-                                    patientContact: (appoint.patients_info as PatientInterface[])[0].phoneNumber as string,
+                                    patientName: appoint.patientsInfo.name as string,
+                                    patientContact: appoint.patientsInfo.phoneNumber as string,
                                     patientAddress: appoint.location as string,
                                     objective: appoint.objective as string,
                                     diagnostic: appoint.diagnostic as string,

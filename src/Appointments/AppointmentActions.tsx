@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import jwt from 'jwt-decode'
+import lodash from "lodash"
 
 
 import {
@@ -9,7 +10,11 @@ import {
     GET_TODAYS_APPOINTMENTS_FAILED,
     GET_APPOINTMENTS_BETWEEN,
     GET_APPOINTMENTS_BETWEEN_COMPLETE,
-    GET_APPOINTMENTS_BETWEEN_FAILED
+    GET_APPOINTMENTS_BETWEEN_FAILED,
+    AppointmentInterface,
+    ACCEPT_APPOINTMENT,
+    ACCEPT_APPOINTMENT_COMPLETE,
+    ACCEPT_APPOINTMENT_FAILED
 } from './AppointmentReducer'
 
 import Store from '../Global/Redux/Store';
@@ -31,9 +36,6 @@ export const getTodaysAppoints = (token: string) => {
 
         axios.get(BE_URL + 'appointment/today', options)
             .then(function (response) {
-
-                console.log("RESPONSE:")
-                console.log(response.data)
 
                 dispatch({
                     type: GET_TODAYS_APPOINTMENTS_COMPLETE,
@@ -72,22 +74,18 @@ export const getAppointsBetween = (startDate: Date, endDate: Date, token: string
         });
 
         axios.get(BE_URL + 'appointment/between', options)
-            .then(function (response) {
-
-                console.log(options)
-                console.log("RESPONSE:")
-                console.log(response.data)
+            .then(response => {
 
                 dispatch({
                     type: GET_APPOINTMENTS_BETWEEN_COMPLETE,
                     payload: {
-                        appointments : response.data,
-                        interval : [startDate, endDate]
+                        appointments: response.data,
+                        interval: [startDate, endDate]
                     }
                 });
 
             })
-            .catch(function (error) {
+            .catch(error => {
                 console.log("GET BETWEEN FAILED")
 
                 dispatch({
@@ -95,9 +93,42 @@ export const getAppointsBetween = (startDate: Date, endDate: Date, token: string
                 });
 
             })
-            .finally(function () {
+            .finally( () => {
 
             });
     }
 }
 
+export const acceptAppoint = (appointID : string, appointPos : number, token : string) => {
+    return (dispatch: Function) => {
+
+        let options = {
+            headers: { "Authorization": "Bearer " + token }
+        }
+
+        dispatch({
+            type: ACCEPT_APPOINTMENT
+        });
+
+        axios.post(BE_URL + 'appointment/' + appointID + '/accept', null , options)
+            .then(response => {
+
+                dispatch({
+                    type: ACCEPT_APPOINTMENT_COMPLETE,
+                    payload: appointPos
+                });
+
+            })
+            .catch(error => {
+
+                dispatch({
+                    type: ACCEPT_APPOINTMENT_FAILED
+                });
+
+            })
+            .finally( () => {
+
+            });
+    }
+
+}
