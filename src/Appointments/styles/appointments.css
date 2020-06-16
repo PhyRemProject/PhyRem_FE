@@ -21,13 +21,17 @@
     padding: 10px;
     background-color: #F7F5FD;
     overflow-y: hidden;
-
 }
 
 #details-info {
     overflow-y: scroll;
     height: 100%;
 }
+
+#new-appoint {
+    height: 100%;
+}
+
 
 .rbc-timeslot-group {
     min-height: 90px;

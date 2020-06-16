@@ -46,6 +46,11 @@ export const ACCEPT_APPOINTMENT = "ACCEPT_APPOINTMENT"
 export const ACCEPT_APPOINTMENT_COMPLETE = "ACCEPT_APPOINTMENT_COMPLETE"
 export const ACCEPT_APPOINTMENT_FAILED = "ACCEPT_APPOINTMENT_FAILED"
 
+export const REJECT_APPOINTMENT = "REJECT_APPOINTMENT"
+export const REJECT_APPOINTMENT_COMPLETE = "REJECT_APPOINTMENT_COMPLETE"
+export const REJECT_APPOINTMENT_FAILED = "REJECT_APPOINTMENT_FAILED"
+
+
 // Interface for the actions above (required by TS)
 interface GetTodaysAppointAction extends Action {
     payload: AppointmentInterface[]
@@ -59,6 +64,10 @@ interface GetAppointsBetweenAction extends Action {
 }
 
 interface AcceptAppointmentAction extends Action {
+    payload: number
+}
+
+interface RejectAppointmentAction extends Action {
     payload: number
 }
 
@@ -129,12 +138,12 @@ export function AppointmentReducer(state = appointmentInitState, action: Action 
             return {
                 ...state,
                 isUpdating: false,
-                loadedAppoints: [...state.loadedAppoints.slice(0, (action as AcceptAppointmentAction).payload), 
-                    {
-                        ...state.loadedAppoints[(action as AcceptAppointmentAction).payload],
-                        status : "ACCEPTED"
-                    },
-                    ...state.loadedAppoints.slice((action as AcceptAppointmentAction).payload + 1),]
+                loadedAppoints: [...state.loadedAppoints.slice(0, (action as AcceptAppointmentAction).payload),
+                {
+                    ...state.loadedAppoints[(action as AcceptAppointmentAction).payload],
+                    status: "ACCEPTED"
+                },
+                ...state.loadedAppoints.slice((action as AcceptAppointmentAction).payload + 1),]
             };
 
         case ACCEPT_APPOINTMENT_FAILED:
@@ -142,6 +151,31 @@ export function AppointmentReducer(state = appointmentInitState, action: Action 
                 ...state,
                 isUpdating: false
             };
+
+        case REJECT_APPOINTMENT:
+            return {
+                ...state,
+                isUpdating: true
+            };
+
+        case REJECT_APPOINTMENT_COMPLETE:
+            return {
+                ...state,
+                isUpdating: false,
+                loadedAppoints: [...state.loadedAppoints.slice(0, (action as AcceptAppointmentAction).payload),
+                {
+                    ...state.loadedAppoints[(action as AcceptAppointmentAction).payload],
+                    status: "REJECTED"
+                },
+                ...state.loadedAppoints.slice((action as AcceptAppointmentAction).payload + 1),]
+            };
+
+        case REJECT_APPOINTMENT_FAILED:
+            return {
+                ...state,
+                isUpdating: false
+            };
+
 
         case PURGE:
             return appointmentInitState;

@@ -5,6 +5,7 @@ import storage from 'redux-persist/lib/storage'
 import { composeWithDevTools } from 'redux-devtools-extension';
 import UserReducer from "../../User/UserReducer"
 import AppointmentReducer from "../../Appointments/AppointmentReducer"
+import PatientReducer from "../../Patients/PatientReducer"
 
 const persistConfig = {
     key: 'root',
@@ -13,7 +14,8 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
     UserReducer,
-    AppointmentReducer
+    AppointmentReducer,
+    PatientReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

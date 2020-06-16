@@ -132,3 +132,37 @@ export const acceptAppoint = (appointID : string, appointPos : number, token : s
     }
 
 }
+
+export const rejectAppoint = (appointID : string, appointPos : number, token : string) => {
+    return (dispatch: Function) => {
+
+        let options = {
+            headers: { "Authorization": "Bearer " + token }
+        }
+
+        dispatch({
+            type: ACCEPT_APPOINTMENT
+        });
+
+        axios.post(BE_URL + 'appointment/' + appointID + '/reject', null , options)
+            .then(response => {
+
+                dispatch({
+                    type: ACCEPT_APPOINTMENT_COMPLETE,
+                    payload: appointPos
+                });
+
+            })
+            .catch(error => {
+
+                dispatch({
+                    type: ACCEPT_APPOINTMENT_FAILED
+                });
+
+            })
+            .finally( () => {
+
+            });
+    }
+
+}

@@ -21,6 +21,7 @@ import { getAppointsBetween } from '../AppointmentActions';
 import UserReducer from '../../User/UserReducer';
 import { PatientInterface } from '../../User/components/Patients';
 import AppointmentDetails from "./AppointmentDetails"
+import NewAppointmentForm from './NewAppointmentForm';
 
 
 interface CalendarEvent {
@@ -41,6 +42,31 @@ function Event({ event }: any) {
     )
 }
 
+const calendarColoring = (event: CalendarEvent, start: any, end: any, isSelected: any) => {
+    if (event.status === "ACCEPTED") {
+        if (isSelected)
+            return { style: { backgroundColor: "#D99A35", color: "white" } };
+        else
+            return { style: { backgroundColor: "#EFAF48", color: "white" } };
+    }
+
+    if (event.status === "REJECTED") {
+        if (isSelected)
+            return { style: { backgroundColor: "#75747D", color: "white" } };
+        else
+            return { style: { backgroundColor: "#9D9CA9", color: "white" } };
+    }
+
+    if (event.status === "REQUESTED") {
+        if (isSelected)
+            return { style: { backgroundColor: "#AAA7F2", color: "white" } };
+        else
+            return { style: { backgroundColor: "#8B88D3", color: "white" } };
+    }
+
+    return {}
+}
+
 
 function Appointments() {
 
@@ -53,6 +79,7 @@ function Appointments() {
     const [currentFilter, setCurrentFilter] = useState("ALL");
     const [normalizedAppointments, setNormalizedAppointments] = useState<CalendarEvent[]>([]);
     const [displayedAppoints, setDisplayedAppoints] = useState<CalendarEvent[]>([]);
+    const [creatingAppoint, setCreatingAppoint] = useState<boolean>(false);
 
     const dispatch = useDispatch()
 
@@ -141,7 +168,6 @@ function Appointments() {
         setCurrentFilter(filter)
     }
 
-    console.log("SELECTEDAPPOINT: ", selectedAppoint)
 
     return (
         <Row className="overview">
@@ -181,20 +207,7 @@ function Appointments() {
                     onView={(view) => {
                     }}
 
-                    eventPropGetter={
-                        (event: CalendarEvent, start, end, isSelected) => {
-                            if (event.status === "ACCEPTED")
-                                return { style: { backgroundColor: "#EFAF48", color: "white" } };
-
-                            if (event.status === "REJECTED")
-                                return { style: { backgroundColor: "#9D9CA9", color: "white" } };
-
-                            if (event.status === "REQUESTED")
-                                return { style: { backgroundColor: "#AAA7F2", color: "white" } };
-
-                            return {}
-                        }
-                    }
+                    eventPropGetter={calendarColoring}
 
                 />
             </Col>
@@ -242,13 +255,39 @@ function Appointments() {
                         </Row>
                     </Container>
 
+                    <Container>
+                        {!creatingAppoint ?
 
-                    <h5 id="details-title">Detalhes</h5>
-                    <div id="details-info" >
+                            <AppointmentDetails selectedAppoint={selectedAppoint} loadedAppoints={loadedAppoints} />
+                            :
+                            <NewAppointmentForm />
 
-                        <AppointmentDetails selectedAppoint={selectedAppoint} loadedAppoints={loadedAppoints}/>
+                        }
 
-                    </div>
+                        {creatingAppoint ?
+                            <Button
+                                className="form-elems w-100"
+                                variant="contained"
+                                color="secondary"
+                                type="submit"
+                                onClick={() => { setCreatingAppoint(false) }}
+                            >
+                                Cancelar
+                    </Button>
+                            :
+                            <Button
+                                className="form-elems w-100"
+                                variant="contained"
+                                color="secondary"
+                                type="submit"
+                                onClick={() => { setCreatingAppoint(true) }}
+                            >
+                                Nova Consulta
+                        </Button>
+                        }
+
+                    </Container>
+
                 </div>
             </Col>
         </Row >

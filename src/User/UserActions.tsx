@@ -87,7 +87,6 @@ export const AttemptLogin = (email: string, password: string, setStatus: Functio
     }
 }
 
-
 export const AttemptLogout = () => {
 
     localStorage.removeItem('token')
@@ -103,3 +102,5 @@ export const AttemptLogout = () => {
         });
 
 }
+
+
