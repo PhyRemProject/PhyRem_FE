@@ -50,6 +50,9 @@ export const REJECT_APPOINTMENT = "REJECT_APPOINTMENT"
 export const REJECT_APPOINTMENT_COMPLETE = "REJECT_APPOINTMENT_COMPLETE"
 export const REJECT_APPOINTMENT_FAILED = "REJECT_APPOINTMENT_FAILED"
 
+export const CREATE_APPOINT = "CREATE_APPOINT"
+export const CREATE_APPOINT_COMPLETE = "CREATE_APPOINT_COMPLETE"
+export const CREATE_APPOINT_FAILED = "CREATE_APPOINT_FAILED"
 
 // Interface for the actions above (required by TS)
 interface GetTodaysAppointAction extends Action {
@@ -70,6 +73,11 @@ interface AcceptAppointmentAction extends Action {
 interface RejectAppointmentAction extends Action {
     payload: number
 }
+
+interface CreateAppointmentAction extends Action {
+    payload: AppointmentInterface
+}
+
 
 
 // Implementing the userStateInterface, setting the initial state
@@ -162,12 +170,12 @@ export function AppointmentReducer(state = appointmentInitState, action: Action 
             return {
                 ...state,
                 isUpdating: false,
-                loadedAppoints: [...state.loadedAppoints.slice(0, (action as AcceptAppointmentAction).payload),
+                loadedAppoints: [...state.loadedAppoints.slice(0, (action as RejectAppointmentAction).payload),
                 {
-                    ...state.loadedAppoints[(action as AcceptAppointmentAction).payload],
+                    ...state.loadedAppoints[(action as RejectAppointmentAction).payload],
                     status: "REJECTED"
                 },
-                ...state.loadedAppoints.slice((action as AcceptAppointmentAction).payload + 1),]
+                ...state.loadedAppoints.slice((action as RejectAppointmentAction).payload + 1),]
             };
 
         case REJECT_APPOINTMENT_FAILED:
@@ -176,6 +184,25 @@ export function AppointmentReducer(state = appointmentInitState, action: Action 
                 isUpdating: false
             };
 
+
+        case CREATE_APPOINT: 
+            return {
+                ...state,
+                isUpdating: true
+            }
+
+        case CREATE_APPOINT_COMPLETE:
+            return {
+                ...state,
+                isUpdating: false,
+                loadedAppoints: [...state.loadedAppoints, (action as CreateAppointmentAction).payload]
+            }
+
+        case CREATE_APPOINT_FAILED:
+            return {
+                ...state,
+                isUpdating: false
+            }
 
         case PURGE:
             return appointmentInitState;

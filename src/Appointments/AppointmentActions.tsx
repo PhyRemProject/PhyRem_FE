@@ -14,11 +14,15 @@ import {
     AppointmentInterface,
     ACCEPT_APPOINTMENT,
     ACCEPT_APPOINTMENT_COMPLETE,
-    ACCEPT_APPOINTMENT_FAILED
+    ACCEPT_APPOINTMENT_FAILED,
+    CREATE_APPOINT,
+    CREATE_APPOINT_COMPLETE,
+    CREATE_APPOINT_FAILED
 } from './AppointmentReducer'
 
 import Store from '../Global/Redux/Store';
 import history from '../Global/components/history'
+import { PatientInterface } from '../User/components/Patients'
 
 const BE_URL = "/api/"
 
@@ -93,13 +97,13 @@ export const getAppointsBetween = (startDate: Date, endDate: Date, token: string
                 });
 
             })
-            .finally( () => {
+            .finally(() => {
 
             });
     }
 }
 
-export const acceptAppoint = (appointID : string, appointPos : number, token : string) => {
+export const acceptAppoint = (appointID: string, appointPos: number, token: string) => {
     return (dispatch: Function) => {
 
         let options = {
@@ -110,7 +114,7 @@ export const acceptAppoint = (appointID : string, appointPos : number, token : s
             type: ACCEPT_APPOINTMENT
         });
 
-        axios.post(BE_URL + 'appointment/' + appointID + '/accept', null , options)
+        axios.post(BE_URL + 'appointment/' + appointID + '/accept', null, options)
             .then(response => {
 
                 dispatch({
@@ -126,14 +130,14 @@ export const acceptAppoint = (appointID : string, appointPos : number, token : s
                 });
 
             })
-            .finally( () => {
+            .finally(() => {
 
             });
     }
 
 }
 
-export const rejectAppoint = (appointID : string, appointPos : number, token : string) => {
+export const rejectAppoint = (appointID: string, appointPos: number, token: string) => {
     return (dispatch: Function) => {
 
         let options = {
@@ -144,7 +148,7 @@ export const rejectAppoint = (appointID : string, appointPos : number, token : s
             type: ACCEPT_APPOINTMENT
         });
 
-        axios.post(BE_URL + 'appointment/' + appointID + '/reject', null , options)
+        axios.post(BE_URL + 'appointment/' + appointID + '/reject', null, options)
             .then(response => {
 
                 dispatch({
@@ -160,9 +164,71 @@ export const rejectAppoint = (appointID : string, appointPos : number, token : s
                 });
 
             })
-            .finally( () => {
+            .finally(() => {
 
             });
     }
 
 }
+
+
+export const createAppoint = (
+    startDate: Date,
+    endDate: Date,
+    location: string,
+    patient: PatientInterface,
+    objective: string,
+    // diagnostic : string,
+    // treatment : string,
+    summary: string,
+    token: string
+) => {
+    return (dispatch: Function) => {
+
+
+        let options = {
+            headers: { "Authorization": "Bearer " + token }
+        }
+
+        dispatch({
+            type: CREATE_APPOINT
+        });
+
+        axios.post(BE_URL + 'appointment',
+            {
+                startDate,
+                endDate,
+                location,
+                patient: patient._id,
+                summary,
+                objective
+            }, options)
+            .then(response => {
+
+                dispatch({
+                    type: CREATE_APPOINT_COMPLETE,
+                    payload: {
+                        startDate,
+                        endDate,
+                        location,
+                        patient,
+                        summary,
+                        objective
+                    }
+                });
+
+            })
+            .catch(error => {
+
+                dispatch({
+                    type: CREATE_APPOINT_FAILED
+                });
+
+            })
+            .finally(() => {
+
+            });
+    }
+
+}
+

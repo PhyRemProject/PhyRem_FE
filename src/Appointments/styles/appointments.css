@@ -41,3 +41,12 @@
     max-height: 180px;
     text-align: center;
 }
+
+/**NEW APPOINTMENT FORM**/
+.summary {
+    height: 230px;
+}
+
+#summary {
+    height: 230px;
+}

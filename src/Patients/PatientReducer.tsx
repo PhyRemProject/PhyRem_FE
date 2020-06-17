@@ -12,7 +12,7 @@ export interface PatientReducer {
 //Interface for the state used by this reducer (required by TS)
 export interface PatientStateInterface {
     loadedPatients: PatientInterface[],
-    physiciansPatients: PatientInterface[] | null,
+    physiciansPatients: PatientInterface[],
     isUpdating: boolean,
     isFetching: boolean
 };
@@ -30,7 +30,7 @@ interface GetPhysiciansPatientsAction extends Action {
 // Implementing the userStateInterface, setting the initial state
 const appointmentInitState = {
     loadedPatients : [],
-    physiciansPatients : null,
+    physiciansPatients : [],
     isUpdating: false,
     isFetching: false
 } as PatientStateInterface

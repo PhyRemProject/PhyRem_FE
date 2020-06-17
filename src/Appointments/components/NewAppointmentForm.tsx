@@ -16,14 +16,16 @@ import moment from "moment"
 
 import AppointmentReducer, { AppointmentInterface } from "../AppointmentReducer"
 
+import "react-datepicker/dist/react-datepicker.css";
 import "react-big-calendar/lib/css/react-big-calendar.css"
 import "../styles/appointments.css"
-import { getAppointsBetween, acceptAppoint, rejectAppoint } from '../AppointmentActions';
+import { getAppointsBetween, acceptAppoint, rejectAppoint, createAppoint } from '../AppointmentActions';
 import UserReducer from '../../User/UserReducer';
 import { PatientInterface } from '../../User/components/Patients';
 import { FormControl, TextField, InputLabel, Select, MenuItem } from '@material-ui/core';
 import { GetAdoptedPatientList } from '../../Patients/PatientActions';
 import PatientReducer from '../../Patients/PatientReducer';
+import ReactDatePicker from 'react-datepicker';
 
 
 interface AppointmentDetailsProps {
@@ -38,30 +40,47 @@ function NewAppointmentForm() {
     const token = useSelector((state: UserReducer) => state.UserReducer.user?.token) as string
     const isFetching = useSelector((state: PatientReducer) => state.PatientReducer.isFetching) as boolean
     const patientsList = useSelector((state: PatientReducer) => state.PatientReducer.physiciansPatients) as PatientInterface[]
-    const [selectedPatient, setSelectedPatient] = useState<string>();
-
+    const [selectedPatientIndex, setSelectedPatientIndex] = useState<number>(-1);
+    const [selectedPatient, setSelectedPatient] = useState<PatientInterface | null>(null);
+    const [startDate, setStartDate] = useState<Date>(new Date);
+    const [endDate, setEndDate] = useState<Date>(new Date);
+    const [location, setLocation] = useState<string>("");
+    const [summary, setSummary] = useState<string>("");
+    const [objective, setObjective] = useState<string>("");
+    const [selectedPatEval, setSelectedPatEval] = useState<string>("");
 
     const dispatch = useDispatch()
 
 
     useEffect(() => {
-        getPhysiciansPatientList()
+        dispatch(GetAdoptedPatientList(token))
     }, [])
 
 
     const handleCreateAppointment = (e: React.FormEvent) => {
         e.preventDefault();
         console.log(e)
-        console.log("Submiting")
+        dispatch(
+            createAppoint(
+                startDate,
+                endDate,
+                location,
+                selectedPatient as PatientInterface,
+                objective,
+                summary,
+                token
+            ))
     }
 
-    const getPhysiciansPatientList = () => {
-        dispatch(GetAdoptedPatientList(token))
+    const handlePatientPicking = (event: React.ChangeEvent<{ value: unknown }>) => {
+        setSelectedPatientIndex(event.target.value as number)
+        setSelectedPatient(patientsList[selectedPatientIndex])
+        console.log(selectedPatientIndex)
+        console.log(selectedPatient)
     }
 
-    const handlePatientPicking = (event : any) => {
-        setSelectedPatient(event.target.value)
-    }
+
+    console.log("render")
 
     return (
         <>
@@ -69,68 +88,137 @@ function NewAppointmentForm() {
             <div id="new-appoint" >
                 {isFetching ? <p>Loading...</p> : <></>}
                 {
-                    patientsList === null ?
-                        <p>Loading...</p> :
-                        patientsList.length === 0 ?
-                            <p>Não tem pacientes adoptados</p>
-                            :
-                            <form>
-                                <FormControl className={"w-100 mt-2"}>
-                                    <InputLabel id="patient-label">Paciente</InputLabel>
-                                    <Select
-                                        labelId="patient-label"
-                                        id="patient-label-select"
-                                    >
-                                        {
-                                            patientsList.map((patient: PatientInterface, index: number) => {
-                                                return <MenuItem
-                                                    value={patient._id || ""}
-                                                    key={index}
-                                                    onChange={handlePatientPicking}
-                                                >
-                                                    {patient.name} - {patient.email}
-                                                </MenuItem>
-                                            })
-                                        }
+                    patientsList.length === 0 ?
+                        <p>Não tem pacientes adoptados</p>
+                        :
+                        <form className={"w-100 mt-2"}>
+                            <InputLabel id="patient-label">Paciente</InputLabel>
+                            <Select
+                                className={"w-100"}
+                                labelId="patient-label"
+                                id="patient-label-select"
+                                value={selectedPatientIndex}
+                                onChange={handlePatientPicking}
+                            >
+                                {
+                                    patientsList.map((patient: PatientInterface, index: number) => {
+                                        return <MenuItem
+                                            value={index}
+                                            key={index}
+                                        >
+                                            {patient.name} - {patient.email}
+                                        </MenuItem>
+                                    })
+                                }
 
-                                    </Select>
-                                </FormControl>
-                                <TextField
-                                    id="datetime-local"
-                                    label="Data da Consulta"
-                                    type="datetime-local"
-                                    defaultValue={""}
-                                    className={"w-100 mt-2"}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                />
-                                <TextField id="outlined-basic" label="Localização" variant="outlined" className="w-100 mt-3" />
-                                <TextField id="outlined-basic" label="Resumo" variant="outlined" className="w-100 mt-3" />
+                            </Select>
 
-                                <FormControl className={"w-100 mt-3"}>
-                                    <InputLabel id="patienteval-label">Avaliação de Paciente</InputLabel>
-                                    <Select
-                                        labelId="patienteval-label"
-                                        id="patienteval-label-select"
-                                        defaultValue={0}
-                                    >
-                                        <MenuItem value={0}>Nenhuma</MenuItem>
+                            <InputLabel id="date-label" className={"mt-4"}>Data da Consulta</InputLabel>
+                            <span>Inicio</span>
+                            <ReactDatePicker
+                                className={"w-100"}
+                                selected={startDate}
+                                onChange={(date: Date | null) => {
+                                    setStartDate(date || new Date)
+                                }}
+                                showTimeSelect
+                                // excludeTimes={[
+                                //     setHours(setMinutes(new Date(), 0), 17),
+                                //     setHours(setMinutes(new Date(), 30), 18),
+                                //     setHours(setMinutes(new Date(), 30), 19),
+                                //     setHours(setMinutes(new Date(), 30), 17)
+                                // ]}
+                                dateFormat="MMMM d, yyyy h:mm aa"
+                            />
 
-                                    </Select>
-                                </FormControl>
+                            <span>Fim</span>
+                            <ReactDatePicker
+                                className={"w-100"}
+                                selected={endDate}
+                                onChange={(date: Date | null) => {
+                                    setEndDate(date || new Date)
+                                }}
+                                showTimeSelect
+                                // excludeTimes={[
+                                //     setHours(setMinutes(new Date(), 0), 17),
+                                //     setHours(setMinutes(new Date(), 30), 18),
+                                //     setHours(setMinutes(new Date(), 30), 19),
+                                //     setHours(setMinutes(new Date(), 30), 17)
+                                // ]}
+                                dateFormat="MMMM d, yyyy h:mm aa"
+                            />
 
-                                <Button
-                                    className="form-elems w-100 pt-3 pb-3 mb-3 mt-3"
-                                    variant="contained"
-                                    color="primary"
-                                    type="submit"
-                                    onClick={handleCreateAppointment}
-                                >
-                                    Registar Consulta
+
+                            <TextField
+                                id="outlined-basic"
+                                label="Localização"
+                                variant="outlined"
+                                value={location}
+                                onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
+                                    setLocation(event.target.value as string)
+                                }}
+                                className={"w-100 mt-3"}
+                            />
+
+                            <InputLabel
+                                id="objective-label"
+                                className={"mt-4 w-100"}
+                            >Objectivo</InputLabel>
+                            <Select
+                                className={"w-100"}
+                                labelId="objective-label"
+                                id="objective-label-select"
+                                defaultValue={""}
+                                value={objective}
+                                onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
+                                    setObjective(event.target.value as string)
+                                }}
+                            >
+                                <MenuItem value={"appointment"}>Consulta</MenuItem>
+                                <MenuItem value={"treatment"}>Tratamento</MenuItem>
+                                <MenuItem value={"evaluation"}>Avaliação</MenuItem>
+
+                            </Select>
+
+
+                            <TextField
+                                id="outlined-basic "
+                                label="Resumo"
+                                variant="outlined"
+                                multiline
+                                value={summary}
+                                onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
+                                    setSummary(event.target.value as string)
+                                }}
+                                className={"w-100 mt-3 "}
+                                inputProps={{ style: { height: 230 } }}
+                            />
+
+                            <InputLabel
+                                id="patienteval-label"
+                                className={"mt-4 w-100"}
+                            >Avaliação de Paciente</InputLabel>
+                            <Select
+                                className={"w-100"}
+                                labelId="patienteval-label"
+                                id="patienteval-label-select"
+                                defaultValue={""}
+                            >
+                                <MenuItem value={""}>Nenhuma</MenuItem>
+
+                            </Select>
+
+                            <Button
+                                className="form-elems w-100 pt-3 pb-3 mb-3 mt-3"
+                                variant="contained"
+                                color="primary"
+                                type="submit"
+                                onClick={handleCreateAppointment}
+                            >
+                                Registar Consulta
                         </Button>
 
-                            </form>
+                        </form>
                 }
             </div>
         </>
