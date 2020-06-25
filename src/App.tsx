@@ -33,6 +33,28 @@ function App() {
       secondary: {
         main: '#6C63FF'
       }
+    },
+    overrides: {
+      MuiOutlinedInput: {
+        root: {
+          fontSize: '15px',
+          lineHeight: '20px',
+        },
+        input: {
+          height: '0.1em',
+        }
+      },
+      MuiInputLabel: {
+        shrink: {
+          fontSize: '15px'
+        },
+        root: {
+          fontSize: '15px'
+        },
+        outlined: {
+          transform: "translate(14px, 12px) scale(1)"
+        }
+      }
     }
   });
 
@@ -43,8 +65,8 @@ function App() {
         <div className="App">
 
           <Switch>
-            <Route exact path="/" component={Home}/>
-            <Route path="/dashboard" component={Dashboard}/>
+            <Route exact path="/" component={Home} />
+            <Route path="/dashboard" component={Dashboard} />
           </Switch>
 
         </div>

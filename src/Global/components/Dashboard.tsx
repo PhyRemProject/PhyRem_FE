@@ -8,6 +8,7 @@ import Sidebar from "./Sidebar";
 import Header from "./Header"
 import Overview from "../../Overview/components/Overview"
 import Appointments from "../../Appointments/components/Appointments"
+import Patients from "../../Patients/components/Patients"
 
 import "../styles/dashboard.css"
 
@@ -26,10 +27,11 @@ function Dashboard() {
                 </Row>
                 {/* Active view */}
                 <Row className="dashboard-content">
-                    <Col xs="12" className="dashboard-content">
+                    <Col xs="12" className="dashboard-content p-0">
                         <Switch>
                             <Route exact path={path} component={Overview} />
                             <Route exact path={`${path}/appointments`} component={Appointments} />
+                            <Route exact path={`${path}/patients`} component={Patients} />
                         </Switch>
 
                     </Col>

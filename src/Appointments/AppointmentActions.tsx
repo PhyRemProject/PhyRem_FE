@@ -173,6 +173,7 @@ export const rejectAppoint = (appointID: string, appointPos: number, token: stri
 
 
 export const createAppoint = (
+    setStatus: Function,
     startDate: Date,
     endDate: Date,
     location: string,
@@ -185,6 +186,21 @@ export const createAppoint = (
 ) => {
     return (dispatch: Function) => {
 
+        /** Validation checks**/
+        if(patient === null) {
+            setStatus("Nenhum paciente seleccionado")
+            return
+        }
+
+        console.table([
+            startDate,
+            endDate,
+            location,
+            patient,
+            objective,
+            summary,
+            token
+        ])
 
         let options = {
             headers: { "Authorization": "Bearer " + token }
@@ -205,21 +221,18 @@ export const createAppoint = (
             }, options)
             .then(response => {
 
+                console.log(response.data)
+                delete response.data.physicianInfo;
+                console.log(response.data)
+
                 dispatch({
                     type: CREATE_APPOINT_COMPLETE,
-                    payload: {
-                        startDate,
-                        endDate,
-                        location,
-                        patient,
-                        summary,
-                        objective
-                    }
+                    payload: response.data
                 });
 
             })
             .catch(error => {
-
+                console.log(error)
                 dispatch({
                     type: CREATE_APPOINT_FAILED
                 });

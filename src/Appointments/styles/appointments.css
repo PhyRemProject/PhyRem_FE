@@ -23,13 +23,17 @@
     overflow-y: hidden;
 }
 
-#details-info {
+.appoint-actions-container {
+    height: calc(100% - 35px);
     overflow-y: scroll;
-    height: 100%;
+}
+
+#details-info {
+    /* height: 100%; */
 }
 
 #new-appoint {
-    height: 100%;
+    /* height: 100%; */
 }
 
 

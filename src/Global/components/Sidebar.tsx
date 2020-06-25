@@ -1,5 +1,5 @@
-import React from 'react';
-import { Switch, Route, Link, useRouteMatch } from "react-router-dom";
+import React, { useMemo, useEffect, useState } from 'react';
+import { Switch, Route, Link, useRouteMatch, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button } from "react-bootstrap";
 
@@ -18,16 +18,16 @@ import UserReducer from '../../User/UserReducer';
 
 interface OptionProps {
     name: string,
-    selected: boolean | null,
     logo: IconDefinition,
-    route: string
+    route: string,
+    activeView: string
 }
 
 function Option(props: OptionProps) {
 
     return (
         <Link to={"/dashboard/" + props.route}>
-            <div className="option" id={props.selected ? "option-selected" : "option-not-selected"}>
+            <div className="option" id={props.route === props.activeView ? "option-selected" : "option-not-selected"}>
                 <FontAwesomeIcon icon={props.logo} className="option-logo" />
                 {props.name}
             </div>
@@ -37,7 +37,16 @@ function Option(props: OptionProps) {
 
 function Sidebar() {
 
-    const user = useSelector((state: UserReducer) => state.UserReducer.user)
+    const user = useSelector((state: UserReducer) => state.UserReducer.user);
+    const [activeView, setActiveView] = useState<string>("");
+    let location = useLocation();
+
+    const setOptionHighlight = () => {
+        let path = location.pathname.split("/")
+        setActiveView(path[2])
+    }
+
+    useEffect(() => setOptionHighlight(), [location]);
 
 
     return (
@@ -45,10 +54,10 @@ function Sidebar() {
             <div className="logo">
                 <img className="logo" src={logo} />
             </div>
-            <Option name="Visão Geral" logo={faWindowRestore} route={""} selected />
-            <Option name="Consultas" logo={faCalendarAlt} route={"appointments"} selected={false} />
-            <Option name="Pacientes" logo={faUser} route={""} selected={false} />
-            <Option name="Definições" logo={faCog} route={""} selected={false} />
+            <Option name="Visão Geral" logo={faWindowRestore} route={""} activeView={activeView} />
+            <Option name="Consultas" logo={faCalendarAlt} route={"appointments"} activeView={activeView} />
+            <Option name="Pacientes" logo={faUser} route={"patients"} activeView={activeView} />
+            <Option name="Definições" logo={faCog} route={"settings"} activeView={activeView} />
             <div className="user-card">
                 <div className="username">
                     <span id="username">

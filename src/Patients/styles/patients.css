@@ -1,0 +1,34 @@
+.patient-view {
+    height: 100%;
+} 
+
+.patient-list-content {
+    height: calc(100vh - 170px);
+    overflow-y: scroll;
+    background-color: #F2F2FC;
+    margin-right: 0px !important;
+}
+
+.patient-list-options {
+    height: 47px;
+}
+
+#patient-list-header {
+    background-color: #E3E1FD;
+    margin-right: 0px;
+    border-radius: 5px 5px 0px 0px;
+    height: 35px;
+    align-items: center;
+    text-align: center;
+}
+
+/* Patient Card */
+
+.patient-card {
+    background-color: #E3E1FD;
+    border-radius: 5px 5px 5px 5px;
+    width: 98%;
+    margin: 10px;
+    padding-left: 15px;
+    height: 120px;
+}

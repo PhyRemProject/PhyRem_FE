@@ -116,7 +116,7 @@ function Appointments() {
     const populateAppointments = (startDate: Date, endDate: Date) => {
 
         //No interval is loaded
-        if (!loadedInterval[0] || !loadedInterval[1])
+        if (!loadedInterval ||  !loadedInterval[0] || !loadedInterval[1])
             dispatch(
                 getAppointsBetween(
                     moment(startDate).subtract(15, "days").toDate(),
@@ -143,7 +143,12 @@ function Appointments() {
 
     //Converts the raw appointments to React-Big-Calendar events 
     const convertAppointments = () => {
-
+        if (!loadedAppoints){
+            setNormalizedAppointments([])
+            setCurrentFilter("ALL")
+            setDisplayedAppoints([])
+            return
+        }
         let appoints = loadedAppoints.map((appoint: AppointmentInterface, index) => {
             return {
                 id: index,
@@ -255,7 +260,7 @@ function Appointments() {
                         </Row>
                     </Container>
 
-                    <Container>
+                    <Container className="appoint-actions-container">
                         {!creatingAppoint ?
 
                             <AppointmentDetails selectedAppoint={selectedAppoint} loadedAppoints={loadedAppoints} />

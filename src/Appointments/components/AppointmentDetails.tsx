@@ -86,7 +86,7 @@ function ApoitmentDetails(props: AppointmentDetailsProps) {
                                 </span>
                                 <span className="appointment-data">
                                     Localidade
-    <p>{props.loadedAppoints[props.selectedAppoint].patientsInfo.address}</p>
+    <p>{props.loadedAppoints[props.selectedAppoint].location}</p>
                                 </span>
                             </Col>
                             <Col xs={6}>

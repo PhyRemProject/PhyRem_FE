@@ -1,15 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Switch, Route } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import {
-    Container,
-    Row,
-    Col,
-    Image,
-
-} from "react-bootstrap";
 
 import Button from "@material-ui/core/Button";
+import Alert from '@material-ui/lab/Alert';
 
 import { Calendar, momentLocalizer, Views } from "react-big-calendar"
 import moment from "moment"
@@ -48,6 +42,7 @@ function NewAppointmentForm() {
     const [summary, setSummary] = useState<string>("");
     const [objective, setObjective] = useState<string>("");
     const [selectedPatEval, setSelectedPatEval] = useState<string>("");
+    const [status, setStatus] = useState<string | null>(null);
 
     const dispatch = useDispatch()
 
@@ -59,9 +54,9 @@ function NewAppointmentForm() {
 
     const handleCreateAppointment = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log(e)
         dispatch(
             createAppoint(
+                setStatus,
                 startDate,
                 endDate,
                 location,
@@ -74,13 +69,9 @@ function NewAppointmentForm() {
 
     const handlePatientPicking = (event: React.ChangeEvent<{ value: unknown }>) => {
         setSelectedPatientIndex(event.target.value as number)
-        setSelectedPatient(patientsList[selectedPatientIndex])
-        console.log(selectedPatientIndex)
-        console.log(selectedPatient)
+        setSelectedPatient(patientsList[event.target.value as number])
+        setStatus(null)
     }
-
-
-    console.log("render")
 
     return (
         <>
@@ -97,6 +88,7 @@ function NewAppointmentForm() {
                                 className={"w-100"}
                                 labelId="patient-label"
                                 id="patient-label-select"
+                                required
                                 value={selectedPatientIndex}
                                 onChange={handlePatientPicking}
                             >
@@ -130,6 +122,7 @@ function NewAppointmentForm() {
                                 // ]}
                                 dateFormat="MMMM d, yyyy h:mm aa"
                             />
+                            <br />
 
                             <span>Fim</span>
                             <ReactDatePicker
@@ -168,7 +161,8 @@ function NewAppointmentForm() {
                                 className={"w-100"}
                                 labelId="objective-label"
                                 id="objective-label-select"
-                                defaultValue={""}
+                                required
+                                defaultValue={"appointment"}
                                 value={objective}
                                 onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
                                     setObjective(event.target.value as string)
@@ -186,6 +180,7 @@ function NewAppointmentForm() {
                                 label="Resumo"
                                 variant="outlined"
                                 multiline
+                                required
                                 value={summary}
                                 onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
                                     setSummary(event.target.value as string)
@@ -203,10 +198,17 @@ function NewAppointmentForm() {
                                 labelId="patienteval-label"
                                 id="patienteval-label-select"
                                 defaultValue={""}
+                                
                             >
                                 <MenuItem value={""}>Nenhuma</MenuItem>
 
                             </Select>
+
+                            {status !== null ? 
+                            <Alert variant="filled" severity="error">
+                                {status}
+                            </Alert>
+                            :<></>}
 
                             <Button
                                 className="form-elems w-100 pt-3 pb-3 mb-3 mt-3"
