@@ -22,20 +22,29 @@ export const GET_PHYSICIANS_PATIENTS = "GET_PHYSICIANS_PATIENTS"
 export const GET_PHYSICIANS_PATIENTS_COMPLETE = "GET_PHYSICIANS_PATIENTS_COMPLETE"
 export const GET_PHYSICIANS_PATIENTS_FAILED = "GET_PHYSICIANS_PATIENTS_FAILED"
 
+export const GET_PATIENTS_WITH_NAME = "GET_PATIENTS_WITH_NAME"
+export const GET_PATIENTS_WITH_NAME_COMPLETE = "GET_PATIENTS_WITH_NAME_COMPLETE"
+export const GET_PATIENTS_WITH_NAME_FAILED = "GET_PATIENTS_WITH_NAME_FAILED"
+
+
 // Interface for the actions above (required by TS)
 interface GetPhysiciansPatientsAction extends Action {
     payload: PatientInterface[]
 }
 
+interface GetPatientByNameAction extends Action {
+    payload: PatientInterface[]
+}
+
 // Implementing the userStateInterface, setting the initial state
 const appointmentInitState = {
-    loadedPatients : [],
-    physiciansPatients : [],
+    loadedPatients: [],
+    physiciansPatients: [],
     isUpdating: false,
     isFetching: false
 } as PatientStateInterface
 
-export function PatientReducer(state = appointmentInitState, action: Action | GetPhysiciansPatientsAction) {
+export function PatientReducer(state = appointmentInitState, action: Action | GetPhysiciansPatientsAction | GetPatientByNameAction) {
 
     switch (action.type) {
 
@@ -59,6 +68,28 @@ export function PatientReducer(state = appointmentInitState, action: Action | Ge
                 ...state,
                 isFetching: false
             };
+
+        case GET_PATIENTS_WITH_NAME:
+            return {
+                ...state,
+                isFetching: true
+            };
+
+
+        case GET_PATIENTS_WITH_NAME_COMPLETE:
+            return {
+                ...state,
+                isFetching: false,
+                loadedPatients: (action as GetPatientByNameAction).payload
+            };
+
+
+        case GET_PATIENTS_WITH_NAME_FAILED:
+            return {
+                ...state,
+                isFetching: false
+            };
+
 
 
         case PURGE:

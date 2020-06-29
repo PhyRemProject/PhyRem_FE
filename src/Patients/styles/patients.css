@@ -32,3 +32,14 @@
     padding-left: 15px;
     height: 120px;
 }
+
+.patient-card :hover{
+    background-color: #cac8e9;
+    border-radius: 5px 5px 5px 5px;
+}
+
+
+.patient-card-content {
+    height: 100%;
+}
+

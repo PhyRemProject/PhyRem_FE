@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
     Container,
@@ -14,75 +14,46 @@ import {
     Button
 } from '@material-ui/core';
 
-import PatientCard from "./PatientCard"
+import {
+    faSearch
+} from "@fortawesome/free-solid-svg-icons";
+import PhysiciansPatients from './PhysiciansPatients';
+import AllPatients from './AllPatients';
+
 
 function Patients() {
 
-    const [search, setSearch] = useState<string | null>(null);
+    let location = useLocation();
+    const [currentView, setCurrentView] = useState<string>("");
+
+    //Updates the currentView, can be:
+    //  None: displays the physician's
+    //  All: displays all the patients on the system
+    //  patientID: displays the patient information view  
+    const activePatientView = () => {
+        let path = location.pathname.split("/")
+        console.log(path)
+        if (path.length === 3)
+            setCurrentView("")
+        else if (path.length === 4) {
+            if (path[3] === "all")
+                setCurrentView("all")
+        }
+    }
+
+    useEffect(() => activePatientView(), [location]);
 
 
     return (
-        <div className="patient-view">
-            <Row className="patient-list-options">
-                <Col sm={3} className={"p-0 pt-2"}>
-                    <TextField
-                        id="outlined-basic"
-                        label="Filtrar"
-                        variant="outlined"
-                        value={search}
-                        onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
-                            setSearch(event.target.value as string)
-                        }}
-                        className={"w-100 mt-0"}
-                    />
-                </Col>
-                <Col sm={7}>
-
-                </Col>
-                <Col sm={2}>
-                    <Button
-                        className="form-elems w-100 h-100"
-                        variant="contained"
-                        color="secondary"
-                        type="submit"
-                        onClick={() => { }}
-                    >
-                        Atribuir Paciente
-                </Button>
-                </Col>
-            </Row>
-
-            <Row className="p-0 mt-2">
-                <Col xs={12}>
-                    <Row id="patient-list-header">
-                        <Col xs={3}>
-                            img
-                    </Col>
-                        <Col xs={3}>
-                            name
-                    </Col>
-                        <Col xs={3}>
-                            age
-                    </Col>
-                        <Col xs={3}>
-                            whatever
-                    </Col>
-                    </Row>
-                    <Row className="patient-list-content">
-
-                        <PatientCard></PatientCard>
-                        <PatientCard></PatientCard>
-                        <PatientCard></PatientCard>
-                        <PatientCard></PatientCard>
-                        <PatientCard></PatientCard>
-                        <PatientCard></PatientCard>
-                        <PatientCard></PatientCard>
-
-
-                    </Row>
-                </Col>
-            </Row>
-        </div>
+        <>
+            {currentView === "" ?
+                <PhysiciansPatients setDisplayedView={setCurrentView} /> :
+                currentView === "all" ?
+                    <AllPatients/>
+                    :
+                    <>hnn</>
+            }
+        </>
     );
 }
 

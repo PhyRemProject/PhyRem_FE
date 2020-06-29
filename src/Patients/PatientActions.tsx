@@ -2,7 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import jwt from 'jwt-decode'
 import lodash from "lodash"
-import { GET_PHYSICIANS_PATIENTS, GET_PHYSICIANS_PATIENTS_COMPLETE, GET_PHYSICIANS_PATIENTS_FAILED } from './PatientReducer'
+import { GET_PHYSICIANS_PATIENTS, GET_PHYSICIANS_PATIENTS_COMPLETE, GET_PHYSICIANS_PATIENTS_FAILED, GET_PATIENTS_WITH_NAME, GET_PATIENTS_WITH_NAME_COMPLETE, GET_PATIENTS_WITH_NAME_FAILED } from './PatientReducer'
 
 
 const BE_URL = "/api/"
@@ -35,6 +35,47 @@ export const GetAdoptedPatientList = (token : string) => {
 
             dispatch({
                 type: GET_PHYSICIANS_PATIENTS_FAILED
+            });
+
+        })
+        .finally(function () {
+
+        });
+}
+}
+
+
+export const GetPatientsWithName = (token : string, name : string) => {
+
+    return (dispatch: Function) => {
+
+        let options = {
+            headers: { "Authorization": "Bearer " + token },
+            params: {
+                name
+            }
+        }
+
+        dispatch({
+            type: GET_PATIENTS_WITH_NAME
+        });
+
+        axios.get(BE_URL + 'patient/search', options)
+        .then(function (response) {
+
+            dispatch({
+                type: GET_PATIENTS_WITH_NAME_COMPLETE,
+                payload: response.data
+            });
+
+            console.log(response.data)
+
+        })
+        .catch(function (error) {
+            console.log("FETCH PATIENT By name FAILED")
+
+            dispatch({
+                type: GET_PATIENTS_WITH_NAME_FAILED
             });
 
         })

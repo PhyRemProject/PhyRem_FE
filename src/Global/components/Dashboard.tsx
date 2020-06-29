@@ -31,7 +31,7 @@ function Dashboard() {
                         <Switch>
                             <Route exact path={path} component={Overview} />
                             <Route exact path={`${path}/appointments`} component={Appointments} />
-                            <Route exact path={`${path}/patients`} component={Patients} />
+                            <Route path={`${path}/patients`} component={Patients} />
                         </Switch>
 
                     </Col>
