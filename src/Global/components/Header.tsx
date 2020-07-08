@@ -32,7 +32,7 @@ function Header() {
             </div>
             <div id="logout">
                 <Button
-                    id="logout-button"
+                    id="red-button"
                     className="form-elems"
                     variant="contained"
                     color="primary"

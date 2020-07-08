@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
     Container,
@@ -21,6 +21,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface PatientCardProps {
     data: {
+        id: string,
         name: string,
         email: string,
         contact: string,
@@ -36,8 +37,8 @@ function PatientCard(props: PatientCardProps) {
     return (
         <div className="patient-card">
             <Row className="h-100">
-                <Col sm={2} className={""}>
-                    <Image src={`${process.env.PUBLIC_URL}/images/default_user.png`} roundedCircle fluid />
+                <Col sm={2} className="h-100">
+                    <Image src={`${process.env.PUBLIC_URL}/images/default_user.png`} roundedCircle fluid className="patient-card-image" />
 
                 </Col>
                 <Col sm={3} className="h-100">
@@ -46,26 +47,28 @@ function PatientCard(props: PatientCardProps) {
                         {props.data.email}
                     </span>
                 </Col>
-                <Col sm={2}>
+                <Col sm={2} className="h-100">
                     {props.data.contact}<br />
                 </Col>
-                <Col sm={2}>
+                <Col sm={2} className="h-100">
                     {props.data.address}<br />
                 </Col>
-                <Col sm={2}>
+                <Col sm={2} className="h-100">
                     {props.data.gender}<br />
                 </Col>
-                <Col sm={1}>
+                <Col sm={1} className="h-100">
                     <Button
                         className="form-elems w-100 h-100"
                         variant="contained"
                         color="secondary"
                         type="submit"
+                        component={Link}
+                        to={"/dashboard/patients/" + props.data.id}
                         onClick={() => { }}
                     >
-                        <FontAwesomeIcon icon={faEye} id="eye-logo" />
-                        <br/>
-                        {"Ver"}
+                            <FontAwesomeIcon icon={faEye} id="eye-logo" />
+                            <br />
+                            {"Ver"}
                     </Button>
                 </Col>
 

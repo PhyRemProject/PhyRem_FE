@@ -141,6 +141,7 @@ function PhysiciansPatients(props: PhysiciansPatientsProps) {
 
                                             return <PatientCard data={
                                                 {
+                                                    id: patient._id as string,
                                                     name: patient.name as string,
                                                     email: patient.email as string,
                                                     contact: patient.phoneNumber as string,
@@ -160,6 +161,7 @@ function PhysiciansPatients(props: PhysiciansPatientsProps) {
 
                                                 return <PatientCard data={
                                                     {
+                                                        id: patient._id as string,
                                                         name: patient.name as string,
                                                         email: patient.email as string,
                                                         contact: patient.phoneNumber as string,

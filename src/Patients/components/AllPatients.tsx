@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
     Container,
@@ -30,6 +30,8 @@ function AllPatients() {
 
 
     const [filterTerm, setFilterTerm] = useState<string>("");
+    const [prevFilterTerm, setPrevFilterTerm] = useState<string>("");
+    const [searchResult, setSearchResult] = useState<PatientInterface[]>([]);
 
     const token = useSelector((state: UserReducer) => state.UserReducer.user?.token) as string
     const patientList = useSelector((state: PatientReducer) => state.PatientReducer.loadedPatients)
@@ -38,20 +40,25 @@ function AllPatients() {
     const dispatch = useDispatch();
 
     const updateSearchResults = () => {
-
+        setPrevFilterTerm(filterTerm)
         dispatch(GetPatientsWithName(token, filterTerm))
-
     }
+
+    useMemo(() => { setSearchResult(patientList) }, [patientList]);
 
     return (
         <div className="patient-view">
             <Row className="patient-list-options">
-                <Col sm={5} className={"p-0 pt-2"}>
+                <Col sm={12} className={"p-0 pt-2"}>
                     <h4>Procurar Novo Paciente</h4>
                     <br />
                 </Col>
-                <Col sm={6}>
+            </Row>
+
+            <Row className="patient-list-options">
+                <Col sm={10}>
                     <TextField
+                        className={"form-elems w-100 h-100"}
                         id="outlined-basic"
                         label="Nome do paciente"
                         variant="outlined"
@@ -59,77 +66,92 @@ function AllPatients() {
                         onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
                             setFilterTerm(event.target.value as string)
                         }}
-                        className={"w-100 mt-0"}
                     />
                 </Col>
                 <Col sm={1}>
                     <Button
                         className="form-elems h-100 w-100"
                         variant="contained"
-                        color="secondary"
+                        color="primary"
                         type="submit"
                         onClick={updateSearchResults}
                     >
                         <FontAwesomeIcon icon={faSearch} id="search-logo" />
                         {" Pesquisar"}
                     </Button>
-
                 </Col>
+                <Col sm={1}>
+                    <Link to={"/dashboard/patients"}>
+
+                        <Button
+                            className="form-elems h-100 w-100"
+                            variant="contained"
+                            color="secondary"
+                            type="submit"
+                            onClick={() => { }}
+                        >
+                            {" Cancelar"}
+                        </Button>
+                    </Link>
+                </Col>
+
             </Row>
 
-            <Row className="p-0 mt-2">
-                <Col xs={12}>
-                    <Row id="patient-list-header">
-                        <Col xs={2}>
 
+                <Row className="p-0 mt-2">
+                    <Col xs={12}>
+                        <Row id="patient-list-header">
+                            <Col xs={2}>
+                                <b>Resultado</b>
+                            </Col>
+                            <Col xs={3}>
+                                Nome
                         </Col>
-                        <Col xs={3}>
-                            <b>Nome</b>
+                            <Col xs={2}>
+                                Contacto
                         </Col>
-                        <Col xs={2}>
-                            <b>Contacto</b>
+                            <Col xs={2}>
+                                Morada
                         </Col>
-                        <Col xs={2}>
-                            <b>Morada</b>
+                            <Col xs={2}>
+                                Sexo
                         </Col>
-                        <Col xs={2}>
-                            <b>Sexo</b>
-                        </Col>
-                        <Col xs={1}>
-                        </Col>
-                    </Row>
-                    <Row className="patient-list-content">
+                            <Col xs={1}>
+                            </Col>
+                        </Row>
+                        <Row className="all-patient-list-content">
 
-                        {/* If the PatientList is null, an error occured during fetch */}
-                        {patientList === null ?
-                            <p>Falha a carregar pacientes</p>
-                            : isFetching === true ?
-                                <p>A Carregar ...</p>
-                                : filterTerm === "" ?
-                                    <p>Inicie uma pesquisa</p>
-                                : patientList.length === 0 ?
-                                    <p>Não foram encontrados resultados com nome "{filterTerm}"</p>
-                                    :
-                                    // If filterResult is null, a filter is not being applied, therefore, show the patient list
-                                    patientList.map((patient: PatientInterface, index: number) => {
+                            {/* If the PatientList is null, an error occured during fetch */}
+                            {patientList === null ?
+                                <p>Falha a carregar pacientes</p>
+                                : isFetching === true ?
+                                    <p>A Carregar ...</p>
+                                    : searchResult.length === 0 && filterTerm === "" ?
+                                        <p>Inicie uma pesquisa</p>
+                                        : searchResult.length === 0 ?
+                                            <p>Não foram encontrados resultados com nome "{prevFilterTerm}"</p>
+                                            :
+                                            // If filterResult is null, a filter is not being applied, therefore, show the patient list
+                                            searchResult.map((patient: PatientInterface, index: number) => {
 
-                                        return <PatientCard data={
-                                            {
-                                                name: patient.name as string,
-                                                email: patient.email as string,
-                                                contact: patient.phoneNumber as string,
-                                                address: patient.address as string,
-                                                gender: patient.gender as string
-                                            }
-                                        }
-                                            key={index}
-                                        />
-                                    })
-                        }
+                                                return <PatientCard data={
+                                                    {
+                                                        id: patient._id as string,
+                                                        name: patient.name as string,
+                                                        email: patient.email as string,
+                                                        contact: patient.phoneNumber as string,
+                                                        address: patient.address as string,
+                                                        gender: patient.gender as string
+                                                    }
+                                                }
+                                                    key={index}
+                                                />
+                                            })
+                            }
 
-                    </Row>
-                </Col>
-            </Row>
+                        </Row>
+                    </Col>
+                </Row>
         </div>
     );
 }

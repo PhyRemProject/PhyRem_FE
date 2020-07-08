@@ -19,6 +19,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import PhysiciansPatients from './PhysiciansPatients';
 import AllPatients from './AllPatients';
+import PatientInformation from './PatientInformation';
 
 
 function Patients() {
@@ -32,12 +33,13 @@ function Patients() {
     //  patientID: displays the patient information view  
     const activePatientView = () => {
         let path = location.pathname.split("/")
-        console.log(path)
         if (path.length === 3)
             setCurrentView("")
         else if (path.length === 4) {
             if (path[3] === "all")
                 setCurrentView("all")
+            else
+                setCurrentView(path[3])
         }
     }
 
@@ -51,7 +53,7 @@ function Patients() {
                 currentView === "all" ?
                     <AllPatients/>
                     :
-                    <>hnn</>
+                    <PatientInformation patientID={currentView}/>
             }
         </>
     );
