@@ -26,8 +26,7 @@ import { Dialog, DialogTitle, DialogActions, DialogContent } from '@material-ui/
 import MapDialog from "../../Global/components/MapDialog"
 
 interface AppointmentDetailsProps {
-    selectedAppoint: number | undefined,
-    loadedAppoints: AppointmentInterface[]
+    appointment: AppointmentInterface
 }
 
 
@@ -39,22 +38,20 @@ function ApoitmentDetails(props: AppointmentDetailsProps) {
     const dispatch = useDispatch()
 
     const handleAcceptAppoint = () => {
-        if (props.selectedAppoint)
+        if (props.appointment)
             dispatch(
                 acceptAppoint(
-                    props.loadedAppoints[props.selectedAppoint]._id,
-                    props.selectedAppoint,
+                    props.appointment,
                     token
                 )
             )
     }
 
     const handleRejectAppoint = () => {
-        if (props.selectedAppoint)
+        if (props.appointment)
             dispatch(
                 rejectAppoint(
-                    props.loadedAppoints[props.selectedAppoint]._id,
-                    props.selectedAppoint,
+                    props.appointment,
                     token
                 )
             )
@@ -67,7 +64,7 @@ function ApoitmentDetails(props: AppointmentDetailsProps) {
             <h5 id="details-title">Detalhes</h5>
             <div id="details-info" >
 
-                {props.selectedAppoint !== undefined ?
+                {props.appointment !== undefined || props.appointment !== null ?
                     <Container fluid>
                         <Row>
                             <Col xs={12} className="appoint-patient-image">
@@ -78,33 +75,33 @@ function ApoitmentDetails(props: AppointmentDetailsProps) {
                             <Col xs={6}>
                                 <span className="appointment-data">
                                     Paciente
-    <p>{props.loadedAppoints[props.selectedAppoint].patientsInfo.name}</p>
+    <p>{props.appointment.patientsInfo.name}</p>
                                 </span>
                                 <span className="appointment-data">
                                     Contacto
-    <p>{props.loadedAppoints[props.selectedAppoint].patientsInfo.phoneNumber}</p>
+    <p>{props.appointment.patientsInfo.phoneNumber}</p>
                                 </span>
                                 <span className="appointment-data">
                                     Localidade
-    <p>{props.loadedAppoints[props.selectedAppoint].location}</p>
+    <p>{props.appointment.location}</p>
                                 </span>
                             </Col>
                             <Col xs={6}>
                                 <span className="appointment-data">
                                     Objectivo
-    <p>{props.loadedAppoints[props.selectedAppoint].objective}</p>
+    <p>{props.appointment.objective}</p>
                                 </span>
                                 <span className="appointment-data">
                                     Diagnóstico
-    <p>{props.loadedAppoints[props.selectedAppoint].diagnostic}</p>
+    <p>{props.appointment.diagnostic}</p>
                                 </span>
                                 <span className="appointment-data">
                                     Tratamento
-    <p>{props.loadedAppoints[props.selectedAppoint].treatment}</p>
+    <p>{props.appointment.treatment}</p>
                                 </span>
                             </Col>
                         </Row>
-                        {props.loadedAppoints[props.selectedAppoint].status === "REQUESTED" ?
+                        {props.appointment.status === "REQUESTED" ?
                             <Row>
                                 <Col xs={12}>
                                     <Button
@@ -147,7 +144,7 @@ function ApoitmentDetails(props: AppointmentDetailsProps) {
                                         color="secondary"
                                         type="submit"
                                         component={Link}
-                                        to={"/dashboard/patients/" + props.loadedAppoints[props.selectedAppoint].patientsInfo._id}
+                                        to={"/dashboard/patients/" + props.appointment.patientsInfo._id}
                                     >
                                         Ver Histórico do Paciente
 </Button>

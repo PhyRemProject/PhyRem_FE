@@ -25,7 +25,8 @@ import NewAppointmentForm from './NewAppointmentForm';
 
 
 interface CalendarEvent {
-    id: number,
+    index: number,
+    id: string,
     title: string,
     start: Date,
     end: Date,
@@ -77,7 +78,7 @@ function Appointments() {
     const loadedInterval = useSelector((state: AppointmentReducer) => state.AppointmentReducer.loadedInterval)
     const token = useSelector((state: UserReducer) => state.UserReducer.user?.token) as string
 
-    const [selectedAppoint, setSelectedAppoint] = useState<number>();
+    const [selectedAppoint, setSelectedAppoint] = useState<AppointmentInterface | null>();
     const [currentFilter, setCurrentFilter] = useState("ALL");
     const [normalizedAppointments, setNormalizedAppointments] = useState<CalendarEvent[]>([]);
     const [displayedAppoints, setDisplayedAppoints] = useState<CalendarEvent[]>([]);
@@ -106,9 +107,11 @@ function Appointments() {
             console.log(end)
             populateAppointments(start.toDate(), end.toDate());
             convertAppointments()
-            let appointFromPath = loadedAppoints.findIndex(element => element._id == path[4])
-            if (appointFromPath !== -1)
+            let appointFromPath = loadedAppoints.find(element => element._id == path[4])
+            if (appointFromPath)
                 setSelectedAppoint(appointFromPath)
+            else
+                console.log("Appointment from URL not found while loading interval")
         }
     }
 
@@ -176,7 +179,8 @@ function Appointments() {
         }
         let appoints = loadedAppoints.map((appoint: AppointmentInterface, index) => {
             return {
-                id: index,
+                index: index,
+                id: appoint._id as string,
                 title: appoint.patientsInfo.name as string,
                 start: moment(appoint.startDate).toDate(),
                 end: moment(appoint.endDate).toDate(),
@@ -187,11 +191,35 @@ function Appointments() {
         setCurrentFilter("ALL")
         setDisplayedAppoints(appoints)
     }
-    useMemo(() => convertAppointments(), [loadedAppoints]);
 
+    //Convert the appointments once they are loaded
+    useMemo(() => convertAppointments(), [loadedAppoints]);
+    useMemo(() => {
+        let path = location.pathname.split("/")
+        if (path.length >= 3) {
+
+            let appointFromPath = loadedAppoints.find(element => element._id == path[4])
+            if (appointFromPath)
+                setSelectedAppoint(appointFromPath)
+            else
+                console.log("Appointment from URL not found while loading interval")
+        }
+
+    }, [normalizedAppointments]);
 
     const handleSelectAppointment = (event: CalendarEvent) => {
-        setSelectedAppoint(event.id)
+
+        console.log("Selected Event obj: ", event)
+        console.log(loadedInterval)
+        console.log(loadedAppoints)
+
+        let appoint = loadedAppoints.find(element => element._id == event.id)
+        if (appoint)
+            setSelectedAppoint(appoint)
+        else
+            console.log("Selected Appointment was not found on the loadedAppoints")
+
+        //setSelectedAppoint(event)
     }
 
     const handleFilterChange = (filter: string) => {
@@ -287,8 +315,10 @@ function Appointments() {
 
                     <Container className="appoint-actions-container">
                         {!creatingAppoint ?
-
-                            <AppointmentDetails selectedAppoint={selectedAppoint} loadedAppoints={loadedAppoints} />
+                            selectedAppoint ?
+                                <AppointmentDetails appointment={selectedAppoint} />
+                                :
+                                <>Seleccione uma consulta</>
                             :
                             <NewAppointmentForm />
 

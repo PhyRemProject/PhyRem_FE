@@ -73,6 +73,7 @@ function Overview() {
 
                             return <AppointmentCard key={index} data={
                                 {
+                                    appointID: appoint._id as string,
                                     startDate: appoint.startDate as Date,
                                     endDate: appoint.endDate as Date,
                                     patientName: appoint.patientsInfo.name as string,

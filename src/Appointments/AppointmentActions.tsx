@@ -17,7 +17,10 @@ import {
     ACCEPT_APPOINTMENT_FAILED,
     CREATE_APPOINT,
     CREATE_APPOINT_COMPLETE,
-    CREATE_APPOINT_FAILED
+    CREATE_APPOINT_FAILED,
+    REJECT_APPOINTMENT,
+    REJECT_APPOINTMENT_COMPLETE,
+    REJECT_APPOINTMENT_FAILED
 } from './AppointmentReducer'
 
 import Store from '../Global/Redux/Store';
@@ -103,7 +106,7 @@ export const getAppointsBetween = (startDate: Date, endDate: Date, token: string
     }
 }
 
-export const acceptAppoint = (appointID: string, appointPos: number, token: string) => {
+export const acceptAppoint = (appointment: AppointmentInterface, token: string) => {
     return (dispatch: Function) => {
 
         let options = {
@@ -114,12 +117,12 @@ export const acceptAppoint = (appointID: string, appointPos: number, token: stri
             type: ACCEPT_APPOINTMENT
         });
 
-        axios.post(BE_URL + 'appointment/' + appointID + '/accept', null, options)
+        axios.post(BE_URL + 'appointment/' + appointment._id + '/accept', null, options)
             .then(response => {
 
                 dispatch({
                     type: ACCEPT_APPOINTMENT_COMPLETE,
-                    payload: appointPos
+                    payload: appointment
                 });
 
             })
@@ -137,7 +140,7 @@ export const acceptAppoint = (appointID: string, appointPos: number, token: stri
 
 }
 
-export const rejectAppoint = (appointID: string, appointPos: number, token: string) => {
+export const rejectAppoint = (appointment: AppointmentInterface, token: string) => {
     return (dispatch: Function) => {
 
         let options = {
@@ -145,22 +148,22 @@ export const rejectAppoint = (appointID: string, appointPos: number, token: stri
         }
 
         dispatch({
-            type: ACCEPT_APPOINTMENT
+            type: REJECT_APPOINTMENT
         });
 
-        axios.post(BE_URL + 'appointment/' + appointID + '/reject', null, options)
+        axios.post(BE_URL + 'appointment/' + appointment._id + '/reject', null, options)
             .then(response => {
 
                 dispatch({
-                    type: ACCEPT_APPOINTMENT_COMPLETE,
-                    payload: appointPos
+                    type: REJECT_APPOINTMENT_COMPLETE,
+                    payload: appointment
                 });
 
             })
             .catch(error => {
 
                 dispatch({
-                    type: ACCEPT_APPOINTMENT_FAILED
+                    type: REJECT_APPOINTMENT_FAILED
                 });
 
             })

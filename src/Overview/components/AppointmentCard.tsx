@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Switch, Route, useRouteMatch, useLocation } from "react-router-dom";
+import { Switch, Route, useRouteMatch, useLocation, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Container, Row, Col, Image } from "react-bootstrap";
 
@@ -17,6 +17,7 @@ import MapDialog from "../../Global/components/MapDialog"
 
 interface AppointmentCardProps {
     data: {
+        appointID: string,
         startDate: Date,
         endDate: Date,
         patientName: string,
@@ -98,6 +99,8 @@ function AppointmentCard(props: AppointmentCardProps) {
                         variant="contained"
                         color="primary"
                         type="submit"
+                        component={Link}
+                        to={"/dashboard/appointments/" + moment(props.data.startDate).format("DDMMYYYY") + "/" + props.data.appointID}
                     >
                         Ir para consulta
                 </Button>

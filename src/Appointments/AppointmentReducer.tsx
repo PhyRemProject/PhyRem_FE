@@ -66,12 +66,8 @@ interface GetAppointsBetweenAction extends Action {
     }
 }
 
-interface AcceptAppointmentAction extends Action {
-    payload: number
-}
-
-interface RejectAppointmentAction extends Action {
-    payload: number
+interface AcceptRejectAppointmentAction extends Action {
+    payload: AppointmentInterface
 }
 
 interface CreateAppointmentAction extends Action {
@@ -89,7 +85,7 @@ const appointmentInitState = {
     isFetching: false
 } as AppointmentStateInterface
 
-export function AppointmentReducer(state = appointmentInitState, action: Action | GetTodaysAppointAction | GetAppointsBetweenAction) {
+export function AppointmentReducer(state = appointmentInitState, action: Action | GetTodaysAppointAction | GetAppointsBetweenAction | AcceptRejectAppointmentAction) {
 
     switch (action.type) {
 
@@ -143,17 +139,35 @@ export function AppointmentReducer(state = appointmentInitState, action: Action 
             };
 
         case ACCEPT_APPOINTMENT_COMPLETE:
-            return {
-                ...state,
-                isUpdating: false,
-                loadedAppoints: [...state.loadedAppoints.slice(0, (action as AcceptAppointmentAction).payload),
-                {
-                    ...state.loadedAppoints[(action as AcceptAppointmentAction).payload],
-                    status: "ACCEPTED"
-                },
-                ...state.loadedAppoints.slice((action as AcceptAppointmentAction).payload + 1),]
-            };
+            {            //If the action is evoked while the appointment is still on the loaded array, it needs to be updated, 
+                //  otherwise the state has to be updated via the GET_APPOINTMENTS_BETWEEN action
+                let foundIndex = state.loadedAppoints.findIndex(
+                    element => element._id == (action as AcceptRejectAppointmentAction).payload._id
+                )
+                console.log("REDUCER DEBUG")
+                console.log("appointment to modify: ", (action as AcceptRejectAppointmentAction).payload)
+                console.log("foundIndex: ", foundIndex)
+                console.log("appointment[foundindex]: ", state.loadedAppoints[foundIndex])
 
+                if (foundIndex === -1)
+                    return {
+                        ...state,
+                        isUpdating: false
+                    };
+                else
+                    return {
+                        ...state,
+                        isUpdating: false,
+                        loadedAppoints: [
+                            ...state.loadedAppoints.slice(0, foundIndex),
+                            {
+                                ...state.loadedAppoints[foundIndex],
+                                status: "ACCEPTED"
+                            },
+                            ...state.loadedAppoints.slice(foundIndex + 1)
+                        ]
+                    };
+            }
         case ACCEPT_APPOINTMENT_FAILED:
             return {
                 ...state,
@@ -167,16 +181,35 @@ export function AppointmentReducer(state = appointmentInitState, action: Action 
             };
 
         case REJECT_APPOINTMENT_COMPLETE:
-            return {
-                ...state,
-                isUpdating: false,
-                loadedAppoints: [...state.loadedAppoints.slice(0, (action as RejectAppointmentAction).payload),
-                {
-                    ...state.loadedAppoints[(action as RejectAppointmentAction).payload],
-                    status: "REJECTED"
-                },
-                ...state.loadedAppoints.slice((action as RejectAppointmentAction).payload + 1),]
-            };
+            {            //If the action is evoked while the appointment is still on the loaded array, it needs to be updated, 
+                //  otherwise the state has to be updated via the GET_APPOINTMENTS_BETWEEN action
+                let foundIndex = state.loadedAppoints.findIndex(
+                    element => element._id == (action as AcceptRejectAppointmentAction).payload._id
+                )
+                console.log("REDUCER DEBUG REJECT")
+                console.log("appointment to modify: ", (action as AcceptRejectAppointmentAction).payload)
+                console.log("foundIndex: ", foundIndex)
+                console.log("appointment[foundindex]: ", state.loadedAppoints[foundIndex])
+
+                if (foundIndex === -1)
+                    return {
+                        ...state,
+                        isUpdating: false
+                    };
+                else
+                    return {
+                        ...state,
+                        isUpdating: false,
+                        loadedAppoints: [
+                            ...state.loadedAppoints.slice(0, foundIndex),
+                            {
+                                ...state.loadedAppoints[foundIndex],
+                                status: "REJECTED"
+                            },
+                            ...state.loadedAppoints.slice(foundIndex + 1)
+                        ]
+                    };
+            }
 
         case REJECT_APPOINTMENT_FAILED:
             return {
@@ -185,7 +218,7 @@ export function AppointmentReducer(state = appointmentInitState, action: Action 
             };
 
 
-        case CREATE_APPOINT: 
+        case CREATE_APPOINT:
             return {
                 ...state,
                 isUpdating: true
