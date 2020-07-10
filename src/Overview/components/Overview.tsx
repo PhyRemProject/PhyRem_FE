@@ -20,7 +20,7 @@ import AppointmentCard from "./AppointmentCard"
 import "../styles/overview.css"
 
 import { UserReducer } from '../../User/UserReducer';
-import { getTodaysAppoints } from '../../Appointments/AppointmentActions';
+import { getTodaysAppoints, getAppointsBetween } from '../../Appointments/AppointmentActions';
 import { AppointmentReducer, AppointmentInterface } from '../../Appointments/AppointmentReducer';
 import { PatientInterface } from '../../User/components/Patients';
 
@@ -37,6 +37,18 @@ function Overview() {
 
     const fetchAppointmentList = () => {
         dispatch(getTodaysAppoints(token))
+    }
+
+    const fetchWeeksAppointments = () => {
+        const startDate = moment(Date.now()).startOf('day');
+        const endDate = moment(Date.now()).endOf('day');
+        dispatch(
+            getAppointsBetween(
+                moment(startDate).subtract(15, "days").toDate(),
+                moment(endDate).add(15, "days").toDate(),
+                token
+            )
+        )
     }
 
     useEffect(() => {

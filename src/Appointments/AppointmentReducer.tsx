@@ -130,7 +130,7 @@ export function AppointmentReducer(state = appointmentInitState, action: Action 
             };
 
 
-        case GET_APPOINTMENTS_BETWEEN_COMPLETE:
+        case GET_APPOINTMENTS_BETWEEN_FAILED:
             return {
                 ...state,
                 isFetching: false

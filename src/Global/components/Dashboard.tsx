@@ -30,7 +30,7 @@ function Dashboard() {
                     <Col xs="12" className="dashboard-content p-0">
                         <Switch>
                             <Route exact path={path} component={Overview} />
-                            <Route exact path={`${path}/appointments`} component={Appointments} />
+                            <Route  path={`${path}/appointments`} component={Appointments} />
                             <Route path={`${path}/patients`} component={Patients} />
                         </Switch>
 

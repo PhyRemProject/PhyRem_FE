@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, useLocation, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
     Container,
@@ -35,9 +35,11 @@ interface CalendarEvent {
 function Event({ event }: any) {
     return (
         <span>
-            <strong>{event.title}</strong>
-            <br />
-            {event.status}
+            <Link to={"/dashboard/appointments/" + moment(event.start).format("DDMMYYYY")}>
+                <strong>{event.title}</strong>
+                <br />
+                {event.status}
+            </Link>
         </span>
     )
 }
@@ -82,17 +84,40 @@ function Appointments() {
     const [creatingAppoint, setCreatingAppoint] = useState<boolean>(false);
 
     const dispatch = useDispatch()
+    let location = useLocation();
+
+
+    //Updates the currentView, can be:
+    //  None: displays the physician's
+    //  All: displays all the patients on the system
+    //  patientID: displays the patient information view  
+    const activeAppointmentView = () => {
+        let path = location.pathname.split("/")
+        if (path.length === 3) {
+            let start = moment(Date.now()).startOf('day');
+            let end = moment(Date.now()).endOf('day');
+            populateAppointments(start.toDate(), end.toDate());
+            convertAppointments()
+        }
+        else if (path.length >= 3) {
+            let start = moment(path[3], "DDMMYYYY").startOf('day');
+            let end = moment(path[3], "DDMMYYYY").endOf('day');
+            console.log(start)
+            console.log(end)
+            populateAppointments(start.toDate(), end.toDate());
+            convertAppointments()
+            let appointFromPath = loadedAppoints.findIndex(element => element._id == path[4])
+            if (appointFromPath !== -1)
+                setSelectedAppoint(appointFromPath)
+        }
+    }
+
 
 
     //On component mount, populate the current week of appointments
     useEffect(() => {
-
-        let start = moment(Date.now()).startOf('day');
-        let end = moment(Date.now()).endOf('day');
-        populateAppointments(start.toDate(), end.toDate());
-        convertAppointments()
-
-    }, [])
+        activeAppointmentView()
+    }, []);
 
     useEffect(() => {
         if (currentFilter === "ALL")
@@ -116,7 +141,7 @@ function Appointments() {
     const populateAppointments = (startDate: Date, endDate: Date) => {
 
         //No interval is loaded
-        if (!loadedInterval ||  !loadedInterval[0] || !loadedInterval[1])
+        if (!loadedInterval || !loadedInterval[0] || !loadedInterval[1])
             dispatch(
                 getAppointsBetween(
                     moment(startDate).subtract(15, "days").toDate(),
@@ -143,7 +168,7 @@ function Appointments() {
 
     //Converts the raw appointments to React-Big-Calendar events 
     const convertAppointments = () => {
-        if (!loadedAppoints){
+        if (!loadedAppoints) {
             setNormalizedAppointments([])
             setCurrentFilter("ALL")
             setDisplayedAppoints([])

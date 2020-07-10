@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, Component } from 'react';
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
     Container,
@@ -23,64 +23,12 @@ import { PatientInterface } from '../../User/components/Patients';
 
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 import { Dialog, DialogTitle, DialogActions, DialogContent } from '@material-ui/core';
+import MapDialog from "../../Global/components/MapDialog"
 
 interface AppointmentDetailsProps {
     selectedAppoint: number | undefined,
     loadedAppoints: AppointmentInterface[]
 }
-
-
-function MapContainer(props: any) {
-
-    return (
-
-        <Map
-            google={props.google}
-            style={{
-                height: "50vh",
-                width: "30vw"
-            }}
-        >
-
-        </Map>
-    );
-}
-
-
-const GMaps = GoogleApiWrapper({
-    apiKey: "AIzaSyAyesbQMyKVVbBgKVi2g6VX7mop2z96jBo"
-})(MapContainer)
-
-
-function MapDialog(props: any) {
-
-    return (
-        <Dialog
-            open={props.showMap}
-            onClose={() => { props.setShowMap(false) }}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-            fullWidth
-        >
-            <DialogTitle id="alert-dialog-title">{"Localização da Consulta"}</DialogTitle>
-            <DialogContent style={{
-                height: "90vh",
-                width: "30vw"
-            }}
-            >
-                <div className={"map-container"}>
-                    <GMaps className={"map-cont"}></GMaps>
-                </div>
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={() => { props.setShowMap(false) }} color="primary">
-                    Fechar
-                </Button>
-            </DialogActions>
-        </Dialog>
-    )
-}
-
 
 
 function ApoitmentDetails(props: AppointmentDetailsProps) {
@@ -89,9 +37,6 @@ function ApoitmentDetails(props: AppointmentDetailsProps) {
     const [showMap, setShowMap] = useState(false);
 
     const dispatch = useDispatch()
-
-
-
 
     const handleAcceptAppoint = () => {
         if (props.selectedAppoint)
@@ -104,7 +49,6 @@ function ApoitmentDetails(props: AppointmentDetailsProps) {
             )
     }
 
-
     const handleRejectAppoint = () => {
         if (props.selectedAppoint)
             dispatch(
@@ -116,8 +60,6 @@ function ApoitmentDetails(props: AppointmentDetailsProps) {
             )
 
     }
-
-
 
     return (
         <>
@@ -204,6 +146,8 @@ function ApoitmentDetails(props: AppointmentDetailsProps) {
                                         variant="contained"
                                         color="secondary"
                                         type="submit"
+                                        component={Link}
+                                        to={"/dashboard/patients/" + props.loadedAppoints[props.selectedAppoint].patientsInfo._id}
                                     >
                                         Ver Histórico do Paciente
 </Button>

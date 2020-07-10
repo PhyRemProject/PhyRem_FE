@@ -12,6 +12,7 @@ import Button from "@material-ui/core/Button";
 
 import "../styles/appointment-card.css"
 import UserReducer from '../../User/UserReducer';
+import MapDialog from "../../Global/components/MapDialog"
 
 
 interface AppointmentCardProps {
@@ -30,10 +31,13 @@ interface AppointmentCardProps {
 
 function AppointmentCard(props: AppointmentCardProps) {
 
-    let location = useLocation().pathname;
+    //let location = useLocation().pathname;
+    const [showMap, setShowMap] = useState(false);
+
 
     return (
         <Container className="appointment-card">
+            <MapDialog showMap={showMap} setShowMap={setShowMap} />
             <Row>
                 <Col xs={12} className="appointment-hour">
                     {moment(props.data.startDate).format("HH:MM")} - {moment(props.data.endDate).format("HH:MM")}
@@ -77,6 +81,7 @@ function AppointmentCard(props: AppointmentCardProps) {
                         variant="contained"
                         color="secondary"
                         type="submit"
+                        onClick={() => { setShowMap(true) }}
                     >
                         Ver Localização
                 </Button>
