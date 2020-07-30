@@ -209,9 +209,9 @@ function Appointments() {
 
     const handleSelectAppointment = (event: CalendarEvent) => {
 
-        console.log("Selected Event obj: ", event)
-        console.log(loadedInterval)
-        console.log(loadedAppoints)
+        //console.log("Selected Event obj: ", event)
+        //console.log(loadedInterval)
+        //console.log(loadedAppoints)
 
         let appoint = loadedAppoints.find(element => element._id == event.id)
         if (appoint)

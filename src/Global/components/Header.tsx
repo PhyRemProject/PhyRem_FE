@@ -32,10 +32,9 @@ function Header() {
             </div>
             <div id="logout">
                 <Button
-                    id="red-button"
-                    className="form-elems"
+                    className="form-elems red-button"
                     variant="contained"
-                    color="primary"
+                    color="inherit"
                     type="submit"
                     onClick={handleLogout}
                 >

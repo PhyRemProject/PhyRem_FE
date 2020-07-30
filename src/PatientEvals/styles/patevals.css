@@ -1,0 +1,65 @@
+.pateval-view {
+    height: 100%;
+} 
+
+.pateval-container {
+    display: block !important;
+    height: calc(100vh - 130px);
+    overflow-y: scroll;
+    background-color: #F2F2FC;
+    margin-right: 0px !important;
+    border-radius: 10px 10px 10px 10px;
+}
+
+
+.pateval-content {
+    background-color: #FFFFFF;
+    height: 97%;
+    width: calc(100% - 10px) !important;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+    padding: 0px;
+}
+
+
+.pateval-options {
+    height: 47px;
+}
+
+#pateval-header {
+    background-color: #E3E1FD;
+    margin-right: 0px;
+    border-radius: 5px 5px 0px 0px;
+    height: 35px;
+    align-items: center;
+    text-align: center;
+}
+
+
+.pateval-card {
+    background-color: #E3E1FD;
+    border-radius: 5px 5px 5px 5px;
+    width: 98%;
+    margin: 10px;
+    padding-left: 15px;
+    height: 120px;
+    vertical-align: middle;
+}
+
+.pateval-card :hover{
+    background-color: #cac8e9;
+    border-radius: 5px 5px 5px 5px;
+}
+
+
+.pateval-card-content {
+    height: 100%;
+}
+
+.pateval-card-image {
+    max-height: 90%;
+    margin: 5px;
+}
+

@@ -17,13 +17,15 @@ import AppointmentReducer, { AppointmentInterface } from "../AppointmentReducer"
 
 import "react-big-calendar/lib/css/react-big-calendar.css"
 import "../styles/appointments.css"
-import { getAppointsBetween, acceptAppoint, rejectAppoint } from '../AppointmentActions';
+import { getAppointsBetween, acceptAppoint, rejectAppoint, GetAppointPatEval } from '../AppointmentActions';
 import UserReducer from '../../User/UserReducer';
 import { PatientInterface } from '../../User/components/Patients';
 
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 import { Dialog, DialogTitle, DialogActions, DialogContent } from '@material-ui/core';
 import MapDialog from "../../Global/components/MapDialog"
+import { PatientEvalInterface } from '../../PatientEvals/PatientEvalsActions';
+import PatEvals from '../../PatientEvals/components/PatEvals';
 
 interface AppointmentDetailsProps {
     appointment: AppointmentInterface
@@ -32,10 +34,16 @@ interface AppointmentDetailsProps {
 
 function ApoitmentDetails(props: AppointmentDetailsProps) {
 
+    const [patEvalInfo, setPatEvalInfo] = useState<PatientEvalInterface>()
     const token = useSelector((state: UserReducer) => state.UserReducer.user?.token) as string
     const [showMap, setShowMap] = useState(false);
 
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        if (props.appointment.patientEval !== undefined)
+            GetAppointPatEval(token, props.appointment.patientEval, setPatEvalInfo)
+    }, [])
 
     const handleAcceptAppoint = () => {
         if (props.appointment)
@@ -93,11 +101,15 @@ function ApoitmentDetails(props: AppointmentDetailsProps) {
                                 </span>
                                 <span className="appointment-data">
                                     Diagnóstico
-    <p>{props.appointment.diagnostic}</p>
+    <p>{patEvalInfo?.clinicDiagnosis}</p>
                                 </span>
                                 <span className="appointment-data">
                                     Tratamento
-    <p>{props.appointment.treatment}</p>
+                                    {
+                                        patEvalInfo?.medicalPrescription.map((prescription, index: number) => {
+                                            return <p key={index}>{prescription.prescription}</p>
+                                        })
+                                    }
                                 </span>
                             </Col>
                         </Row>

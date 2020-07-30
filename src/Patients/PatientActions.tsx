@@ -202,3 +202,28 @@ export const DropPatient = (token : string, patientID : string, physicianID : st
         });
 }
 }
+
+export const GetPatientPatEvals = (token : string, patientID : string, setPatientPatEvals : Function) => {
+
+        let options = {
+            headers: { "Authorization": "Bearer " + token }
+        }
+
+        setPatientPatEvals("loading")
+
+        axios.get(BE_URL + 'patientEval/patient/' + patientID, options)
+        .then(function (response) {
+
+            console.log(response.data)
+            setPatientPatEvals(response.data)
+
+        })
+        .catch(function (error) {
+
+            setPatientPatEvals("error")
+
+        })
+        .finally(function () {
+
+        });
+}

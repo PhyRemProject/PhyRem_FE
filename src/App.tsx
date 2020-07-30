@@ -6,6 +6,7 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 import logo from './logo.svg';
 import './App.css';
+import './Global/styles/buttons.css';
 import Home from "./Home/components/Home"
 import Dashboard from './Global/components/Dashboard';
 import Appointments from './Appointments/components/Appointments';
@@ -27,12 +28,14 @@ function App() {
     },
     palette: {
       primary: {
-        main: '#F9A825',
-        contrastText: '#FFFFFF'
+        main: '#F9A825 !important',
+        contrastText: '#FFFFFF !important'
       },
       secondary: {
-        main: '#6C63FF'
+        main: '#6C63FF !important',
+        contrastText: '#FFFFFF !important'
       }
+
     },
     overrides: {
       MuiOutlinedInput: {

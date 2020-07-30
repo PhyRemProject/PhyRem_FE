@@ -11,7 +11,8 @@ import {
     faWindowRestore,
     faCalendarAlt,
     faUser,
-    faCog
+    faCog,
+    faPaperclip
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import UserReducer from '../../User/UserReducer';
@@ -57,7 +58,9 @@ function Sidebar() {
             <Option name="Visão Geral" logo={faWindowRestore} route={""} activeView={activeView} />
             <Option name="Consultas" logo={faCalendarAlt} route={"appointments"} activeView={activeView} />
             <Option name="Pacientes" logo={faUser} route={"patients"} activeView={activeView} />
+            <Option name="Avaliação de Paciente" logo={faPaperclip} route={"pateval"} activeView={activeView} />
             <Option name="Definições" logo={faCog} route={"settings"} activeView={activeView} />
+
             <div className="user-card">
                 <div className="username">
                     <span id="username">

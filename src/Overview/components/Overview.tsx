@@ -23,6 +23,7 @@ import { UserReducer } from '../../User/UserReducer';
 import { getTodaysAppoints, getAppointsBetween } from '../../Appointments/AppointmentActions';
 import { AppointmentReducer, AppointmentInterface } from '../../Appointments/AppointmentReducer';
 import { PatientInterface } from '../../User/components/Patients';
+import { PatientEvalInterface } from '../../PatientEvals/PatientEvalsActions';
 
 function Overview() {
 
@@ -82,6 +83,7 @@ function Overview() {
                                     objective: appoint.objective as string,
                                     diagnostic: appoint.diagnostic as string,
                                     treatment: appoint.treatment as string,
+                                    patientEval: appoint.patientEval as string
                                 }} />
                         }
                         )}

@@ -26,6 +26,7 @@ import {
 import Store from '../Global/Redux/Store';
 import history from '../Global/components/history'
 import { PatientInterface } from '../User/components/Patients'
+import { PatientEvalInterface } from '../PatientEvals/PatientEvalsActions'
 
 const BE_URL = "/api/"
 
@@ -185,6 +186,7 @@ export const createAppoint = (
     // diagnostic : string,
     // treatment : string,
     summary: string,
+    patEval: PatientEvalInterface | null,
     token: string
 ) => {
     return (dispatch: Function) => {
@@ -195,16 +197,6 @@ export const createAppoint = (
             return
         }
 
-        console.table([
-            startDate,
-            endDate,
-            location,
-            patient,
-            objective,
-            summary,
-            token
-        ])
-
         let options = {
             headers: { "Authorization": "Bearer " + token }
         }
@@ -213,15 +205,22 @@ export const createAppoint = (
             type: CREATE_APPOINT
         });
 
-        axios.post(BE_URL + 'appointment',
-            {
-                startDate,
-                endDate,
-                location,
-                patient: patient._id,
-                summary,
-                objective
-            }, options)
+
+        let newAppointment : any = {
+            startDate,
+            endDate,
+            location,
+            patient: patient._id,
+            summary,
+            objective
+        }
+
+        if(patEval !== null)
+            newAppointment.patientEval = patEval._id
+
+        console.log("Submitting appointment: ", newAppointment)
+
+        axios.post(BE_URL + 'appointment', newAppointment , options)
             .then(response => {
 
                 console.log(response.data)
@@ -248,3 +247,27 @@ export const createAppoint = (
 
 }
 
+export const GetAppointPatEval = (token : string, patientEval : string, setPatEvalInfo : Function) => {
+
+    let options = {
+        headers: { "Authorization": "Bearer " + token }
+    }
+
+    //setPatEvalInfo("loading")
+
+    axios.get(BE_URL + 'patientEval/eval/' + patientEval, options)
+    .then(function (response) {
+
+        console.log(response.data)
+        setPatEvalInfo(response.data)
+
+    })
+    .catch(function (error) {
+
+        //setPatEvalInfo("error")
+
+    })
+    .finally(function () {
+
+    });
+}

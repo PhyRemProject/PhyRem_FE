@@ -11,6 +11,7 @@ import Appointments from "../../Appointments/components/Appointments"
 import Patients from "../../Patients/components/Patients"
 
 import "../styles/dashboard.css"
+import PatEvals from '../../PatientEvals/components/PatEvals';
 
 function Dashboard() {
 
@@ -32,6 +33,7 @@ function Dashboard() {
                             <Route exact path={path} component={Overview} />
                             <Route  path={`${path}/appointments`} component={Appointments} />
                             <Route path={`${path}/patients`} component={Patients} />
+                            <Route path={`${path}/pateval`} component={PatEvals} />
                         </Switch>
 
                     </Col>

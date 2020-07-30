@@ -1,0 +1,41 @@
+a {
+    color: inherit !important;
+    text-decoration: none !important;
+}
+
+a:hover 
+{
+     color:inherit !important; 
+     text-decoration:none !important; 
+     cursor:pointer;  
+}
+
+a .MuiButton-label {
+    text-align: center;
+    color: white !important;
+    text-decoration: none !important;
+}
+
+a:hover .MuiButton-label
+{
+    color: white !important;
+    text-decoration: none !important;
+    cursor:pointer;  
+}
+
+a .MuiButton-containedPrimary {
+    color: white !important;
+    text-decoration: none !important;
+}
+
+a:hover .MuiButton-containedPrimary
+{
+    color: white !important;
+    text-decoration: none !important;
+    cursor:pointer;  
+}
+
+.red-button {
+    background-color: #FF94A9 !important;
+    color: #FFFFFF !important;
+}

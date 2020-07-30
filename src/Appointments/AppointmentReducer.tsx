@@ -14,7 +14,8 @@ export interface AppointmentInterface {
     objective: string,
     diagnostic: string,
     treatment: string,
-    patientsInfo: PatientInterface
+    patientsInfo: PatientInterface,
+    patientEval? : string
 
 }
 

@@ -17,16 +17,16 @@ import { getAppointsBetween, acceptAppoint, rejectAppoint, createAppoint } from 
 import UserReducer from '../../User/UserReducer';
 import { PatientInterface } from '../../User/components/Patients';
 import { FormControl, TextField, InputLabel, Select, MenuItem } from '@material-ui/core';
-import { GetAdoptedPatientList } from '../../Patients/PatientActions';
+import { GetAdoptedPatientList, GetPatientPatEvals } from '../../Patients/PatientActions';
 import PatientReducer from '../../Patients/PatientReducer';
 import ReactDatePicker from 'react-datepicker';
+import { PatientEvalInterface } from '../../PatientEvals/PatientEvalsActions';
 
 
 interface AppointmentDetailsProps {
     selectedAppoint: number | undefined,
     loadedAppoints: AppointmentInterface[]
 }
-
 
 
 function NewAppointmentForm() {
@@ -41,7 +41,8 @@ function NewAppointmentForm() {
     const [location, setLocation] = useState<string>("");
     const [summary, setSummary] = useState<string>("");
     const [objective, setObjective] = useState<string>("");
-    const [selectedPatEval, setSelectedPatEval] = useState<string>("");
+    const [selectedPatEval, setSelectedPatEval] = useState<number>(-1);
+    const [patientPatEvals, setPatientPatEvals] = useState<PatientEvalInterface[] | string>("");
     const [status, setStatus] = useState<string | null>(null);
 
     const dispatch = useDispatch()
@@ -54,6 +55,12 @@ function NewAppointmentForm() {
 
     const handleCreateAppointment = (e: React.FormEvent) => {
         e.preventDefault();
+        let patEval;
+        if(selectedPatEval === -1)
+            patEval = null;
+        else 
+            patEval = patientPatEvals[selectedPatEval] as PatientEvalInterface
+
         dispatch(
             createAppoint(
                 setStatus,
@@ -63,15 +70,28 @@ function NewAppointmentForm() {
                 selectedPatient as PatientInterface,
                 objective,
                 summary,
+                patEval,
                 token
             ))
     }
 
+    useEffect(() => {
+        if (selectedPatient !== null && selectedPatient !== undefined)
+            GetPatientPatEvals(token, selectedPatient._id as string, setPatientPatEvals)
+    }, [selectedPatient])
+
     const handlePatientPicking = (event: React.ChangeEvent<{ value: unknown }>) => {
         setSelectedPatientIndex(event.target.value as number)
         setSelectedPatient(patientsList[event.target.value as number])
+        setSelectedPatEval(-1)
         setStatus(null)
     }
+
+    const handlePatEvalPicking = (event: React.ChangeEvent<{ value: unknown }>) => {
+
+        setSelectedPatEval(event.target.value as number)
+    }
+
 
     return (
         <>
@@ -193,22 +213,43 @@ function NewAppointmentForm() {
                                 id="patienteval-label"
                                 className={"mt-4 w-100"}
                             >Avaliação de Paciente</InputLabel>
-                            <Select
-                                className={"w-100"}
-                                labelId="patienteval-label"
-                                id="patienteval-label-select"
-                                defaultValue={""}
-                                
-                            >
-                                <MenuItem value={""}>Nenhuma</MenuItem>
+                            {patientPatEvals === "" ?
+                                <>Seleccione um paciente</>
+                                :
+                                patientPatEvals === "loading" ?
+                                    <>A Carregar...</>
+                                    : patientPatEvals === "error" ?
+                                        <> Occoreu um erro a carregar</> :
+                                        <>
+                                            <Select
+                                                className={"w-100"}
+                                                labelId="patienteval-label"
+                                                id="patienteval-label-select"
+                                                defaultValue={""}
+                                                value={selectedPatEval}
+                                                onChange={handlePatEvalPicking}
+                                            >
+                                                <MenuItem value={-1}>Nenhuma</MenuItem>
+                                                {
+                                                    (patientPatEvals as PatientEvalInterface[]).map((patEval: PatientEvalInterface, index: number) => {
+                                                        return <MenuItem
+                                                            value={index}
+                                                            key={index}
+                                                        >
+                                                            {moment(patEval.creationDate).format("DD/MM/YYYY HH:mm")} - {patEval.clinicDiagnosis}
+                                                        </MenuItem>
+                                                    })
+                                                }
+                                            </Select>
+                                        </>
+                            }
 
-                            </Select>
 
-                            {status !== null ? 
-                            <Alert variant="filled" severity="error">
-                                {status}
-                            </Alert>
-                            :<></>}
+                            {status !== null ?
+                                <Alert variant="filled" severity="error">
+                                    {status}
+                                </Alert>
+                                : <></>}
 
                             <Button
                                 className="form-elems w-100 pt-3 pb-3 mb-3 mt-3"

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Switch, Route, useRouteMatch, useLocation, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Container, Row, Col, Image } from "react-bootstrap";
@@ -13,6 +13,8 @@ import Button from "@material-ui/core/Button";
 import "../styles/appointment-card.css"
 import UserReducer from '../../User/UserReducer';
 import MapDialog from "../../Global/components/MapDialog"
+import { PatientEvalInterface } from '../../PatientEvals/PatientEvalsActions';
+import { GetAppointPatEval } from '../../Appointments/AppointmentActions';
 
 
 interface AppointmentCardProps {
@@ -25,7 +27,8 @@ interface AppointmentCardProps {
         patientAddress: string,
         objective: string,
         diagnostic: string,
-        treatment: string
+        treatment: string,
+        patientEval?: string
     }
 }
 
@@ -34,6 +37,14 @@ function AppointmentCard(props: AppointmentCardProps) {
 
     //let location = useLocation().pathname;
     const [showMap, setShowMap] = useState(false);
+    const token = useSelector((state: UserReducer) => state.UserReducer.user?.token) as string
+    const [patEvalInfo, setPatEvalInfo] = useState<PatientEvalInterface>()
+
+    useEffect(() => {
+        if (props.data.patientEval !== undefined)
+            GetAppointPatEval(token, props.data.patientEval, setPatEvalInfo)
+    }, [])
+
 
 
     return (
@@ -69,11 +80,13 @@ function AppointmentCard(props: AppointmentCardProps) {
                     </span>
                     <span className="appointment-data">
                         Diagnóstico
-                        <p>{props.data.diagnostic}</p>
+                        <p>{patEvalInfo?.clinicDiagnosis}</p>
                     </span>
                     <span className="appointment-data">
                         Tratamento
-                        <p>{props.data.treatment}</p>
+                        <div style={{textOverflow: "ellipsis"}}>
+                            <p>{patEvalInfo?.medicalPrescription[0].prescription} ...</p>
+                        </div>
                     </span>
                 </Col>
                 <Col xs={3}>
@@ -91,11 +104,13 @@ function AppointmentCard(props: AppointmentCardProps) {
                         variant="contained"
                         color="secondary"
                         type="submit"
+                        component={Link}
+                        to={"/dashboard/pateval/" + patEvalInfo?._id}
                     >
                         Ver Avaliação de Paciente
                 </Button>
                     <Button
-                        className="form-elems w-100"
+                        className="form-elems w-100 "
                         variant="contained"
                         color="primary"
                         type="submit"

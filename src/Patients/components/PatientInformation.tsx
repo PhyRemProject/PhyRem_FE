@@ -126,7 +126,7 @@ function PatientInformation(props: PatientInformationProps) {
 
     return (
         <div className="patient-view">
-            <DropConfirmation open={open} setOpen={setOpen} handleClickOpen={handleClickOpen} handleClose={handleClose} dropPatient={dropPatient}/>
+            <DropConfirmation open={open} setOpen={setOpen} handleClickOpen={handleClickOpen} handleClose={handleClose} dropPatient={dropPatient} />
             <Row className="patient-list-options">
                 <Col sm={1}>
                     <Link to={"/dashboard/patients"} className={"h-100"}>
@@ -137,15 +137,17 @@ function PatientInformation(props: PatientInformationProps) {
                     {isFetching ? <p>A Carregar ...</p> : <></>}
                 </Col>
                 <Col sm={2}>
-                    <Button
-                        className="form-elems h-100 w-100"
-                        variant="contained"
-                        color="primary"
-                        type="submit"
-                        onClick={() => { }}
-                    >
-                        {"Criar Avaliação de Paciente"}
-                    </Button>
+                    <Link to={"/dashboard/pateval/new/" + activePatient?._id}>
+                        <Button
+                            className="form-elems h-100 w-100"
+                            variant="contained"
+                            color="primary"
+                            type="submit"
+                            onClick={() => { }}
+                        >
+                            {"Criar Avaliação de Paciente"}
+                        </Button>
+                    </Link>
                 </Col>
                 <Col sm={2}>
                     <Button
