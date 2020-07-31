@@ -59,7 +59,8 @@ function Sidebar() {
             <Option name="Consultas" logo={faCalendarAlt} route={"appointments"} activeView={activeView} />
             <Option name="Pacientes" logo={faUser} route={"patients"} activeView={activeView} />
             <Option name="Avaliação de Paciente" logo={faPaperclip} route={"pateval"} activeView={activeView} />
-            <Option name="Definições" logo={faCog} route={"settings"} activeView={activeView} />
+            <Option name="Secretaria" logo={faCog} route={"office"} activeView={activeView} />
+            {/* <Option name="Definições" logo={faCog} route={"settings"} activeView={activeView} /> */}
 
             <div className="user-card">
                 <div className="username">

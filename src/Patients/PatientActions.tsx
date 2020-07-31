@@ -7,7 +7,7 @@ import { GET_PHYSICIANS_PATIENTS, GET_PHYSICIANS_PATIENTS_COMPLETE, GET_PHYSICIA
 
 const BE_URL = "/api/"
 
-export const GetAdoptedPatientList = (token : string) => {
+export const GetAdoptedPatientList = (token: string) => {
 
     return (dispatch: Function) => {
 
@@ -20,32 +20,32 @@ export const GetAdoptedPatientList = (token : string) => {
         });
 
         axios.get(BE_URL + 'physician/patients', options)
-        .then(function (response) {
+            .then(function (response) {
 
-            dispatch({
-                type: GET_PHYSICIANS_PATIENTS_COMPLETE,
-                payload: response.data
+                dispatch({
+                    type: GET_PHYSICIANS_PATIENTS_COMPLETE,
+                    payload: response.data
+                });
+
+                console.log(response.data)
+
+            })
+            .catch(function (error) {
+                console.log("FETCH PHYSICIAN PATIENTS FAILED")
+
+                dispatch({
+                    type: GET_PHYSICIANS_PATIENTS_FAILED
+                });
+
+            })
+            .finally(function () {
+
             });
-
-            console.log(response.data)
-
-        })
-        .catch(function (error) {
-            console.log("FETCH PHYSICIAN PATIENTS FAILED")
-
-            dispatch({
-                type: GET_PHYSICIANS_PATIENTS_FAILED
-            });
-
-        })
-        .finally(function () {
-
-        });
-}
+    }
 }
 
 
-export const GetPatientsWithName = (token : string, name : string) => {
+export const GetPatientsWithName = (token: string, name: string) => {
 
     return (dispatch: Function) => {
 
@@ -61,32 +61,32 @@ export const GetPatientsWithName = (token : string, name : string) => {
         });
 
         axios.get(BE_URL + 'patient/search', options)
-        .then(function (response) {
+            .then(function (response) {
 
-            dispatch({
-                type: GET_PATIENTS_WITH_NAME_COMPLETE,
-                payload: response.data
+                dispatch({
+                    type: GET_PATIENTS_WITH_NAME_COMPLETE,
+                    payload: response.data
+                });
+
+                console.log(response.data)
+
+            })
+            .catch(function (error) {
+                console.log("FETCH PATIENT By name FAILED")
+
+                dispatch({
+                    type: GET_PATIENTS_WITH_NAME_FAILED
+                });
+
+            })
+            .finally(function () {
+
             });
-
-            console.log(response.data)
-
-        })
-        .catch(function (error) {
-            console.log("FETCH PATIENT By name FAILED")
-
-            dispatch({
-                type: GET_PATIENTS_WITH_NAME_FAILED
-            });
-
-        })
-        .finally(function () {
-
-        });
-}
+    }
 }
 
 
-export const GetPatientInfoByID = (token : string, id : string) => {
+export const GetPatientInfoByID = (token: string, id: string) => {
 
     return (dispatch: Function) => {
 
@@ -99,31 +99,29 @@ export const GetPatientInfoByID = (token : string, id : string) => {
         });
 
         axios.get(BE_URL + 'patient/' + id, options)
-        .then(function (response) {
+            .then(function (response) {
 
-            dispatch({
-                type: GET_PATIENT_INFO_COMPLETE,
-                payload: response.data
+                dispatch({
+                    type: GET_PATIENT_INFO_COMPLETE,
+                    payload: response.data
+                });
+
+            })
+            .catch(function (error) {
+                console.log("FETCH PATIENT By ID FAILED")
+
+                dispatch({
+                    type: GET_PATIENT_INFO_FAILED
+                });
+
+            })
+            .finally(function () {
+
             });
-
-            console.log(response.data)
-
-        })
-        .catch(function (error) {
-            console.log("FETCH PATIENT By ID FAILED")
-
-            dispatch({
-                type: GET_PATIENT_INFO_FAILED
-            });
-
-        })
-        .finally(function () {
-
-        });
-}
+    }
 }
 
-export const AdoptPatient = (token : string, patientID : string, physicianID : string) => {
+export const AdoptPatient = (token: string, patientID: string, physicianID: string) => {
 
     return (dispatch: Function) => {
 
@@ -135,35 +133,33 @@ export const AdoptPatient = (token : string, patientID : string, physicianID : s
             type: ADOPT_PATIENT
         });
 
-        axios.post(BE_URL + 'physician/adopt/' + patientID, null,  options)
-        .then(function (response) {
+        axios.post(BE_URL + 'physician/adopt/' + patientID, null, options)
+            .then(function (response) {
 
-            dispatch({
-                type: ADOPT_PATIENT_COMPLETE,
-                payload: {
+                dispatch({
+                    type: ADOPT_PATIENT_COMPLETE,
+                    payload: {
                         patientID,
                         physicianID
-                }
+                    }
+                });
+
+            })
+            .catch(function (error) {
+                console.log("adopt PATIENT FAILED")
+
+                dispatch({
+                    type: ADOPT_PATIENT_FAILED
+                });
+
+            })
+            .finally(function () {
+
             });
-
-            console.log(response.data)
-
-        })
-        .catch(function (error) {
-            console.log("adopt PATIENT FAILED")
-
-            dispatch({
-                type: ADOPT_PATIENT_FAILED
-            });
-
-        })
-        .finally(function () {
-
-        });
-}
+    }
 }
 
-export const DropPatient = (token : string, patientID : string, physicianID : string) => {
+export const DropPatient = (token: string, patientID: string, physicianID: string) => {
 
     return (dispatch: Function) => {
 
@@ -176,42 +172,42 @@ export const DropPatient = (token : string, patientID : string, physicianID : st
         });
 
         axios.post(BE_URL + 'physician/drop/' + patientID, null, options)
-        .then(function (response) {
+            .then(function (response) {
 
-            dispatch({
-                type: DROP_PATIENT_COMPLETE,
-                payload: {
+                dispatch({
+                    type: DROP_PATIENT_COMPLETE,
+                    payload: {
                         patientID,
                         physicianID
-                }
+                    }
+                });
+
+                console.log(response.data)
+
+            })
+            .catch(function (error) {
+                console.log("drop PATIENT FAILED")
+
+                dispatch({
+                    type: DROP_PATIENT_FAILED
+                });
+
+            })
+            .finally(function () {
+
             });
-
-            console.log(response.data)
-
-        })
-        .catch(function (error) {
-            console.log("drop PATIENT FAILED")
-
-            dispatch({
-                type: DROP_PATIENT_FAILED
-            });
-
-        })
-        .finally(function () {
-
-        });
-}
+    }
 }
 
-export const GetPatientPatEvals = (token : string, patientID : string, setPatientPatEvals : Function) => {
+export const GetPatientPatEvals = (token: string, patientID: string, setPatientPatEvals: Function) => {
 
-        let options = {
-            headers: { "Authorization": "Bearer " + token }
-        }
+    let options = {
+        headers: { "Authorization": "Bearer " + token }
+    }
 
-        setPatientPatEvals("loading")
+    setPatientPatEvals("loading")
 
-        axios.get(BE_URL + 'patientEval/patient/' + patientID, options)
+    axios.get(BE_URL + 'patientEval/patient/' + patientID, options)
         .then(function (response) {
 
             console.log(response.data)
@@ -221,6 +217,61 @@ export const GetPatientPatEvals = (token : string, patientID : string, setPatien
         .catch(function (error) {
 
             setPatientPatEvals("error")
+
+        })
+        .finally(function () {
+
+        });
+}
+
+
+
+export const GetPatientHistory = (token: string, patientID: string, setPatientHistory: Function, setFetchStatus: Function) => {
+
+    let options = {
+        headers: { "Authorization": "Bearer " + token }
+    }
+
+    let compareHistory = (a: any, b: any) => {
+        if (a.creationDate < b.creationDate)
+            return 1
+        if (a.creationDate > b.creationDate)
+            return -1
+        return 0
+    }
+
+    setFetchStatus("loading")
+
+    axios.get(BE_URL + 'patient/history/' + patientID, options)
+        .then(function (response) {
+
+            setFetchStatus("complete")
+
+            response.data.patientevals.forEach((element : any) => {
+                element.type = "patEval"
+            });
+            response.data.physioevals.forEach((element : any) => {
+                element.type = "physioEval"
+            });
+            response.data.exercises.forEach((element : any) => {
+                element.type = "exercise"
+            });
+
+
+            let sortedHistory = [
+                ...response.data.patientevals,
+                ...response.data.physioevals,
+                ...response.data.exercises
+            ].sort(compareHistory)
+
+            console.log(sortedHistory)
+
+            setPatientHistory(sortedHistory)
+
+        })
+        .catch(function (error) {
+
+            setFetchStatus("error")
 
         })
         .finally(function () {

@@ -29,9 +29,12 @@ import {
 import PatientCard from "./PatientCard"
 import UserReducer from '../../User/UserReducer';
 import PatientReducer from '../PatientReducer';
-import { GetPatientInfoByID, AdoptPatient, DropPatient } from '../PatientActions';
+import { GetPatientInfoByID, AdoptPatient, DropPatient, GetPatientHistory } from '../PatientActions';
 import { PatientInterface } from '../../User/components/Patients';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import PatientHistoryCard from './PatientHistoryCard';
+import { PatientEvalInterface } from '../../PatientEvals/PatientEvalsActions';
+import PatEvalInfo from '../../PatientEvals/components/PatEvalInfo';
 
 
 interface PatientInformationProps {
@@ -94,14 +97,17 @@ function DropConfirmation(props: any) {
     )
 }
 
-
 function PatientInformation(props: PatientInformationProps) {
-
 
     const token = useSelector((state: UserReducer) => state.UserReducer.user?.token) as string
     const physicianID = useSelector((state: UserReducer) => state.UserReducer.user?._id) as string
     const activePatient = useSelector((state: PatientReducer) => state.PatientReducer.activePatient)
     const isFetching = useSelector((state: PatientReducer) => state.PatientReducer.isFetching)
+
+    const [patientHistory, setPatientHistory] = useState([])
+    const [fetchStatus, setFetchStatus] = useState<string>()
+    const [selectedHistoryType, setSelectedHistoryType] = useState<string>("")
+    const [selectedHistoryID, setSelectedHistoryID] = useState<string>("")
 
     const dispatch = useDispatch();
 
@@ -119,6 +125,10 @@ function PatientInformation(props: PatientInformationProps) {
         dispatch(GetPatientInfoByID(token, props.patientID))
     }, [])
 
+    useMemo(() => {
+        if (activePatient !== null)
+            GetPatientHistory(token, activePatient._id as string, setPatientHistory, setFetchStatus)
+    }, [activePatient])
 
     const dropPatient = () => {
         dispatch(DropPatient(token, (activePatient?._id as string), physicianID))
@@ -130,7 +140,7 @@ function PatientInformation(props: PatientInformationProps) {
             <Row className="patient-list-options">
                 <Col sm={1}>
                     <Link to={"/dashboard/patients"} className={"h-100"}>
-                        <FontAwesomeIcon icon={faArrowAltCircleLeft} className={"h-100"} />
+                        <FontAwesomeIcon icon={faArrowAltCircleLeft} className={"h-100"} style={{ color: "#6C63FF", width: "25px" }} />
                     </Link>
                 </Col>
                 <Col sm={5}>
@@ -270,17 +280,59 @@ function PatientInformation(props: PatientInformationProps) {
                                         Histórico
                             </div>
                                     <div className={"patient-history-content"}>
+                                        {
+                                            fetchStatus === "loading" ?
+                                                <p>A Carregar ...</p>
+                                                :
+                                                fetchStatus === "error" ?
+                                                    <p>Ocorreu um erro a carregar o histórico</p>
+                                                    :
+                                                    fetchStatus === "complete" ?
+                                                        patientHistory !== undefined ?
+                                                            patientHistory.map((value: any, index: number) => {
+                                                                return (
+                                                                    <PatientHistoryCard
+                                                                        data={{
+                                                                            type: value.type,
+                                                                            value
+                                                                        }}
+                                                                        setType={setSelectedHistoryType}
+                                                                        setID={setSelectedHistoryID}
+                                                                        key={index}
+                                                                    />
+                                                                )
+                                                            })
+                                                            :
+                                                            <p>Ocorreu um erro a carregar o histórico</p>
+                                                        :
+                                                        <p>Ocorreu um erro a carregar o histórico</p>
+                                        }
                                     </div>
                                 </Col>
                                 <Col sm={8} className={"patient-history-container"} id={"bottom-right"}>
                                     <div className={"patient-history-content"}>
 
-                                        <Canvas>
-                                            <ambientLight />
-                                            <pointLight position={[10, 10, 10]} />
-                                            <Box position={[-1.2, 0, 0]} />
-                                            <Box position={[1.2, 0, 0]} />
-                                        </Canvas>
+                                        {
+                                            selectedHistoryType === "patEval" ?
+                                                <PatEvalInfo patEvalID={selectedHistoryID} noHeader />
+                                                :
+                                                selectedHistoryType === "physioEval" ?
+                                                    <p>PHYSIOEVAL WITH ID: {selectedHistoryID}</p>
+                                                    :
+                                                    selectedHistoryType === "exercise" ?
+                                                        <>
+                                                            <p>Temporary Demo</p>
+                                                            <Canvas>
+                                                                <ambientLight />
+                                                                <pointLight position={[10, 10, 10]} />
+                                                                <Box position={[-1.2, 0, 0]} />
+                                                                <Box position={[1.2, 0, 0]} />
+                                                            </Canvas>
+                                                        </>
+                                                    :
+                                                        <p>Seleccione um registo</p>
+                                        }
+
 
                                     </div>
                                 </Col>

@@ -35,10 +35,6 @@ export const createNewPatEval = (token: string, patEval: PatientEvalInterface, s
         headers: { "Authorization": "Bearer " + token }
     }
 
-
-    console.log("Submiting: ", JSON.stringify(patEval))
-
-
     axios.post(BE_URL + 'patientEval', patEval, options)
         .then(function (response) {
             submitStatus("complete")
@@ -86,7 +82,6 @@ export const GetPatEval = (token: string, patientEval: string, setPatEvalInfo: F
     axios.get(BE_URL + 'patientEval/eval/' + patientEval, options)
         .then(function (response) {
 
-            console.log(response.data)
             setFetchStatus("complete")
             setPatEvalInfo(response.data)
 

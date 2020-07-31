@@ -21,9 +21,14 @@ import {
 
 import UserReducer from '../../User/UserReducer';
 import { GetPatEval, PatientEvalInterface } from '../PatientEvalsActions';
+import {
+    faArrowAltCircleLeft
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface PatEvalInfoProps {
     patEvalID: string
+    noHeader?: boolean
 }
 
 
@@ -39,24 +44,29 @@ function PatEvalInfo(props: PatEvalInfoProps) {
         GetPatEval(token, props.patEvalID, setPatEval, setFetchStatus)
     }, [])
 
-    console.log(patEval)
-
     return (
         <div className="pateval-view">
-            <Row className="pateval-options">
-                <Col sm={3} className={"p-0 pt-2"}>
-                    <Link to={"/dashboard/pateval"}>Voltar</Link>
-                </Col>
-                <Col sm={5}>
+            {
+                !props.noHeader ?
+                    <Row className="pateval-options">
+                        <Col sm={3} className={"p-0 pt-2"}>
+                            <Link to={"/dashboard/pateval"}>
+                                <FontAwesomeIcon icon={faArrowAltCircleLeft} className={"h-100"} style={{ color: "#6C63FF", width: "25px" }} />
+                            </Link>
+                        </Col>
+                        <Col sm={5}>
 
-                </Col>
-                <Col sm={2}>
+                        </Col>
+                        <Col sm={2}>
 
-                </Col>
-                <Col sm={2}>
+                        </Col>
+                        <Col sm={2}>
 
-                </Col>
-            </Row>
+                        </Col>
+                    </Row>
+                    :
+                    <></>
+            }
 
 
             {
@@ -74,7 +84,7 @@ function PatEvalInfo(props: PatEvalInfoProps) {
                                             <Col xs={12}>
                                                 <Row>
                                                     <Col xs={4}>
-                                                        <InputLabel id="">Paciente</InputLabel>
+                                                        <InputLabel id=""><b>Paciente</b></InputLabel>
                                                         {patEval.patientName}
                                                         <br />
                                                         {patEval.patientEmail}
@@ -83,13 +93,13 @@ function PatEvalInfo(props: PatEvalInfoProps) {
 
                                                 <Row className="mt-5">
                                                     <Col xs={4}>
-                                                        <InputLabel id="">Diagnóstico Clinico</InputLabel>
+                                                        <InputLabel id=""><b>Diagnóstico Clinico</b></InputLabel>
                                                         {patEval.clinicDiagnosis}
                                                     </Col>
                                                 </Row>
                                                 <Row className="mt-5">
                                                     <Col xs={4}>
-                                                        <InputLabel id="">Descrição</InputLabel>
+                                                        <InputLabel id=""><b>Descrição</b></InputLabel>
                                                         {patEval.description}
                                                     </Col>
                                                 </Row>
@@ -97,16 +107,16 @@ function PatEvalInfo(props: PatEvalInfoProps) {
 
                                                 <Row className="mt-5">
                                                     <Col xs={3}>
-                                                        <InputLabel id="">Prescrição Médica</InputLabel>
+                                                        <InputLabel id=""><b>Prescrição Médica</b></InputLabel>
                                                     </Col>
                                                     <Col xs={3}>
-                                                        <InputLabel id="">Opções</InputLabel>
+                                                        <InputLabel id=""><b>Opções</b></InputLabel>
                                                     </Col>
                                                     <Col xs={2}>
-                                                        <InputLabel id="">Número de Tratamentos</InputLabel>
+                                                        <InputLabel id=""><b>Número de Tratamentos</b></InputLabel>
                                                     </Col>
                                                     <Col xs={2}>
-                                                        <InputLabel id="">Frequência do Tratamento</InputLabel>
+                                                        <InputLabel id=""><b>Frequência do Tratamento</b></InputLabel>
                                                     </Col>
                                                     <Col xs={2}>
                                                     </Col>
