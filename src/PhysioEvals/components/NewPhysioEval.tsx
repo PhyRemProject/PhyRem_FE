@@ -29,7 +29,7 @@ import UserReducer from '../../User/UserReducer';
 import { PatientInterface } from '../../User/components/Patients';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PatientReducer from '../../Patients/PatientReducer';
-import { submitNewPhysioEval, PatientEvalInterface, PrescriptionInterface } from '../PhysioEvalsActions';
+import { submitNewPhysioEval, PatientEvalInterface, PrescriptionInterface, clearPhysioExam } from '../PhysioEvalsActions';
 import { GetAdoptedPatientList } from '../../Patients/PatientActions';
 import SubjectiveExam from "./PhysioEvalExams/SubjectiveExam";
 import ObjectiveExam from "./PhysioEvalExams/ObjectiveExam";
@@ -100,7 +100,6 @@ function NewPhysioEval(props: NewPatEvalProps) {
         }
     }, [isSaved])
 
-
     const handlePatientPicking = (event: React.ChangeEvent<{ value: unknown }>) => {
         setSelectedPatientIndex(event.target.value as number)
         setSelectedPatient(patientsList[event.target.value as number])
@@ -111,7 +110,7 @@ function NewPhysioEval(props: NewPatEvalProps) {
     }
 
     const handleExamSubmit = () => {
-        dispatch( () => { submitNewPhysioEval(token, completeExam, setSubmitStatus)})
+        dispatch(submitNewPhysioEval(token, completeExam, setSubmitStatus))
     }
 
 

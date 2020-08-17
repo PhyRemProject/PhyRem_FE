@@ -32,12 +32,12 @@ export interface PhysioEvalInterface {
     perimeter: [
         {
             bodyPart: string,
-            rightMeasure: string,
-            leftMeasure: string,
-            difference: string,
-            reeval1: string,
-            reeval2: string,
-            reevalFinal: string
+            rightMeasure: number,
+            leftMeasure: number,
+            difference: number,
+            reeval1: number,
+            reeval2: number,
+            reevalFinal: number
         }
     ],
     postural: [
@@ -92,12 +92,12 @@ export interface PerimeterExam {
     perimeter: [
         {
             bodyPart: string,
-            rightMeasure: string,
-            leftMeasure: string,
-            difference: string,
-            reeval1: string,
-            reeval2: string,
-            reevalFinal: string
+            rightMeasure: number,
+            leftMeasure: number,
+            difference: number,
+            reeval1: number,
+            reeval2: number,
+            reevalFinal: number
         }
     ]
 }
@@ -130,6 +130,7 @@ export interface PhysioEvalStateInterface {
 };
 
 // Action Types
+export const CLEAR_PHYSIO_EXAM = "CLEAR_PHYSIO_EXAM"
 export const UPDATE_SELECTED_PATIENT = "UPDATE_SELECTED_PATIENT"
 export const UPDATE_SUBJECTIVE_EXAM = "UPDATE_SUBJECTIVE_EXAM"
 export const UPDATE_OBJECTIVE_EXAM = "UPDATE_OBJECTIVE_EXAM"
@@ -167,6 +168,11 @@ export function PhysioEvalsReducer(state = appointmentInitState, action: Action 
 
     switch (action.type) {
 
+        case CLEAR_PHYSIO_EXAM:
+            return {
+                appointmentInitState
+            }
+
         case UPDATE_SELECTED_PATIENT:
             return {
                 ...state,
@@ -187,6 +193,10 @@ export function PhysioEvalsReducer(state = appointmentInitState, action: Action 
         case UPDATE_OBJECTIVE_EXAM:
             return {
                 ...state,
+                physioEval: {
+                    ...state.physioEval,
+                    ...(action as UpdateExamAction).payload
+                },
                 objectiveExam: (action as UpdateExamAction).payload
             };
         case UPDATE_MUSCULAR_EXAM:

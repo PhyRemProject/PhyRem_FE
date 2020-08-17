@@ -42,12 +42,12 @@ const perimeterAreas = [
 
 interface PerimeterArea {
     bodyPart: string,
-    rightMeasure: string,
-    leftMeasure: string,
-    difference: string,
-    reeval1: string,
-    reeval2: string,
-    reevalFinal: string
+    rightMeasure: number,
+    leftMeasure: number,
+    difference: number,
+    reeval1: number,
+    reeval2: number,
+    reevalFinal: number
 
 }
 
@@ -55,12 +55,12 @@ function PerimeterExam(props : ExamProps) {
 
     const emptyArea = {
         bodyPart: "",
-        rightMeasure: "",
-        leftMeasure: "",
-        difference: "",
-        reeval1: "",
-        reeval2: "",
-        reevalFinal: ""
+        rightMeasure: 0,
+        leftMeasure: 0,
+        difference: 0,
+        reeval1: 0,
+        reeval2: 0,
+        reevalFinal: 0
     }
 
     const createEmptyAreas = () => {
@@ -150,6 +150,7 @@ function PerimeterExam(props : ExamProps) {
                                                 <td>
                                                     <TextField
                                                         label=""
+                                                        type={"number"}
                                                         value={areasValues[index].rightMeasure}
                                                         onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
                                                             setAreasValues(
@@ -157,7 +158,7 @@ function PerimeterExam(props : ExamProps) {
                                                                     ...areasValues.slice(0, index),
                                                                     {
                                                                         ...areasValues[index],
-                                                                        rightMeasure: event.target.value as string
+                                                                        rightMeasure: event.target.value as number
                                                                     },
                                                                     ...areasValues.slice(index + 1)
                                                                 ]
@@ -169,6 +170,7 @@ function PerimeterExam(props : ExamProps) {
                                                 <td>
                                                     <TextField
                                                         label=""
+                                                        type={"number"}
                                                         value={areasValues[index].leftMeasure}
                                                         onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
                                                             setAreasValues(
@@ -176,7 +178,7 @@ function PerimeterExam(props : ExamProps) {
                                                                     ...areasValues.slice(0, index),
                                                                     {
                                                                         ...areasValues[index],
-                                                                        leftMeasure: event.target.value as string
+                                                                        leftMeasure: event.target.value as number
                                                                     },
                                                                     ...areasValues.slice(index + 1)
                                                                 ]
@@ -189,6 +191,7 @@ function PerimeterExam(props : ExamProps) {
                                                 <td>
                                                     <TextField
                                                         label=""
+                                                        type={"number"}
                                                         value={areasValues[index].difference}
                                                         onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
                                                             setAreasValues(
@@ -196,7 +199,7 @@ function PerimeterExam(props : ExamProps) {
                                                                     ...areasValues.slice(0, index),
                                                                     {
                                                                         ...areasValues[index],
-                                                                        difference: event.target.value as string
+                                                                        difference: event.target.value as number
                                                                     },
                                                                     ...areasValues.slice(index + 1)
                                                                 ]
@@ -209,6 +212,7 @@ function PerimeterExam(props : ExamProps) {
                                                 <td>
                                                     <TextField
                                                         label=""
+                                                        type={"number"}
                                                         value={areasValues[index].reeval1}
                                                         onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
                                                             setAreasValues(
@@ -216,7 +220,7 @@ function PerimeterExam(props : ExamProps) {
                                                                     ...areasValues.slice(0, index),
                                                                     {
                                                                         ...areasValues[index],
-                                                                        reeval1: event.target.value as string
+                                                                        reeval1: event.target.value as number
                                                                     },
                                                                     ...areasValues.slice(index + 1)
                                                                 ]
@@ -230,6 +234,7 @@ function PerimeterExam(props : ExamProps) {
                                                 <td>
                                                     <TextField
                                                         label=""
+                                                        type={"number"}
                                                         value={areasValues[index].reeval2}
                                                         onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
                                                             setAreasValues(
@@ -237,7 +242,7 @@ function PerimeterExam(props : ExamProps) {
                                                                     ...areasValues.slice(0, index),
                                                                     {
                                                                         ...areasValues[index],
-                                                                        reeval2: event.target.value as string
+                                                                        reeval2: event.target.value as number
                                                                     },
                                                                     ...areasValues.slice(index + 1)
                                                                 ]
@@ -251,6 +256,7 @@ function PerimeterExam(props : ExamProps) {
                                                 <td>
                                                     <TextField
                                                         label=""
+                                                        type={"number"}
                                                         value={areasValues[index].reevalFinal}
                                                         onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
                                                             setAreasValues(
@@ -258,7 +264,7 @@ function PerimeterExam(props : ExamProps) {
                                                                     ...areasValues.slice(0, index),
                                                                     {
                                                                         ...areasValues[index],
-                                                                        reevalFinal: event.target.value as string
+                                                                        reevalFinal: event.target.value as number
                                                                     },
                                                                     ...areasValues.slice(index + 1)
                                                                 ]

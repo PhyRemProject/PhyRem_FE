@@ -4,7 +4,7 @@ import jwt from 'jwt-decode'
 import lodash from "lodash"
 
 import { PatientInterface } from '../User/components/Patients'
-import { PhysioEvalInterface } from './PhysioEvalsReducer'
+import { PhysioEvalInterface, CLEAR_PHYSIO_EXAM } from './PhysioEvalsReducer'
 
 const BE_URL = "/api/"
 
@@ -27,7 +27,19 @@ export interface PrescriptionInterface {
     treatmentFreq: string
 }
 
+export const clearPhysioExam = () => {
+    return (dispatch: Function) => {
+        dispatch({
+            type: CLEAR_PHYSIO_EXAM
+        })
+    }
+}
+
 export const submitNewPhysioEval = (token: string, physioEval: PhysioEvalInterface, submitStatus: Function) => {
+
+
+    return (dispatch: Function) => {
+
 
     submitStatus("uploading")
 
@@ -40,6 +52,9 @@ export const submitNewPhysioEval = (token: string, physioEval: PhysioEvalInterfa
     axios.post(BE_URL + 'physioEval', physioEval, options)
         .then(function (response) {
             submitStatus("complete")
+            dispatch({
+                type: CLEAR_PHYSIO_EXAM
+            })
         })
         .catch(function (error) {
             submitStatus("error")
@@ -47,6 +62,7 @@ export const submitNewPhysioEval = (token: string, physioEval: PhysioEvalInterfa
         .finally(function () {
 
         });
+    }
 }
 
 
