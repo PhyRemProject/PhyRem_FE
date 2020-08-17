@@ -161,7 +161,7 @@ function PatEvalInfo(props: PatEvalInfoProps) {
                                 </Row>
                             </>
                             :
-                            <p>Ocorreu um erro a carregar a avaliação de id : {props.patEvalID}</p>
+                            <p>A Carregar ...</p>
             }
 
         </div>

@@ -1,0 +1,105 @@
+.physioeval-view {
+    height: 100%;
+} 
+
+.physioeval-container {
+    display: block !important;
+    height: calc(100vh - 130px);
+    overflow-y: scroll;
+    background-color: #F2F2FC;
+    margin-right: 0px !important;
+    border-radius: 10px 10px 10px 10px;
+}
+
+
+.physioeval-content {
+    background-color: #FFFFFF;
+    height: 97%;
+    width: calc(100% - 10px) !important;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+    padding: 0px;
+    font-size: 15px;
+    font-weight: 400;
+
+}
+
+
+.physioeval-options {
+    height: 47px;
+}
+
+#physioeval-header {
+    background-color: #E3E1FD;
+    margin-right: 0px;
+    border-radius: 5px 5px 0px 0px;
+    height: 35px;
+    align-items: center;
+    text-align: center;
+}
+
+.physioeval-card {
+    background-color: #E3E1FD;
+    border-radius: 5px 5px 5px 5px;
+    width: 98%;
+    margin: 10px;
+    padding-left: 15px;
+    height: 120px;
+    vertical-align: middle;
+}
+
+.physioeval-card :hover{
+    background-color: #cac8e9;
+    border-radius: 5px 5px 5px 5px;
+}
+
+
+.physioeval-card-content {
+    height: 100%;
+}
+
+.physioeval-card-image {
+    max-height: 90%;
+    margin: 5px;
+}
+
+
+/** New PhysioEval **/
+.physioeval-section-name {
+    text-decoration: underline;
+    font-weight: 500;
+}
+
+.physioeval-bodychart {
+    width: 40%;
+}
+
+.articular-exam-container {
+    height: 280px;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 5px;
+    border-color: #BBB;
+    overflow: scroll;
+}
+
+.articular-exam-registered {
+    border-style: solid;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+    border-width: 1px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-color: #AAAAAA;
+}
+
+.exam-nav-buttons{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}

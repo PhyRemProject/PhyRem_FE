@@ -314,7 +314,7 @@ function PatientInformation(props: PatientInformationProps) {
 
                                         {
                                             selectedHistoryType === "patEval" ?
-                                                <PatEvalInfo patEvalID={selectedHistoryID} noHeader />
+                                                <PatEvalInfo patEvalID={selectedHistoryID} noHeader key={selectedHistoryID}/>
                                                 :
                                                 selectedHistoryType === "physioEval" ?
                                                     <p>PHYSIOEVAL WITH ID: {selectedHistoryID}</p>

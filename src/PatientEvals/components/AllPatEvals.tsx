@@ -70,8 +70,6 @@ function AllPatEvals() {
         }
     }
 
-    console.log(patEvalList)
-
     return (
         <div className="pateval-view">
             <Row className="pateval-options">
@@ -100,7 +98,7 @@ function AllPatEvals() {
                             type="submit"
                             onClick={() => { }}
                         >
-                            <FontAwesomeIcon icon={faPlusCircle} id="search-logo" className="mr-2"/>
+                            <FontAwesomeIcon icon={faPlusCircle} id="search-logo" className="mr-2" />
                             {"Nova Avaliação"}
                         </Button>
                     </Link>
@@ -133,25 +131,27 @@ function AllPatEvals() {
 
                         {/* If the PatientList is null, an error occured during fetch */}
                         {patEvalList === undefined || patEvalList === undefined ?
-                            <p>Falha a carregar as avaliações de paciente</p>
+                            <p>A Carregar ...</p>
                             : fetchStatus === "loading" ?
                                 <p>A Carregar ...</p>
-                                : patEvalList.length === 0 ?
-                                    <p>Não existem avaliações de paciente registadas</p>
-                                    // If filterResult is null, a filter is not being applied, therefore, show the patient list
-                                    : filterResult === null ?
-                                        patEvalList.map((patEval: PatientEvalInterface, index: number) => {
-                                            return <PatEvalCard data={patEval} key={index}/>
-                                        })
-                                        :
-                                        //If there are no results with filter, show warning
-                                        filterResult.length === 0 ?
-                                            <p>Nenhuma avaliação com paciente de nome: "{filterTerm}"</p>
-                                            :
-                                            filterResult.map((patEval: PatientEvalInterface, index: number) => {
-
-                                                return <PatEvalCard data={patEval} key={index}/>
+                                : fetchStatus === "error" ?
+                                    <p>Falha a carregar as avaliações de paciente</p>
+                                    : patEvalList.length === 0 ?
+                                        <p>Não existem avaliações de paciente registadas</p>
+                                        // If filterResult is null, a filter is not being applied, therefore, show the patient list
+                                        : filterResult === null ?
+                                            patEvalList.map((patEval: PatientEvalInterface, index: number) => {
+                                                return <PatEvalCard data={patEval} key={index} />
                                             })
+                                            :
+                                            //If there are no results with filter, show warning
+                                            filterResult.length === 0 ?
+                                                <p>Nenhuma avaliação com paciente de nome: "{filterTerm}"</p>
+                                                :
+                                                filterResult.map((patEval: PatientEvalInterface, index: number) => {
+
+                                                    return <PatEvalCard data={patEval} key={index} />
+                                                })
                         }
 
                     </Row>

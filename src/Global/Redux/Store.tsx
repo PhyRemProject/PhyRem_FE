@@ -6,6 +6,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import UserReducer from "../../User/UserReducer"
 import AppointmentReducer from "../../Appointments/AppointmentReducer"
 import PatientReducer from "../../Patients/PatientReducer"
+import PhysioEvalsReducer from "../../PhysioEvals/PhysioEvalsReducer"
 
 const persistConfig = {
     key: 'root',
@@ -15,7 +16,8 @@ const persistConfig = {
 const rootReducer = combineReducers({
     UserReducer,
     AppointmentReducer,
-    PatientReducer
+    PatientReducer,
+    PhysioEvalsReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
