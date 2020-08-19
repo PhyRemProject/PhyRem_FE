@@ -35,6 +35,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PatientHistoryCard from './PatientHistoryCard';
 import { PatientEvalInterface } from '../../PatientEvals/PatientEvalsActions';
 import PatEvalInfo from '../../PatientEvals/components/PatEvalInfo';
+import PhysioEvalInfo from '../../PhysioEvals/components/PhysioEvalInfo';
 
 
 interface PatientInformationProps {
@@ -160,15 +161,18 @@ function PatientInformation(props: PatientInformationProps) {
                     </Link>
                 </Col>
                 <Col sm={2}>
-                    <Button
-                        className="form-elems h-100 w-100"
-                        variant="contained"
-                        color="primary"
-                        type="submit"
-                        onClick={() => { }}
-                    >
-                        {"Criar Avaliação de Fisioterapeuta"}
-                    </Button>
+                    <Link to={"/dashboard/physioeval/new/" + activePatient?._id}>
+
+                        <Button
+                            className="form-elems h-100 w-100"
+                            variant="contained"
+                            color="primary"
+                            type="submit"
+                            onClick={() => { }}
+                        >
+                            {"Criar Avaliação de Fisioterapeuta"}
+                        </Button>
+                    </Link>
                 </Col>
                 {activePatient?.physicians?.includes(physicianID) ?
                     <Col sm={2}>
@@ -314,10 +318,10 @@ function PatientInformation(props: PatientInformationProps) {
 
                                         {
                                             selectedHistoryType === "patEval" ?
-                                                <PatEvalInfo patEvalID={selectedHistoryID} noHeader key={selectedHistoryID}/>
+                                                <PatEvalInfo patEvalID={selectedHistoryID} noHeader key={selectedHistoryID} />
                                                 :
                                                 selectedHistoryType === "physioEval" ?
-                                                    <p>PHYSIOEVAL WITH ID: {selectedHistoryID}</p>
+                                                    <PhysioEvalInfo physioEvalID={selectedHistoryID} noHeader key={selectedHistoryID}/>
                                                     :
                                                     selectedHistoryType === "exercise" ?
                                                         <>
@@ -329,7 +333,7 @@ function PatientInformation(props: PatientInformationProps) {
                                                                 <Box position={[1.2, 0, 0]} />
                                                             </Canvas>
                                                         </>
-                                                    :
+                                                        :
                                                         <p>Seleccione um registo</p>
                                         }
 

@@ -48,7 +48,6 @@ export const submitNewPhysioEval = (token: string, physioEval: PhysioEvalInterfa
     }
 
 
-    //TODO NEEDS UPDATING
     axios.post(BE_URL + 'physioEval', physioEval, options)
         .then(function (response) {
             submitStatus("complete")
@@ -65,32 +64,7 @@ export const submitNewPhysioEval = (token: string, physioEval: PhysioEvalInterfa
     }
 }
 
-
-export const getPhysicianPhysioEvals = (token: string, setFetchStatus: Function, setPatEvalList: Function) => {
-
-
-    setFetchStatus("loading")
-
-    let options = {
-        headers: { "Authorization": "Bearer " + token }
-    }
-
-    //TODO NEEDS UPDATING
-    axios.get(BE_URL + 'patientEval/physician', options)
-        .then(function (response) {
-            setFetchStatus("complete")
-            setPatEvalList(response.data)
-        })
-        .catch(function (error) {
-            setFetchStatus("error")
-        })
-        .finally(function () {
-
-        });
-}
-
-
-export const GetPhysioEval = (token: string, patientEval: string, setPatEvalInfo: Function, setFetchStatus: Function) => {
+export const GetPhysioEval = (token: string, physioEval: string, setPhysioEvalInfo: Function, setFetchStatus: Function) => {
 
     let options = {
         headers: { "Authorization": "Bearer " + token }
@@ -99,12 +73,11 @@ export const GetPhysioEval = (token: string, patientEval: string, setPatEvalInfo
     setFetchStatus("loading")
 
 
-    //TODO NEEDS UPDATING
-    axios.get(BE_URL + 'patientEval/eval/' + patientEval, options)
+    axios.get(BE_URL + 'physioEval/eval/' + physioEval, options)
         .then(function (response) {
 
             setFetchStatus("complete")
-            setPatEvalInfo(response.data)
+            setPhysioEvalInfo(response.data)
 
         })
         .catch(function (error) {

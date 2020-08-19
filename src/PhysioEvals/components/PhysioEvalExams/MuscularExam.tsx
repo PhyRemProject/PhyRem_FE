@@ -54,7 +54,7 @@ const muscleTable = [
 ]
 
 
-interface Muscle {
+export interface Muscle {
     muscle: string,
     movement: string,
     adm: string,

@@ -38,7 +38,7 @@ const postureList = [
 ]
 
 
-interface Posture {
+export interface Posture {
     posture: string,
     below: number,
     above: number

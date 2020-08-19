@@ -5,6 +5,8 @@ import { PatientInterface } from "../User/components/Patients"
 //Represents a User structure that will be part of the app state
 export interface PhysioEvalInterface {
     _id?: string,
+    patientName?: string,
+    patientEmail?: string,
     patient: string,
     currentState: string,
     previousIssues: string,

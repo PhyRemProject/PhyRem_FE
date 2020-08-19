@@ -40,7 +40,7 @@ const perimeterAreas = [
     "Raiz do membro"
 ]
 
-interface PerimeterArea {
+export interface PerimeterArea {
     bodyPart: string,
     rightMeasure: number,
     leftMeasure: number,

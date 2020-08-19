@@ -54,7 +54,7 @@ const articulationsTable = [
 ]
 
 
-interface Articulation {
+export interface Articulation {
     articulation: string,
     movement: string,
     adm: string,
