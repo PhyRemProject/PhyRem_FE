@@ -8,7 +8,6 @@ import {
     Image
 } from "react-bootstrap";
 
-import "../styles/patients.css"
 import {
     TextField,
     Button
@@ -24,22 +23,21 @@ interface PatientCardProps {
         id: string,
         name: string,
         email: string,
-        contact: string,
-        address: string,
-        gender: string,
+        phoneNumber: string,
+        specialty: string[],
+        physicianID: string,
     }
     //TODO this has to be completed
 }
 
 
-function PatientCard(props: PatientCardProps) {
+function PhysicianCard(props: PatientCardProps) {
 
     return (
         <div className="patient-card">
             <Row className="h-100">
                 <Col sm={2} className="h-100">
-                <Image src={`${process.env.PUBLIC_URL}/api/patient/profileImage/${props.data.id}`} roundedCircle fluid id="patient-info-image" onError={(e) => {e.currentTarget.src = `${process.env.PUBLIC_URL}/images/default_user_icon.png`}}/>
-
+                    <Image src={`${process.env.PUBLIC_URL}/api/physician/profileImage/${props.data.id}`} roundedCircle fluid id="patient-info-image" onError={(e) => { e.currentTarget.src = `${process.env.PUBLIC_URL}/images/default_user_icon.png` }} />
                 </Col>
                 <Col sm={3} className="h-100">
                     <span className="align-middle h-100">
@@ -48,16 +46,16 @@ function PatientCard(props: PatientCardProps) {
                     </span>
                 </Col>
                 <Col sm={2} className="h-100">
-                    {props.data.contact}<br />
+                    {props.data.phoneNumber}<br />
                 </Col>
                 <Col sm={2} className="h-100">
-                    {props.data.address}<br />
+                    {props.data.specialty.map((elem, index) => (<p>{elem}</p>))}<br />
                 </Col>
                 <Col sm={2} className="h-100">
-                    {props.data.gender}<br />
+                    {props.data.physicianID}<br />
                 </Col>
                 <Col sm={1} className="h-100">
-                    <Button
+                    {/* <Button
                         className="form-elems w-100 h-100"
                         variant="contained"
                         color="secondary"
@@ -69,7 +67,7 @@ function PatientCard(props: PatientCardProps) {
                             <FontAwesomeIcon icon={faEye} id="eye-logo" />
                             <br />
                             {"Ver"}
-                    </Button>
+                    </Button> */}
                 </Col>
 
             </Row>
@@ -77,4 +75,4 @@ function PatientCard(props: PatientCardProps) {
     );
 }
 
-export default PatientCard;
+export default PhysicianCard;

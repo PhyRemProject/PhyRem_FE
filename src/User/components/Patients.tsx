@@ -1,5 +1,6 @@
 export interface PatientInterface {
     _id :string | null,
+    creationDate? : number,
     physicians : string[] | null,
     email :string | null,
     name :string | null,

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useFrame, Canvas } from "react-three-fiber";
-import { Switch, Route, Link } from "react-router-dom";
+import { Switch, Route, Link} from "react-router-dom";
+import history from '../../Global/components/history'
 import { useSelector, useDispatch } from "react-redux";
 import {
     Container,
@@ -114,14 +115,6 @@ function PatientInformation(props: PatientInformationProps) {
 
     const [open, setOpen] = React.useState(false);
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
     useEffect(() => {
         dispatch(GetPatientInfoByID(token, props.patientID))
     }, [])
@@ -135,14 +128,14 @@ function PatientInformation(props: PatientInformationProps) {
         dispatch(DropPatient(token, (activePatient?._id as string), physicianID))
     }
 
+
+
     return (
         <div className="patient-view">
-            <DropConfirmation open={open} setOpen={setOpen} handleClickOpen={handleClickOpen} handleClose={handleClose} dropPatient={dropPatient} />
+            <DropConfirmation open={open} setOpen={setOpen} handleClickOpen={()=>{setOpen(true)}} handleClose={()=>{setOpen(false)}} dropPatient={dropPatient} />
             <Row className="patient-list-options">
                 <Col sm={1}>
-                    <Link to={"/dashboard/patients"} className={"h-100"}>
-                        <FontAwesomeIcon icon={faArrowAltCircleLeft} className={"h-100"} style={{ color: "#6C63FF", width: "25px" }} />
-                    </Link>
+                        <FontAwesomeIcon icon={faArrowAltCircleLeft} className={"h-100"} style={{ color: "#6C63FF", width: "25px" }} onClick={history.goBack} />
                 </Col>
                 <Col sm={5}>
                     {isFetching ? <p>A Carregar ...</p> : <></>}
@@ -183,7 +176,7 @@ function PatientInformation(props: PatientInformationProps) {
                             color="secondary"
                             type="submit"
                             onClick={() => {
-                                handleClickOpen();
+                                setOpen(true)
                                 //dispatch(DropPatient(token, (activePatient?._id as string), physicianID))
                             }}
                         >
@@ -220,7 +213,8 @@ function PatientInformation(props: PatientInformationProps) {
                             <Row className={"patient-information-container"}>
                                 <Col sm={4} className={"patient-information-container text-center"} id={"top-left"}>
                                     <br />
-                                    <Image src={`${process.env.PUBLIC_URL}/images/default_user.png`} roundedCircle fluid id="patient-info-image" />
+                                    <Image src={`${process.env.PUBLIC_URL}/api/patient/profileImage/${activePatient._id}`} roundedCircle fluid id="patient-info-image" onError={(e) => {e.currentTarget.src = `${process.env.PUBLIC_URL}/images/default_user_icon.png`}}/>
+                                    {/* <Image src={`${process.env.PUBLIC_URL}/images/default_user.png`} roundedCircle fluid id="patient-info-image" /> */}
                                     <br />
                                     <div id={"patient-name-email"}>
                                         <h5>{activePatient.name}</h5>
@@ -321,7 +315,7 @@ function PatientInformation(props: PatientInformationProps) {
                                                 <PatEvalInfo patEvalID={selectedHistoryID} noHeader key={selectedHistoryID} />
                                                 :
                                                 selectedHistoryType === "physioEval" ?
-                                                    <PhysioEvalInfo physioEvalID={selectedHistoryID} noHeader key={selectedHistoryID}/>
+                                                    <PhysioEvalInfo physioEvalID={selectedHistoryID} noHeader key={selectedHistoryID} />
                                                     :
                                                     selectedHistoryType === "exercise" ?
                                                         <>

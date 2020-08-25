@@ -46,11 +46,11 @@ function Header() {
         var currentHour = parseFloat(m.format("HH"));
 
         if (split_afternoon <= currentHour && currentHour <= split_evening) {
-            g = "Tarde";
+            g = "Boa Tarde";
         } else if (split_evening <= currentHour && currentHour >= split_night || currentHour <= split_night) {
-            g = "Noite";
+            g = "Boa Noite";
         } else {
-            g = "Dia";
+            g = "Bom Dia";
         }
 
         return g;
@@ -60,7 +60,7 @@ function Header() {
         <div className="header">
             <div id="greetings">
                 <FontAwesomeIcon icon={faCloudSun} id="weather-logo" />
-                <span id="greetings-day">Bom {getGreetingTime(ptMoment)}, </span>
+                <span id="greetings-day">{getGreetingTime(ptMoment)}, </span>
 
                 {user?.gender?.toLowerCase() === "male" ? "Dr. " : "Dra. "}
                 {user?.name}

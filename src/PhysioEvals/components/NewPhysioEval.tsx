@@ -87,6 +87,10 @@ function NewPhysioEval(props: NewPatEvalProps) {
             let patientIndex = patientsList.findIndex(element => element._id === props.patientID)
             setSelectedPatientIndex(patientIndex)
             setSelectedPatient(patientsList[patientIndex])
+            dispatch({
+                type: UPDATE_SELECTED_PATIENT,
+                payload: patientsList[patientIndex]._id
+            })
         }
     }, [])
 

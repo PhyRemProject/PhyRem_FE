@@ -3,6 +3,9 @@ import { Switch, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button } from "react-bootstrap";
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import MomentUtils from '@date-io/moment';
+import moment from "moment";
 
 import logo from './logo.svg';
 import './App.css';
@@ -33,7 +36,11 @@ function App() {
       },
       secondary: {
         main: '#6C63FF !important',
-        contrastText: '#FFFFFF !important'
+        contrastText: '#FFFFFF !important',
+      },
+      action: {
+        disabledBackground: '#8a89a2',
+        disabled: '#FFFFFF'
       }
 
     },
@@ -65,14 +72,16 @@ function App() {
   return (
     <>
       <MuiThemeProvider theme={theme}>
-        <div className="App">
+        <MuiPickersUtilsProvider libInstance={moment} utils={MomentUtils}>
+          <div className="App">
 
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route path="/dashboard" component={Dashboard} />
-          </Switch>
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route path="/dashboard" component={Dashboard} />
+            </Switch>
 
-        </div>
+          </div>
+        </MuiPickersUtilsProvider>
       </MuiThemeProvider>
     </>
   );

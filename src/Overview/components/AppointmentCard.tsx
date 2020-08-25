@@ -22,6 +22,7 @@ interface AppointmentCardProps {
         appointID: string,
         startDate: Date,
         endDate: Date,
+        patientID: string,
         patientName: string,
         patientContact: string,
         patientAddress: string,
@@ -57,7 +58,7 @@ function AppointmentCard(props: AppointmentCardProps) {
             </Row>
             <Row>
                 <Col xs={3}>
-                    <Image src={`${process.env.PUBLIC_URL}/images/default_user.png`} roundedCircle fluid />
+                    <Image src={`${process.env.PUBLIC_URL}/api/patient/profileImage/${props.data.patientID}`} roundedCircle fluid onError={(e) => { e.currentTarget.src = `${process.env.PUBLIC_URL}/images/default_user_icon.png` }} />
                 </Col>
                 <Col xs={3}>
                     <span className="appointment-data">
@@ -84,7 +85,7 @@ function AppointmentCard(props: AppointmentCardProps) {
                     </span>
                     <span className="appointment-data">
                         Tratamento
-                        <div style={{textOverflow: "ellipsis"}}>
+                        <div style={{ textOverflow: "ellipsis" }}>
                             <p>{patEvalInfo?.medicalPrescription[0].prescription} ...</p>
                         </div>
                     </span>

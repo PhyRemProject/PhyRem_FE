@@ -79,6 +79,7 @@ function Overview() {
                                     endDate: appoint.endDate as Date,
                                     patientName: appoint.patientsInfo.name as string,
                                     patientContact: appoint.patientsInfo.phoneNumber as string,
+                                    patientID : appoint.patientsInfo._id as string,
                                     patientAddress: appoint.location as string,
                                     objective: appoint.objective as string,
                                     diagnostic: appoint.diagnostic as string,

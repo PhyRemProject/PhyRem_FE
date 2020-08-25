@@ -25,6 +25,7 @@ import PatientReducer from '../PatientReducer';
 import { GetAdoptedPatientList, GetPatientsWithName } from '../PatientActions';
 import { PatientInterface } from '../../User/components/Patients';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import AllPatientsList from '../../Office/components/AllPatientsList';
 
 function AllPatients() {
 
@@ -98,30 +99,13 @@ function AllPatients() {
             </Row>
 
 
-                <Row className="p-0 mt-2">
-                    <Col xs={12}>
-                        <Row id="patient-list-header">
-                            <Col xs={2}>
-                                <b>Resultado</b>
-                            </Col>
-                            <Col xs={3}>
-                                Nome
-                        </Col>
-                            <Col xs={2}>
-                                Contacto
-                        </Col>
-                            <Col xs={2}>
-                                Morada
-                        </Col>
-                            <Col xs={2}>
-                                Sexo
-                        </Col>
-                            <Col xs={1}>
-                            </Col>
-                        </Row>
-                        <Row className="all-patient-list-content">
+            <Row className="p-0 mt-2">
+                <Col xs={12}>
+                    <AllPatientsList searchResult={searchResult as PatientInterface[]} filterTerm={filterTerm} prevFilterTerm={prevFilterTerm} />
+                </Col>
 
-                            {/* If the PatientList is null, an error occured during fetch */}
+
+                {/* If the PatientList is null, an error occured during fetch
                             {patientList === null ?
                                 <p>Falha a carregar pacientes</p>
                                 : isFetching === true ?
@@ -147,11 +131,9 @@ function AllPatients() {
                                                     key={index}
                                                 />
                                             })
-                            }
+                            } */}
 
-                        </Row>
-                    </Col>
-                </Row>
+            </Row>
         </div>
     );
 }

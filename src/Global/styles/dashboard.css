@@ -15,3 +15,6 @@
     /* overflow: hidden; */
 }
 
+.scroll {
+    overflow: scroll !important;
+}

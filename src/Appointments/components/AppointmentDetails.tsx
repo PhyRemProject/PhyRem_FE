@@ -76,7 +76,7 @@ function ApoitmentDetails(props: AppointmentDetailsProps) {
                     <Container fluid>
                         <Row>
                             <Col xs={12} className="appoint-patient-image">
-                                <Image src={`${process.env.PUBLIC_URL}/images/default_user.png`} roundedCircle fluid className="appoint-patient-image" />
+                            <Image src={`${process.env.PUBLIC_URL}/api/patient/profileImage/${props.appointment.patientsInfo._id}`} roundedCircle fluid id="patient-info-image" onError={(e) => {e.currentTarget.src = `${process.env.PUBLIC_URL}/images/default_user_icon.png`}}/>
                             </Col>
                         </Row>
                         <Row>
@@ -176,6 +176,8 @@ function ApoitmentDetails(props: AppointmentDetailsProps) {
                                         variant="contained"
                                         color="primary"
                                         type="submit"
+                                        component={Link}
+                                        to={"/dashboard/pateval/new/" + props.appointment.patientsInfo._id}
                                     >
                                         Criar Avaliação de Paciente
 </Button>
@@ -184,6 +186,8 @@ function ApoitmentDetails(props: AppointmentDetailsProps) {
                                         variant="contained"
                                         color="primary"
                                         type="submit"
+                                        component={Link}
+                                        to={"/dashboard/physioeval/new/" + props.appointment.patientsInfo._id}
                                     >
                                         Criar Avaliação de Fisioterapeuta
 </Button>
