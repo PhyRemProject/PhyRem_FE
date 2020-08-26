@@ -31,8 +31,10 @@ function PatEvalCard(props: PatientCardProps) {
     return (
         <div className="pateval-card">
             <Row className="h-100 ">
-                <Col sm={2} className="h-100">
-                    <FontAwesomeIcon icon={faPaperclip} className="h-50 w-50" />
+                <Col sm={2} className="h-100 text-center">
+                    <div className="center-content">
+                        <FontAwesomeIcon icon={faPaperclip} className="w-50 h-50"/>
+                    </div>
                 </Col>
                 <Col sm={3} className="h-100">
                     <span className="align-middle h-100">
@@ -47,7 +49,7 @@ function PatEvalCard(props: PatientCardProps) {
                     {props.data.clinicDiagnosis}<br />
                 </Col>
                 <Col sm={2} className="h-100">
-                    
+
                 </Col>
                 <Col sm={1} className="h-100">
                     <Button

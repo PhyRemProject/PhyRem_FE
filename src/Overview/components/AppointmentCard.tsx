@@ -53,12 +53,22 @@ function AppointmentCard(props: AppointmentCardProps) {
             <MapDialog showMap={showMap} setShowMap={setShowMap} />
             <Row>
                 <Col xs={12} className="appointment-hour">
-                    {moment(props.data.startDate).format("HH:MM")} - {moment(props.data.endDate).format("HH:MM")}
+                    {moment(props.data.startDate).format("HH:mm")} - {moment(props.data.endDate).format("HH:mm")}
                 </Col>
             </Row>
             <Row>
                 <Col xs={3}>
-                    <Image src={`${process.env.PUBLIC_URL}/api/patient/profileImage/${props.data.patientID}`} roundedCircle fluid onError={(e) => { e.currentTarget.src = `${process.env.PUBLIC_URL}/images/default_user_icon.png` }} />
+                    <div className="center-content" >
+                        <div style={{ height: "150px", width: "150px" }}>
+                            <Image
+                                className="user-image"
+                                src={`${process.env.PUBLIC_URL}/api/patient/profileImage/${props.data.patientID}`}
+                                roundedCircle
+                                fluid
+                                onError={(e) => { e.currentTarget.src = `${process.env.PUBLIC_URL}/images/default_user_icon.png` }} />
+
+                        </div>
+                    </div>
                 </Col>
                 <Col xs={3}>
                     <span className="appointment-data">
@@ -100,8 +110,8 @@ function AppointmentCard(props: AppointmentCardProps) {
                     >
                         Ver Localização
                 </Button>
-                    <Button
-                        className="form-elems w-100"
+                    <Button 
+                        className="form-elems w-100 mt-1"
                         variant="contained"
                         color="secondary"
                         type="submit"
@@ -111,7 +121,7 @@ function AppointmentCard(props: AppointmentCardProps) {
                         Ver Avaliação de Paciente
                 </Button>
                     <Button
-                        className="form-elems w-100 "
+                        className="form-elems w-100 mt-4"
                         variant="contained"
                         color="primary"
                         type="submit"

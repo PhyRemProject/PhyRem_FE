@@ -38,7 +38,16 @@ function PatientCard(props: PatientCardProps) {
         <div className="patient-card">
             <Row className="h-100">
                 <Col sm={2} className="h-100">
-                <Image src={`${process.env.PUBLIC_URL}/api/patient/profileImage/${props.data.id}`} roundedCircle fluid id="patient-info-image" onError={(e) => {e.currentTarget.src = `${process.env.PUBLIC_URL}/images/default_user_icon.png`}}/>
+                    <div className="center-content">
+                        <div style={{ height: "100px", width: "100px" }}>
+                            <Image
+                                className="user-image"
+                                src={`${process.env.PUBLIC_URL}/api/patient/profileImage/${props.data.id}`}
+                                fluid
+                                roundedCircle
+                                onError={(e) => { e.currentTarget.src = `${process.env.PUBLIC_URL}/images/default_user_icon.png` }} />
+                        </div>
+                    </div>
 
                 </Col>
                 <Col sm={3} className="h-100">
@@ -66,14 +75,14 @@ function PatientCard(props: PatientCardProps) {
                         to={"/dashboard/patients/" + props.data.id}
                         onClick={() => { }}
                     >
-                            <FontAwesomeIcon icon={faEye} id="eye-logo" />
-                            <br />
-                            {"Ver"}
+                        <FontAwesomeIcon icon={faEye} id="eye-logo" />
+                        <br />
+                        {"Ver"}
                     </Button>
                 </Col>
 
             </Row>
-        </div>
+        </div >
     );
 }
 

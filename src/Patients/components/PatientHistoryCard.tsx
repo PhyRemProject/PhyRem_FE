@@ -34,7 +34,6 @@ interface PatientHistoryCardProps {
 
 function PatientHistoryCard(props: PatientHistoryCardProps) {
 
-    console.log("HISTORY CARD: ",props.data.value)
 
     return (
         <div className="patient-card">

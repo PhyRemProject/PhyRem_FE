@@ -76,10 +76,20 @@ function ApoitmentDetails(props: AppointmentDetailsProps) {
                     <Container fluid>
                         <Row>
                             <Col xs={12} className="appoint-patient-image">
-                            <Image src={`${process.env.PUBLIC_URL}/api/patient/profileImage/${props.appointment.patientsInfo._id}`} roundedCircle fluid id="patient-info-image" onError={(e) => {e.currentTarget.src = `${process.env.PUBLIC_URL}/images/default_user_icon.png`}}/>
+                                <div className="center-content">
+
+                                    <div style={{ height: "150px", width: "150px" }}>
+                                        <Image
+                                            src={`${process.env.PUBLIC_URL}/api/patient/profileImage/${props.appointment.patientsInfo._id}`}
+                                            roundedCircle
+                                            fluid
+                                            onError={(e) => { e.currentTarget.src = `${process.env.PUBLIC_URL}/images/default_user_icon.png` }} />
+
+                                    </div>
+                                </div>
                             </Col>
                         </Row>
-                        <Row>
+                        <Row className="pt-4">
                             <Col xs={6}>
                                 <span className="appointment-data">
                                     Paciente

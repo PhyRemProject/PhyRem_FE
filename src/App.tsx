@@ -35,7 +35,7 @@ function App() {
         contrastText: '#FFFFFF !important'
       },
       secondary: {
-        main: '#6C63FF !important',
+        main: '#9477E9 !important',
         contrastText: '#FFFFFF !important',
       },
       action: {

@@ -18,3 +18,20 @@
 .scroll {
     overflow: scroll !important;
 }
+
+.center-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100% !important;
+    width: 100% !important;
+}
+
+.user-image {
+    object-fit: cover;
+    flex-shrink: 0;
+    min-width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    min-height: 100%
+}

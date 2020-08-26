@@ -51,11 +51,7 @@
 
 /*All Patients Search*/
 .all-patient-list-content {
-    display: block !important;
-    height: calc(100vh - 400px);
-    overflow-y: scroll;
-    background-color: #F2F2FC;
-    margin-right: 0px !important;
+    height: calc(100vh - 250px);
 }
 
 

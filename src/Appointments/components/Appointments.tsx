@@ -335,15 +335,19 @@ function Appointments() {
                                 Cancelar
                     </Button>
                             :
-                            <Button
-                                className="form-elems w-100"
-                                variant="contained"
-                                color="secondary"
-                                type="submit"
-                                onClick={() => { setCreatingAppoint(true) }}
-                            >
-                                Nova Consulta
+                            <Row className="pt-4">
+                                <Col xs={12}>
+                                    <Button
+                                        className="form-elems w-100"
+                                        variant="contained"
+                                        color="secondary"
+                                        type="submit"
+                                        onClick={() => { setCreatingAppoint(true) }}
+                                    >
+                                        Nova Consulta
                         </Button>
+                                </Col>
+                            </Row>
                         }
 
                     </Container>

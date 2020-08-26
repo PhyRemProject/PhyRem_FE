@@ -99,8 +99,8 @@ function AllPatients() {
             </Row>
 
 
-            <Row className="p-0 mt-2">
-                <Col xs={12}>
+            <Row className="p-0 mt-2 all-patient-list-content">
+                <Col xs={12} className="h-100">
                     <AllPatientsList searchResult={searchResult as PatientInterface[]} filterTerm={filterTerm} prevFilterTerm={prevFilterTerm} />
                 </Col>
 

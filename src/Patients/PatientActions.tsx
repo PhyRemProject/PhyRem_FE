@@ -68,7 +68,6 @@ export const GetPatientsWithName = (token: string, name: string) => {
                     payload: response.data
                 });
 
-                console.log(response.data)
 
             })
             .catch(function (error) {
@@ -224,8 +223,6 @@ export const GetPatientPatEvals = (token: string, patientID: string, setPatientP
         });
 }
 
-
-
 export const GetPatientHistory = (token: string, patientID: string, setPatientHistory: Function, setFetchStatus: Function) => {
 
     let options = {
@@ -264,7 +261,6 @@ export const GetPatientHistory = (token: string, patientID: string, setPatientHi
                 ...response.data.exercises
             ].sort(compareHistory)
 
-            console.log(sortedHistory)
 
             setPatientHistory(sortedHistory)
 

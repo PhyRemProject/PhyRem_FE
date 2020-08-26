@@ -21,6 +21,8 @@ import { GetAdoptedPatientList, GetPatientPatEvals } from '../../Patients/Patien
 import PatientReducer from '../../Patients/PatientReducer';
 import ReactDatePicker from 'react-datepicker';
 import { PatientEvalInterface } from '../../PatientEvals/PatientEvalsActions';
+import { KeyboardDateTimePicker } from '@material-ui/pickers';
+import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 
 
 interface AppointmentDetailsProps {
@@ -56,9 +58,9 @@ function NewAppointmentForm() {
     const handleCreateAppointment = (e: React.FormEvent) => {
         e.preventDefault();
         let patEval;
-        if(selectedPatEval === -1)
+        if (selectedPatEval === -1)
             patEval = null;
-        else 
+        else
             patEval = patientPatEvals[selectedPatEval] as PatientEvalInterface
 
         dispatch(
@@ -126,8 +128,7 @@ function NewAppointmentForm() {
                             </Select>
 
                             <InputLabel id="date-label" className={"mt-4"}>Data da Consulta</InputLabel>
-                            <span>Inicio</span>
-                            <ReactDatePicker
+                            {/* <ReactDatePicker
                                 className={"w-100"}
                                 selected={startDate}
                                 onChange={(date: Date | null) => {
@@ -141,10 +142,44 @@ function NewAppointmentForm() {
                                 //     setHours(setMinutes(new Date(), 30), 17)
                                 // ]}
                                 dateFormat="MMMM d, yyyy h:mm aa"
+                            /> */}
+
+                            <KeyboardDateTimePicker
+                                className="mt-3"
+                                variant="inline"
+                                color="secondary"
+                                label="Data de Início"
+                                format="YYYY-MM-DD HH:mm"
+                                ampm={false}
+                                disablePast
+                                value={startDate}
+                                onChange={(date: MaterialUiPickersDate) => {
+                                    console.log(date)
+                                    setStartDate(date?.toDate() as Date)
+                                    let tempDate = date?.toDate() as Date
+                                    tempDate.setHours(tempDate.getHours() + 1)
+                                    setEndDate(tempDate)
+                                }}
                             />
+
                             <br />
 
-                            <span>Fim</span>
+                            <KeyboardDateTimePicker
+                                className="mt-3"
+                                variant="inline"
+                                color="secondary"
+                                label="Data de Início"
+                                format="YYYY-MM-DD HH:mm"
+                                ampm={false}
+                                disablePast
+                                value={endDate}
+                                onChange={(date: MaterialUiPickersDate) => {
+                                    console.log(date)
+                                    setEndDate(date?.toDate() as Date)
+                                }}
+                            />
+
+                            {/* <span>Fim</span>
                             <ReactDatePicker
                                 className={"w-100"}
                                 selected={endDate}
@@ -159,7 +194,7 @@ function NewAppointmentForm() {
                                 //     setHours(setMinutes(new Date(), 30), 17)
                                 // ]}
                                 dateFormat="MMMM d, yyyy h:mm aa"
-                            />
+                            /> */}
 
 
                             <TextField

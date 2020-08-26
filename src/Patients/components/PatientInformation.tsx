@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useFrame, Canvas } from "react-three-fiber";
-import { Switch, Route, Link} from "react-router-dom";
+import { Switch, Route, Link } from "react-router-dom";
 import history from '../../Global/components/history'
 import { useSelector, useDispatch } from "react-redux";
+import moment from "moment"
 import {
     Container,
     Row,
@@ -37,6 +38,7 @@ import PatientHistoryCard from './PatientHistoryCard';
 import { PatientEvalInterface } from '../../PatientEvals/PatientEvalsActions';
 import PatEvalInfo from '../../PatientEvals/components/PatEvalInfo';
 import PhysioEvalInfo from '../../PhysioEvals/components/PhysioEvalInfo';
+import Exercise from '../../Exercise/components/Exercise';
 
 
 interface PatientInformationProps {
@@ -44,30 +46,6 @@ interface PatientInformationProps {
 }
 
 
-function Box(props: any) {
-    // This reference will give us direct access to the mesh
-    const mesh = useRef()
-
-    // Set up state for the hovered and active state
-    const [hovered, setHover] = useState(false)
-    const [active, setActive] = useState(false)
-
-    // Rotate mesh every frame, this is outside of React without overhead
-    useFrame(() => ((mesh.current as any).rotation.x = (mesh.current as any).rotation.y += 0.01))
-
-    return (
-        <mesh
-            {...props}
-            ref={mesh}
-            scale={active ? [1.5, 1.5, 1.5] : [1, 1, 1]}
-            onClick={(e) => setActive(!active)}
-            onPointerOver={(e) => setHover(true)}
-            onPointerOut={(e) => setHover(false)}>
-            <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
-            <meshStandardMaterial attach="material" color={hovered ? 'hotpink' : 'orange'} />
-        </mesh>
-    )
-}
 
 function DropConfirmation(props: any) {
 
@@ -120,7 +98,7 @@ function PatientInformation(props: PatientInformationProps) {
     }, [])
 
     useMemo(() => {
-        if (activePatient !== null)
+        if (activePatient !== null && activePatient !== undefined)
             GetPatientHistory(token, activePatient._id as string, setPatientHistory, setFetchStatus)
     }, [activePatient])
 
@@ -132,10 +110,10 @@ function PatientInformation(props: PatientInformationProps) {
 
     return (
         <div className="patient-view">
-            <DropConfirmation open={open} setOpen={setOpen} handleClickOpen={()=>{setOpen(true)}} handleClose={()=>{setOpen(false)}} dropPatient={dropPatient} />
+            <DropConfirmation open={open} setOpen={setOpen} handleClickOpen={() => { setOpen(true) }} handleClose={() => { setOpen(false) }} dropPatient={dropPatient} />
             <Row className="patient-list-options">
                 <Col sm={1}>
-                        <FontAwesomeIcon icon={faArrowAltCircleLeft} className={"h-100"} style={{ color: "#6C63FF", width: "25px" }} onClick={history.goBack} />
+                    <FontAwesomeIcon icon={faArrowAltCircleLeft} className={"h-100"} style={{ color: "#6C63FF", width: "25px" }} onClick={history.goBack} />
                 </Col>
                 <Col sm={5}>
                     {isFetching ? <p>A Carregar ...</p> : <></>}
@@ -211,15 +189,27 @@ function PatientInformation(props: PatientInformationProps) {
                         <Col xs={12} className={"patient-details-container p-0"}>
 
                             <Row className={"patient-information-container"}>
-                                <Col sm={4} className={"patient-information-container text-center"} id={"top-left"}>
-                                    <br />
-                                    <Image src={`${process.env.PUBLIC_URL}/api/patient/profileImage/${activePatient._id}`} roundedCircle fluid id="patient-info-image" onError={(e) => {e.currentTarget.src = `${process.env.PUBLIC_URL}/images/default_user_icon.png`}}/>
-                                    {/* <Image src={`${process.env.PUBLIC_URL}/images/default_user.png`} roundedCircle fluid id="patient-info-image" /> */}
-                                    <br />
-                                    <div id={"patient-name-email"}>
-                                        <h5>{activePatient.name}</h5>
-                                        <small>{activePatient.email}</small>
-                                    </div>
+                                <Col sm={4} id={"top-left"}>
+                                    <Row>
+                                        <Col xs={12} className="center-content mt-3">
+                                            <div style={{ height: "100px", width: "100px" }}>
+                                                <Image
+                                                    className="user-image"
+                                                    src={`${process.env.PUBLIC_URL}/api/patient/profileImage/${activePatient._id}`}
+                                                    roundedCircle
+                                                    fluid
+                                                    onError={(e) => { e.currentTarget.src = `${process.env.PUBLIC_URL}/images/default_user_icon.png` }} />
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col xs={12} className="text-center">
+                                            <div id={"patient-name-email"}>
+                                                <h5>{activePatient.name}</h5>
+                                                <small>{activePatient.email}</small>
+                                            </div>
+                                        </Col>
+                                    </Row>
                                 </Col>
                                 <Col sm={8} className={"patient-information-container"} id={"top-right"}>
                                     <Row className={"h-100"}>
@@ -241,7 +231,7 @@ function PatientInformation(props: PatientInformationProps) {
                                         <Col xs={4} className={"my-auto"}>
                                             <span className="patient-info-data">
                                                 Data de Nascimento
-                                                <p>{activePatient?.birthDate}</p>
+                                                <p>{moment(activePatient?.birthDate).format("DD/MM/YYYY")}</p>
                                             </span>
                                             <span className="patient-info-data">
                                                 Género
@@ -258,14 +248,6 @@ function PatientInformation(props: PatientInformationProps) {
                                                 Fisioterapeutas Associados
                                                 <p>{activePatient?.physicians}</p>
                                             </span>
-                                            {/* <span className="patient-info-data">
-                                        Paciente
-                                        <p>asdasd</p>
-                                    </span>
-                                    <span className="patient-info-data">
-                                        Paciente
-                                        <p>asdasd</p>
-                                    </span> */}
 
                                         </Col>
                                     </Row>
@@ -318,15 +300,7 @@ function PatientInformation(props: PatientInformationProps) {
                                                     <PhysioEvalInfo physioEvalID={selectedHistoryID} noHeader key={selectedHistoryID} />
                                                     :
                                                     selectedHistoryType === "exercise" ?
-                                                        <>
-                                                            <p>Temporary Demo</p>
-                                                            <Canvas>
-                                                                <ambientLight />
-                                                                <pointLight position={[10, 10, 10]} />
-                                                                <Box position={[-1.2, 0, 0]} />
-                                                                <Box position={[1.2, 0, 0]} />
-                                                            </Canvas>
-                                                        </>
+                                                        <Exercise/>
                                                         :
                                                         <p>Seleccione um registo</p>
                                         }

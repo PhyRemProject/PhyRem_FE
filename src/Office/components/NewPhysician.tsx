@@ -33,6 +33,7 @@ function NewPhysician() {
 
     const [email, setEmail] = useState<string>("")
     const [password, setPassword] = useState<string>("")
+    const [passwordConf, setPasswordConf] = useState<string>("")
     const [physicianID, setPhysicianID] = useState<string>("")
     const [name, setName] = useState<string>("")
     const [specialty, setSpecialty] = useState<string[]>([])
@@ -128,6 +129,7 @@ function NewPhysician() {
                             <TextField
                                 id=""
                                 label="Password"
+                                type="password"
                                 variant="outlined"
                                 value={password}
                                 onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
@@ -140,10 +142,11 @@ function NewPhysician() {
                             <TextField
                                 id=""
                                 label="Confirmação de Password"
+                                type="password"
                                 variant="outlined"
-                                value={password}
+                                value={passwordConf}
                                 onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
-                                    setPassword(event.target.value as string)
+                                    setPasswordConf(event.target.value as string)
                                 }}
                                 className={"w-100"}
                             />
