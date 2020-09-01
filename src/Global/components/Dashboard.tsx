@@ -18,6 +18,7 @@ import Office from '../../Office/components/Office';
 import UserReducer from '../../User/UserReducer';
 import Alert from '@material-ui/lab/Alert';
 import { Snackbar } from '@material-ui/core';
+import Exercise from '../../Exercise/components/Exercise';
 
 function Dashboard() {
 
@@ -60,6 +61,7 @@ function Dashboard() {
                             <Route path={`${path}/pateval`} component={PatEvals} />
                             <Route path={`${path}/physioeval`} component={PhysioEval} />
                             <Route path={`${path}/office`} component={Office} />
+                            <Route path={`${path}/exercise`} component={Exercise} /> {/*DEBUG ONLY ROUTE*/}
                         </Switch>
 
                     </Col>

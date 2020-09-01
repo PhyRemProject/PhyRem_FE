@@ -49,6 +49,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "react-scroll": "^1.8.0",
+    "react-spring-three": "^1.0.4",
     "react-three-fiber": "^4.2.19",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
