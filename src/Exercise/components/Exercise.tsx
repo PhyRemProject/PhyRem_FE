@@ -1,232 +1,20 @@
-// import React, { useState, useEffect, useMemo, useRef, Suspense } from 'react';
-// import { Switch, Route, Link } from "react-router-dom";
-// import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-// import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-// import { Canvas, useFrame, useLoader, useThree, extend, ReactThreeFiber } from 'react-three-fiber';
-// import { Camera, PerspectiveCamera, MathUtils, SkeletonHelper, AnimationMixer } from 'three';
-// import { Slider } from '@material-ui/core';
-// import { Col, Row } from 'react-bootstrap';
-// import {
-//     faPlay
-// } from "@fortawesome/free-solid-svg-icons";
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-// extend({ OrbitControls });
-
-// declare global {
-//     namespace JSX {
-//         interface IntrinsicElements {
-//             orbitControls: ReactThreeFiber.Object3DNode<OrbitControls, typeof OrbitControls>
-//         }
-//     }
-// }
-
-// function lerp(v0: any, v1: any, t: any) {
-//     return v0 * (1 - t) + v1 * t
-// }
-
-// function Loading() {
-//     return (
-//         <mesh visible position={[0, 0, 0]} rotation={[0, 0, 0]}>
-//             <sphereGeometry attach="geometry" args={[1, 16, 16]} />
-//             <meshStandardMaterial
-//                 attach="material"
-//                 color="white"
-//                 transparent
-//                 opacity={0.6}
-//                 roughness={1}
-//                 metalness={0}
-//             />
-//         </mesh>
-//     );
-// }
-
-
-// const CameraControls = () => {
-//     // Get a reference to the Three.js Camera, and the canvas html element.
-//     // We need these to setup the OrbitControls component.
-//     // https://threejs.org/docs/#examples/en/controls/OrbitControls
-//     const {
-//         camera,
-//         gl: { domElement },
-//     } = useThree();
-//     // Ref to the controls, so that we can update them on every frame using useFrame
-//     const controls = useRef();
-
-
-
-//     useFrame((state) => {
-//         return ((controls.current as any).update())
-//     })
-//     return <orbitControls ref={controls} args={[camera, domElement]} />;
-// };
-
-// function moveJoint(joint: any) {
-//     let degrees = { x: Math.random() * 500, y: Math.random() * 500 }
-//     joint.rotation.xD = lerp(joint.rotation.xD || 0, degrees.y, 0.1)
-//     joint.rotation.yD = lerp(joint.rotation.yD || 0, degrees.x, 0.1)
-//     joint.rotation.x = MathUtils.degToRad(joint.rotation.xD)
-//     joint.rotation.y = MathUtils.degToRad(joint.rotation.yD)
-//     //console.log(joint.rotation)
-// }
-
-
-
-// function Body(props: any) {
-
-//     const {
-//         scene,
-//     } = useThree();
-
-//     //const loaded = useLoader(GLTFLoader, "/objects/BodyRigged.glb");
-//     const loaded = useLoader(GLTFLoader, "/objects/stacy.glb");
-
-//     console.log(loaded)
-
-//     const group = useRef()
-//     const bodyRef = useRef()
-//     const forearmRef = useRef()
-
-//     const actions = useRef() as any
-//     const [mixer] = useState(() => new AnimationMixer((loaded as any).nodes)) 
-
-//     useFrame((state, delta) => mixer.update(delta))
-
-//     useEffect(() => {
-//         actions.current = { idle: mixer.clipAction((loaded as any).animations[8], group.current) }
-//         actions.current.idle.play()
-//         return () => (loaded as any).animations.forEach((clip : any) => mixer.uncacheClip(clip))
-//     }, [])
-
-//     useFrame((state, delta) => {
-//         mixer.update(delta)
-//         //console.log((bodyRef.current as any))
-//         //console.log((bodyRef.current as any).skeleton.bones[4].rotation._x)
-//         //return ((bodyRef.current as any).skeleton.bones[4].rotation._x += 0.1)
-//        // moveJoint((bodyRef.current as any).skeleton.bones[32])
-//        // console.log((bodyRef.current as any).skeleton.bones[32].rotation)
-//         //console.log((loaded as any).nodes.Arm.rotation)
-//         //console.log((bodyRef.current as any).skeleton.bones[4].rotation)
-//     })
-
-//     return (
-//         <group ref={group} {...props} dispose={null} >
-//             <primitive object={(loaded as any).nodes.mixamorigHips} />
-//             <skinnedMesh {...props}
-//                 //ref={bodyRef}
-//                 //visible
-//                 geometry={(loaded as any).nodes.stacy.geometry}
-//                 skeleton={(loaded as any).nodes.stacy.skeleton}
-//                 //scale={[0.2, 0.2, 0.2]}
-//                 scale={[10, 10, 10]}
-//                 position={[0, -10, 0]}
-//             >
-//                 <meshStandardMaterial
-//                     attach="material"
-//                     color="#F9A825"
-//                     roughness={0.9}
-//                     metalness={0.2}
-//                 />
-//             </skinnedMesh>
-//         </group>
-//     );
-// }
-
-
-// function Exercise() {
-
-//     const [time, setTime] = useState<number>(0)
-//     const [arm, setArm] = useState<number>(0.0)
-//     const [forearm, setForearm] = useState<number>(0.0)
-//     const [play, setPlay] = useState<boolean>(false)
-
-//     return (
-//         <>
-//             <div className="h-100 w-100">
-//                 <Row style={{ height: "95%" }}>
-//                     <Col xs={9}>
-//                         <Canvas camera={{ fov: 75, position: [0, 0, 20], rotation: [0, 0, 0] }}>
-//                             <CameraControls />
-//                             <ambientLight />
-//                             <pointLight position={[10, 10, 10]} />
-//                             <Suspense fallback={<Loading />}>
-//                                 {/* <Body position={[4, -15, 0]} armProps={{ rotation: [0, arm, 0] }} /> */}
-//                                 <Body position={[0, 0, 0]} />
-//                             </Suspense>
-//                         </Canvas>
-//                     </Col>
-//                     <Col xs={3}>
-//                         Arm
-//                         <Slider
-//                             defaultValue={0}
-//                             valueLabelDisplay="off"
-//                             value={arm}
-//                             onChange={(event: any, newValue: number | number[]) => {
-//                                 setArm(newValue as number);
-//                             }}
-//                             step={0.1}
-//                             min={0}
-//                             max={Math.PI * 2}
-//                             className={"w-100"}
-//                         />
-//                         <br />
-//                         Forearm
-//                         <Slider
-//                             defaultValue={0}
-//                             valueLabelDisplay="off"
-//                             value={forearm}
-//                             onChange={(event: any, newValue: number | number[]) => {
-//                                 //setForearm(newValue as number);
-//                             }}
-//                             step={0.1}
-//                             min={0}
-//                             max={Math.PI * 2}
-//                             className={"w-100"}
-//                         />
-//                     </Col>
-//                 </Row>
-//                 <Row style={{ height: "5%" }}>
-//                     <Col xs={12}>
-//                         <FontAwesomeIcon icon={faPlay} style={{ width: "10%" }} color={"#F9A825"} onClick={() => (setPlay(!play))} />
-//                         <Slider
-
-//                             valueLabelDisplay="off"
-//                             value={time}
-//                             onChange={(event: any, newValue: number | number[]) => {
-//                                 //setTime(newValue as number);
-//                             }}
-//                             step={1}
-//                             min={-1}
-//                             max={300}
-//                             style={{ width: "90%" }}
-//                         />
-//                     </Col>
-//                 </Row>
-//             </div >
-//         </>
-//     );
-// }
-
-// export default Exercise;
-
-
 
 // Auto-generated by https://github.com/react-spring/gltfjsx
 
 import * as THREE from "three"
 import React, { useEffect, useRef, useState, Suspense, useMemo } from "react"
-import { useLoader, useFrame, Canvas, useThree, extend, ReactThreeFiber } from "react-three-fiber"
+import { useLoader, useFrame, Canvas, useThree, extend, ReactThreeFiber, useUpdate } from "react-three-fiber"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { Row, Col } from "react-bootstrap"
-import { Slider } from "@material-ui/core";
+import { Slider, Button } from "@material-ui/core";
 
 extend({ OrbitControls });
 
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            orbitControls: ReactThreeFiber.Object3DNode<OrbitControls, typeof OrbitControls>
+            orbitControls: ReactThreeFiber.Object3DNode<OrbitControls, typeof OrbitControls>,
         }
     }
 }
@@ -237,32 +25,140 @@ function lerp(v0: any, v1: any, t: any) {
 }
 
 
-const CameraControls = () => {
-    // Get a reference to the Three.js Camera, and the canvas html element.
-    // We need these to setup the OrbitControls component.
-    // https://threejs.org/docs/#examples/en/controls/OrbitControls
+
+//This methods provides the orbitControls, this object overrides several camera settings, 
+//  therefore focus, position, rotation etc. of the camera has to be defined here
+const CameraControls = (props: any) => {
+
+    // Getting Threejs' elements
     const {
         camera,
+        scene,
         gl: { domElement },
     } = useThree();
-    // Ref to the controls, so that we can update them on every frame using useFrame
+
+    //References so that state is maintained across frames since each frame is a run of this function
     const controls = useRef();
-
-
+    const prevFocus = useRef("");
 
     useFrame((state) => {
         //console.log(camera.position)
-        //console.log(camera.rotation)
-        return ((controls.current as any).update())
+
+        const position = new THREE.Vector3();               //Varible to store the in focus bone's position
+        const object = scene?.getObjectByName(props.focus); //Getting the bone's (or any other) object from the scene
+        //This method is required for parented objects, for example, a skeleton is a chained parent/child structure.
+        // This mean that the object's position is defined by the parent's position/rotation, to get the actual 
+        //  global position the method getWorldPosition needs to be called
+        let objectpos = object?.getWorldPosition(position); //Getting the world position of the object. 
+
+        if (!object) {
+            camera.position.set(0, 0, 200);
+            (controls.current as any).target.set(0, 0, 0);
+        }
+        else {
+            //camera.position.set(object?.position.x, object?.position.y, 100);
+            if (prevFocus.current !== props.focus) {
+                camera.position.set(position.x, position.y, 200);
+                (controls.current as any).target.set(position.x, position.y, position.z);
+                prevFocus.current = props.focus;
+            } else {
+                (controls.current as any).target.set(position.x, position.y, position.z);
+            }
+        }
+        return ((controls.current as any).update());
     })
-    return <orbitControls ref={controls} args={[camera, domElement]} />;
+    return <orbitControls ref={controls} args={[camera, domElement]} target={props.target} />;
 };
+
+
+function Degrees(props: any) {
+
+    const mesh = useRef()
+
+    const font = useLoader(THREE.FontLoader, '/fonts/helvetiker_regular.typeface.json')
+    console.log(font)
+    const config = useMemo(() => ({ font, size: 5, height: 1 }), [font])
+
+    return (
+        <mesh ref={mesh} rotation={[0, 0, -Math.PI/2]} position={[-14,5,0]}>
+            <textGeometry attach="geometry" args={[props.degree + "°", config]} />
+            <meshStandardMaterial attach="material" color={'#a38be8'} side={THREE.DoubleSide} />
+        </mesh>
+    )
+}
+
+
+
+function AngleMarkers(props: any) {
+
+    const {
+        camera,
+        scene,
+        gl: { domElement },
+    } = useThree();
+
+    const controls = useRef();
+    const group = useRef();
+
+    const position = new THREE.Vector3();
+    const rotation = new THREE.Quaternion();
+    let objectpos: any;
+    let objectrot: any;
+    let object = scene?.getObjectByName("Arm1");
+    objectpos = object?.getWorldPosition(position);
+    objectrot = object?.getWorldQuaternion(rotation);
+    //rotation.setFromAxisAngle(new THREE.Vector3(1, 0, 0).normalize(), Math.PI/2);
+
+    useFrame((state) => {
+        const object = scene?.getObjectByName("Arm1");
+        let objectpos = object?.getWorldPosition(position);
+        let objectrot = object?.getWorldQuaternion(rotation);
+        //rotation.setFromAxisAngle(new THREE.Vector3(1, 0, 0).normalize(), Math.PI/2);
+        //console.log(rotation)
+
+    })
+
+
+    const innerRadius = 1;
+    const outerRadius = 15;
+    const thetaSegments = 24;
+    const phiSegments = 2;
+    const thetaStart = Math.PI / 2;
+    const thetaLength = (Math.PI - THREE.MathUtils.degToRad(props.forearm));
+    const geometry = new THREE.RingBufferGeometry(
+        innerRadius, outerRadius,
+        thetaSegments, phiSegments,
+        thetaStart, thetaLength);
+
+
+    return (
+        <>
+            <group ref={group} dispose={null} position={[position.x, position.y, position.z]} quaternion={[rotation.x, rotation.y, rotation.z, rotation.w]}>
+                <mesh >
+                    <ringBufferGeometry
+                        attach="geometry"
+                        args={[innerRadius, outerRadius, thetaSegments, phiSegments, thetaStart, thetaLength]}
+                    />
+
+
+                    {/* <planeBufferGeometry
+                        attach="geometry"
+                    args={[20, 20]} /> */}
+                    <meshStandardMaterial attach="material" color={'#5030af'} opacity={0.8} transparent side={THREE.DoubleSide} />
+                </mesh>
+                <Degrees degree={props.forearm.toString()}/>
+            </group>
+        </>
+    )
+}
 
 function moveJoint(amount: number, joint: any, degreeLimit = 40) {
     //let degrees = { x: Math.random() * 360, y: Math.random() * 360 }
     let degrees = { x: amount, y: amount, z: amount }
-    joint.rotation.xD = lerp(joint.rotation.xD || 0, degrees.y, 0.1)
-    joint.rotation.yD = lerp(joint.rotation.yD || 0, degrees.x, 0.1)
+    joint.rotation.xD = lerp(joint.rotation.xD || 0, degrees.y, 1)
+    joint.rotation.yD = lerp(joint.rotation.yD || 0, degrees.x, 1)
+    //joint.rotation.xD = lerp(0, degrees.y, 0.1)
+    //joint.rotation.yD = lerp(0, degrees.x, 0.1)
     joint.rotation.x = THREE.MathUtils.degToRad(joint.rotation.xD)
     joint.rotation.y = THREE.MathUtils.degToRad(joint.rotation.yD)
 }
@@ -270,88 +166,73 @@ function moveJoint(amount: number, joint: any, degreeLimit = 40) {
 function Model({ ...props }) {
     console.log("> MODEL RENDER")
     const group = useRef()
+    const material = useRef()
     const loaded = useLoader(GLTFLoader, "/objects/BodyRigged.glb")
     console.log(loaded)
 
-    const [bones, skeleton] = useMemo(() => {
+    const [object, bones, skeleton] = useMemo(() => {
         if (!(loaded as any).bones) (loaded as any).bones = loaded.scene.children[0].children[0];
         if (!(loaded as any).skeleton)
-        (loaded as any).skeleton = (loaded.scene.children[0].children[1] as any).skeleton;
+            (loaded as any).skeleton = (loaded.scene.children[0].children[1] as any).skeleton;
+        if (!(loaded as any).object)
+            (loaded as any).object = (loaded.scene.children[0] as any);
         console.log("LOADER FINALIZED")
-
-        return [(loaded as any).bones, (loaded as any).skeleton];
+        return [(loaded as any).object, (loaded as any).bones, (loaded as any).skeleton];
     }, [loaded]);
 
-
-
     const nodes = (loaded as any).nodes
-    //const animations = (loaded as any).animations
-    //const texture = useLoader(THREE.TextureLoader, "/objects/stacy.jpg")
-
-    //const actions = useRef()
-    //const [mixer] = useState(() => new THREE.AnimationMixer(nodes["Stacy"]))
-    //useFrame((state, delta) => mixer.update(delta))
-    useEffect(() => {
-        //(actions as any).current = { idle: mixer.clipAction(animations[8], group.current) } as any
-        //(actions as any).current.idle.play()
-        //return () => animations.forEach((clip: any) => mixer.uncacheClip(clip))
-    }, [])
-
-    let angle = 0
 
     useFrame((state, delta) => {
-        //mixer.update(delta)
-        angle++
         moveJoint(props.arm, nodes.Arm0)
-        //moveJoint(angle, nodes.Arm1)
-        //moveJoint(nodes.mixamorigNeck)
-        //moveJoint(nodes.mixamorigSpine)
+        moveJoint(props.forearm, nodes.Arm1)
     })
 
     return (
         <group ref={group} {...props} dispose={null}>
-            <group rotation={[0, 0, 0]} scale={[0.1, 0.1, 0.1]}>
-                <primitive object={bones} />
-                <skinnedMesh geometry={nodes["Body_low"].geometry} skeleton={nodes["Body_low"].skeleton}>
-                    <meshPhongMaterial attach="material" color="#b3720a" skinning />
-                    {/* <meshPhongMaterial attach="material" map={texture} map-flipY={false} skinning /> */}
-                </skinnedMesh>
-            </group>
+            {/* <group scale={[0.1, 0.1, 0.1]}> */}
+            <primitive object={object} />
+            <skinnedMesh geometry={nodes["Body_low"].geometry} skeleton={skeleton}>
+                {/* <skeletonHelper args={object} /> */}
+                <meshPhongMaterial ref={material} attach="material" color="#b3720a" skinning />
+                {/* <meshPhongMaterial attach="material" map={texture} map-flipY={false} skinning /> */}
+            </skinnedMesh>
+            {/* </group> */}
         </group>
     )
 }
 
+function Camera(props: any) {
+    const ref = useRef()
+    const { setDefaultCamera } = useThree()
+    // Make the camera known to the system
+    useEffect(() => void setDefaultCamera((ref as any).current), [])
+    // Update it every frame
+    useFrame(() => (ref as any).current.updateMatrixWorld())
+    return <perspectiveCamera ref={ref} {...props} />
+}
 
 
 function Exercise() {
 
     //const arm = useRef(0)
     const [arm, setArm] = useState(0)
-
-    console.log("> EXERCISE RENDER")
-
-    // useEffect(() => {
-    //     setInterval(() => {
-    //         arm.current += 0.1
-    //         console.log(arm.current)
-    //     }, 40)
-    // }, [])
-
+    const [forearm, setForearm] = useState(0)
+    const [target, setTarget] = useState("Spine2")
 
     return (
         <>
             <div className="h-100 w-100">
                 <Row style={{ height: "95%" }}>
                     <Col xs={9}>
-                        <Canvas
-                            camera={{ fov: 50, position: [0.0, 2.0, 15.0], rotation: [0, 0, 0] }}
-                        >
-                            <CameraControls />
+                        <Canvas>
+                            <Camera />
+                            <CameraControls focus={target} />
                             <ambientLight />
-                            <pointLight position={[20, 20, 20]} />
+                            <pointLight position={[40, 40, 40]} />
+                            <pointLight position={[-40, -40, -40]} />
                             <Suspense fallback={null}>
-                                {/* <Body position={[4, -15, 0]} armProps={{ rotation: [0, arm, 0] }} /> */}
-                                <Model position={[1.5, 0, 0]} arm={arm} />
+                                <AngleMarkers forearm={forearm} />
+                                <Model position={[0, 0, 0]} arm={arm} forearm={forearm} />
                             </Suspense>
                         </Canvas>
                     </Col>
@@ -370,6 +251,48 @@ function Exercise() {
                             max={180}
                             className={"w-100"}
                         />
+                        <br />
+                        ForeArm
+                         <Slider
+                            defaultValue={0}
+                            valueLabelDisplay="off"
+                            value={forearm}
+
+                            onChange={(event: any, newValue: number | number[]) => {
+                                setForearm(newValue as number)
+                            }}
+                            step={1}
+                            min={0}
+                            max={180}
+                            className={"w-100"}
+                        />
+                        <br />
+                        <Button
+                            className=""
+                            variant="contained"
+                            color="secondary"
+                            onClick={() => setTarget("Arm0")}
+                        >
+                            Arm
+                </Button>
+                        <br />
+                        <Button
+                            className=""
+                            variant="contained"
+                            color="secondary"
+                            onClick={() => setTarget("Arm1")}
+                        >
+                            Forearm
+                </Button>
+                        <br />
+                        <Button
+                            className=""
+                            variant="contained"
+                            color="secondary"
+                            onClick={() => setTarget("Arm2")}
+                        >
+                            Hand
+                </Button>
                     </Col>
                 </Row>
             </div >
@@ -378,61 +301,4 @@ function Exercise() {
 }
 
 export default Exercise;
-
-
-
-                // function Arm(props: any) {
-                //     const scene = useLoader(GLTFLoader, "/objects/splitarm.glb");
-
-                //     const armRef = useRef()
-                //     const forearmRef = useRef()
-                //     useFrame(() => {
-                //         //console.log((mesh.current as any).rotation.y)
-                //         //return ((mesh.current as any).rotation.y += 0.01)
-                //     })
-
-                //     const location = props.position.map((value: any, index: any) => {
-                //         if (index === 0)
-                //             return value + (scene as any).nodes.Arm.children[0].position.x * 0.2
-                //         if (index === 1)
-                //             return value + (scene as any).nodes.Arm.children[0].position.y * 0.2
-                //         if (index === 2)
-                //             return value + (scene as any).nodes.Arm.children[0].position.z * 0.2
-
-                //     })
-
-                //     return (
-                //         <group>
-                //             <mesh {...props}
-                //                 ref={armRef}
-                //                 visible
-                //                 geometry={(scene as any).nodes.Arm.geometry}
-                //                 scale={[0.2, 0.2, 0.2]}
-                //             >
-                //                 <meshStandardMaterial
-                //                     attach="material"
-                //                     color="#F9A825"
-                //                     roughness={0.9}
-                //                     metalness={0.2}
-                //                 />
-                //                 <mesh
-                //                     {...props.forearm}
-                //                     ref={forearmRef}
-                //                     visible
-                //                     geometry={(scene as any).nodes.Arm.children[0].geometry}
-                //                     position={[(scene as any).nodes.Arm.children[0].position.x, (scene as any).nodes.Arm.children[0].position.y, (scene as any).nodes.Arm.children[0].position.z]}
-                //                 >
-                //                     <meshStandardMaterial
-                //                         attach="material"
-                //                         color="#F9A825"
-                //                         roughness={0.9}
-                //                         metalness={0.2}
-                //                     />
-                //                 </mesh>
-                //             </mesh>
-                //         </group>
-                //     );
-                // }
-
-
 
