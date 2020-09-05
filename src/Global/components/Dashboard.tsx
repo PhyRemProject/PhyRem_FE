@@ -61,7 +61,7 @@ function Dashboard() {
                             <Route path={`${path}/pateval`} component={PatEvals} />
                             <Route path={`${path}/physioeval`} component={PhysioEval} />
                             <Route path={`${path}/office`} component={Office} />
-                            <Route path={`${path}/exercise`} component={Exercise} /> {/*DEBUG ONLY ROUTE*/}
+                            <Route path={`${path}/exercise`} component={() => <Exercise fullInterface/>} /> {/*DEBUG ONLY ROUTE*/}
                         </Switch>
 
                     </Col>

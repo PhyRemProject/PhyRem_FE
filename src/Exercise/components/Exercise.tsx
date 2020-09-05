@@ -8,6 +8,9 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { Row, Col } from "react-bootstrap"
 import { Slider, Button } from "@material-ui/core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlay, faPause } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 extend({ OrbitControls });
 
@@ -76,11 +79,11 @@ function Degrees(props: any) {
     const mesh = useRef()
 
     const font = useLoader(THREE.FontLoader, '/fonts/helvetiker_regular.typeface.json')
-    console.log(font)
+    //console.log(font)
     const config = useMemo(() => ({ font, size: 5, height: 1 }), [font])
 
     return (
-        <mesh ref={mesh} rotation={[0, 0, -Math.PI/2]} position={[-14,5,0]}>
+        <mesh ref={mesh} rotation={[0, 0, -Math.PI / 2]} position={[-14, 5, 0]}>
             <textGeometry attach="geometry" args={[props.degree + "°", config]} />
             <meshStandardMaterial attach="material" color={'#a38be8'} side={THREE.DoubleSide} />
         </mesh>
@@ -146,7 +149,7 @@ function AngleMarkers(props: any) {
                     args={[20, 20]} /> */}
                     <meshStandardMaterial attach="material" color={'#5030af'} opacity={0.8} transparent side={THREE.DoubleSide} />
                 </mesh>
-                <Degrees degree={props.forearm.toString()}/>
+                <Degrees degree={props.forearm.toString()} />
             </group>
         </>
     )
@@ -164,11 +167,11 @@ function moveJoint(amount: number, joint: any, degreeLimit = 40) {
 }
 
 function Model({ ...props }) {
-    console.log("> MODEL RENDER")
+    //console.log("> MODEL RENDER")
     const group = useRef()
     const material = useRef()
     const loaded = useLoader(GLTFLoader, "/objects/BodyRigged.glb")
-    console.log(loaded)
+    //console.log(loaded)
 
     const [object, bones, skeleton] = useMemo(() => {
         if (!(loaded as any).bones) (loaded as any).bones = loaded.scene.children[0].children[0];
@@ -176,7 +179,7 @@ function Model({ ...props }) {
             (loaded as any).skeleton = (loaded.scene.children[0].children[1] as any).skeleton;
         if (!(loaded as any).object)
             (loaded as any).object = (loaded.scene.children[0] as any);
-        console.log("LOADER FINALIZED")
+        //console.log("LOADER FINALIZED")
         return [(loaded as any).object, (loaded as any).bones, (loaded as any).skeleton];
     }, [loaded]);
 
@@ -212,18 +215,85 @@ function Camera(props: any) {
 }
 
 
-function Exercise() {
+interface ExerciseProps {
+    fullInterface: boolean
+}
+
+
+function DebugAngleGenerator(time: number) {
+
+    const timeInterval = [0, 2 * 60]
+    const angleInterval = [0, 80]
+
+    var angle;
+    var timeposition = time % (4 * 60);
+
+    //if (timeposition <= (2 * 60))
+    angle = angleInterval[0] + (((angleInterval[1] - angleInterval[0]) / (timeInterval[1] - timeInterval[0])) * (timeposition - timeInterval[0])) % angleInterval[1]
+    //else if (timeposition > (2 * 60))
+    //angle =  (angleInterval[0] + (((angleInterval[1] - angleInterval[0]) / (timeInterval[1] - timeInterval[0])) * (timeposition - timeInterval[0])))
+    //else angle = 0
+
+    console.log("TIME: ", time)
+    console.log("TIMEPOSITION: ", timeposition)
+    console.log("ANGLE: ", angle)
+    return Math.round(angle)
+}
+
+function Exercise(props: ExerciseProps) {
 
     //const arm = useRef(0)
+    const [loading, setLoading] = useState(true)
     const [arm, setArm] = useState(0)
     const [forearm, setForearm] = useState(0)
     const [target, setTarget] = useState("Spine2")
+    const [play, setPlay] = useState(false)
+    const timer = useRef<NodeJS.Timeout>()
+    const [time, setTime] = useState(0)
+    const tiker = useRef<number>(0)
+
+    useEffect(() => {
+        setTimeout(() => {
+            setLoading(false)
+        }, 700)
+    }, [])
+
+
+    useEffect(() => {
+        if (play && tiker.current <= (30 * 60 - 1)) {
+            const id = setInterval(() => {
+                tiker.current += 1
+                setTime(tiker.current)
+                setForearm(DebugAngleGenerator(tiker.current))
+                //DebugAngleGenerator(tiker.current)
+                console.log(time)
+            }, 17);
+
+            timer.current = id;
+        }
+        else {
+            clearInterval(timer.current as NodeJS.Timeout);
+        }
+
+    }, [play])
 
     return (
-        <>
-            <div className="h-100 w-100">
-                <Row style={{ height: "95%" }}>
-                    <Col xs={9}>
+        <div style={{ position: "relative" }} className="h-100 w-100">
+            {loading ?
+                <div className="h-100 w-100 center-content" style={{ position: "absolute", zIndex: 99, backgroundColor: "white" }}>
+                    <h4>A carregar visualização 3D ...</h4>
+                </div>
+                :
+                <></>
+            }
+            <div className="h-100 w-100" style={{ position: "absolute" }}>
+                <Row style={{ height: "2%" }}>
+                    <Col xs={12}>
+                        <b>Debug Mode</b>
+                    </Col>
+                </Row>
+                <Row style={{ height: "90%" }}>
+                    <Col xs={props.fullInterface ? 9 : 12}>
                         <Canvas>
                             <Camera />
                             <CameraControls focus={target} />
@@ -236,67 +306,125 @@ function Exercise() {
                             </Suspense>
                         </Canvas>
                     </Col>
-                    <Col xs={3}>
-                        Arm
-                         <Slider
-                            defaultValue={0}
-                            valueLabelDisplay="off"
-                            value={arm}
+                    {
+                        props.fullInterface ?
 
-                            onChange={(event: any, newValue: number | number[]) => {
-                                setArm(newValue as number)
-                            }}
-                            step={1}
-                            min={0}
-                            max={180}
-                            className={"w-100"}
-                        />
-                        <br />
+                            <Col xs={3}>
+                                Arm
+                         <Slider
+                                    defaultValue={0}
+                                    valueLabelDisplay="off"
+                                    value={arm}
+
+                                    onChange={(event: any, newValue: number | number[]) => {
+                                        setArm(newValue as number)
+                                    }}
+                                    step={1}
+                                    min={0}
+                                    max={180}
+                                    className={"w-100"}
+                                />
+                                <br />
                         ForeArm
                          <Slider
-                            defaultValue={0}
-                            valueLabelDisplay="off"
-                            value={forearm}
+                                    defaultValue={0}
+                                    valueLabelDisplay="off"
+                                    value={forearm}
 
+                                    onChange={(event: any, newValue: number | number[]) => {
+                                        setForearm(newValue as number)
+                                    }}
+                                    step={1}
+                                    min={0}
+                                    max={180}
+                                    className={"w-100"}
+                                />
+                                <br />
+                                <p><b>Centrar:</b><br />
+                                </p>
+                                <Button
+                                    className=""
+                                    variant="contained"
+                                    color="secondary"
+                                    onClick={() => setTarget("Arm0")}
+                                >
+                                    Arm
+                </Button>
+                                <br />
+                                <Button
+                                    className=""
+                                    variant="contained"
+                                    color="secondary"
+                                    onClick={() => setTarget("Arm1")}
+                                >
+                                    Forearm
+                </Button>
+                                <br />
+                                <Button
+                                    className=""
+                                    variant="contained"
+                                    color="secondary"
+                                    onClick={() => setTarget("Arm2")}
+                                >
+                                    Hand
+                </Button>
+                                <br />
+                                <p><b>Controlos:</b><br />
+                    Rodar - Clicar botão esquerdo e arrastar<br />
+                    Zoom - Roda de scroll
+                </p>
+                            </Col>
+                            :
+                            <></>
+                    }
+                </Row>
+                <Row style={{ height: "5%" }}>
+                    <Col xs={1}>
+                        {
+                            !play ?
+                                <FontAwesomeIcon icon={faPlay} style={{ color: "#6C63FF", width: "25px" }} onClick={() => { setPlay(true) }} />
+                                :
+                                <FontAwesomeIcon icon={faPause} style={{ color: "#6C63FF", width: "25px" }} onClick={() => { setPlay(false) }} />
+                        }
+                    </Col>
+                    <Col xs={props.fullInterface ? 11 : 9}>
+                        <Slider
+                            valueLabelDisplay="off"
+                            color="secondary"
+                            value={time}
                             onChange={(event: any, newValue: number | number[]) => {
-                                setForearm(newValue as number)
+                                if (!play) {
+                                    tiker.current = newValue as number;
+                                    setTime(newValue as number);
+                                }
+                                else
+                                    setPlay(false)
                             }}
                             step={1}
                             min={0}
-                            max={180}
+                            max={30 * 60}
                             className={"w-100"}
                         />
-                        <br />
-                        <Button
-                            className=""
-                            variant="contained"
-                            color="secondary"
-                            onClick={() => setTarget("Arm0")}
-                        >
-                            Arm
-                </Button>
-                        <br />
-                        <Button
-                            className=""
-                            variant="contained"
-                            color="secondary"
-                            onClick={() => setTarget("Arm1")}
-                        >
-                            Forearm
-                </Button>
-                        <br />
-                        <Button
-                            className=""
-                            variant="contained"
-                            color="secondary"
-                            onClick={() => setTarget("Arm2")}
-                        >
-                            Hand
-                </Button>
                     </Col>
+                    {
+                        !props.fullInterface ?
+                            <Col xs={2}>
+                                <Link to={"/dashboard/exercise"}>
+                                    <Button
+                                        className=""
+                                        variant="contained"
+                                        color="secondary"
+                                    >
+                                        Vista Completa
+    </Button>
+                                </Link>
+                            </Col>
+                            :
+                            <></>
+                    }
                 </Row>
             </div >
-        </>
+        </div>
     );
 }
 
