@@ -300,7 +300,7 @@ function PatientInformation(props: PatientInformationProps) {
                                                     <PhysioEvalInfo physioEvalID={selectedHistoryID} noHeader key={selectedHistoryID} />
                                                     :
                                                     selectedHistoryType === "exercise" ?
-                                                        <Exercise fullInterface={false}/>
+                                                        <Exercise fullInterface={false} id={selectedHistoryID} key={selectedHistoryID} />
                                                         :
                                                         <p>Seleccione um registo</p>
                                         }

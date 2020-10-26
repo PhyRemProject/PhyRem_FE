@@ -11,8 +11,19 @@ import { Slider, Button } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faPause } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { downloadExercise } from "../ExerciseActions"
+import { useSelector } from "react-redux";
+import UserReducer from "../../User/UserReducer";
 
 extend({ OrbitControls });
+
+
+export interface QuaternionCoorRefs {
+    x: React.MutableRefObject<number>,
+    y: React.MutableRefObject<number>,
+    z: React.MutableRefObject<number>,
+    w: React.MutableRefObject<number>
+}
 
 declare global {
     namespace JSX {
@@ -73,6 +84,7 @@ const CameraControls = (props: any) => {
     return <orbitControls ref={controls} args={[camera, domElement]} target={props.target} />;
 };
 
+var angle = "0";
 
 function Degrees(props: any) {
 
@@ -84,12 +96,31 @@ function Degrees(props: any) {
 
     return (
         <mesh ref={mesh} rotation={[0, 0, -Math.PI / 2]} position={[-14, 5, 0]}>
-            <textGeometry attach="geometry" args={[props.degree + "°", config]} />
+            <textGeometry attach="geometry" args={[angle + "°", config]} />
             <meshStandardMaterial attach="material" color={'#a38be8'} side={THREE.DoubleSide} />
         </mesh>
     )
 }
 
+
+const calculateAngleBetween = (d1: THREE.Vector3, d2: THREE.Vector3) => {
+
+    //console.log(d1.x.toPrecision(2) + "\t" + d1.y.toPrecision(2)+ "\t" + d1.z.toPrecision(2)+ "\t\t" + d2.x.toPrecision(2)+ "\t" + d2.y.toPrecision(2)+ "\t" + d2.z.toPrecision(2))
+
+    //Caculate dot product
+    let uv = (d1.x * d2.x) + (d1.y * d2.y) + (d1.z * d2.z)
+
+    //Calculate Magnitudes
+    let u = Math.sqrt((Math.pow(d1.x, 2) + Math.pow(d1.y, 2) + Math.pow(d1.z, 2)))
+    let v = Math.sqrt((Math.pow(d2.x, 2) + Math.pow(d2.y, 2) + Math.pow(d2.z, 2)))
+
+    //arccos the ratio between the two
+    let result = Math.acos((uv / (u * v)));
+    return THREE.MathUtils.radToDeg(result);
+
+    //return THREE.MathUtils.radToDeg(d1.z - d2.z);
+
+}
 
 
 function AngleMarkers(props: any) {
@@ -184,10 +215,38 @@ function Model({ ...props }) {
     }, [loaded]);
 
     const nodes = (loaded as any).nodes
+    let tempArmDir = new THREE.Vector3;
+    let tempForearmDir = new THREE.Vector3;
 
     useFrame((state, delta) => {
-        moveJoint(props.arm, nodes.Arm0)
-        moveJoint(props.forearm, nodes.Arm1)
+
+        if (props.positions !== undefined && props.time !== undefined) {
+
+            nodes.Arm0.setRotationFromQuaternion(
+                new THREE.Quaternion(props.positions.current[props.time].q1._x,
+                    props.positions.current[props.time].q1._y,
+                    props.positions.current[props.time].q1._z,
+                    props.positions.current[props.time].q1._w
+                ),
+            );
+            nodes.Arm1.setRotationFromQuaternion(
+                new THREE.Quaternion(props.positions.current[props.time].q2._x,
+                    props.positions.current[props.time].q2._y,
+                    props.positions.current[props.time].q2._z,
+                    props.positions.current[props.time].q2._w
+                ),
+            );
+        }
+        else {
+            nodes.Arm0.setRotationFromQuaternion(new THREE.Quaternion);
+            nodes.Arm1.setRotationFromQuaternion(new THREE.Quaternion);
+        }
+
+        (nodes.Arm0 as THREE.Bone).getWorldDirection(tempArmDir);
+        (nodes.Arm1 as THREE.Bone).getWorldDirection(tempForearmDir);
+        angle = calculateAngleBetween(tempArmDir, tempForearmDir).toFixed(1).toString()
+        props.setAngle(angle)
+
     })
 
     return (
@@ -216,29 +275,30 @@ function Camera(props: any) {
 
 
 interface ExerciseProps {
-    fullInterface: boolean
+    fullInterface: boolean,
+    id?: string
 }
 
 
-function DebugAngleGenerator(time: number) {
+// function DebugAngleGenerator(time: number) {
 
-    const timeInterval = [0, 2 * 60]
-    const angleInterval = [0, 80]
+//     const timeInterval = [0, 2 * 60]
+//     const angleInterval = [0, 80]
 
-    var angle;
-    var timeposition = time % (4 * 60);
+//     var angle;
+//     var timeposition = time % (4 * 60);
 
-    //if (timeposition <= (2 * 60))
-    angle = angleInterval[0] + (((angleInterval[1] - angleInterval[0]) / (timeInterval[1] - timeInterval[0])) * (timeposition - timeInterval[0])) % angleInterval[1]
-    //else if (timeposition > (2 * 60))
-    //angle =  (angleInterval[0] + (((angleInterval[1] - angleInterval[0]) / (timeInterval[1] - timeInterval[0])) * (timeposition - timeInterval[0])))
-    //else angle = 0
+//     //if (timeposition <= (2 * 60))
+//     angle = angleInterval[0] + (((angleInterval[1] - angleInterval[0]) / (timeInterval[1] - timeInterval[0])) * (timeposition - timeInterval[0])) % angleInterval[1]
+//     //else if (timeposition > (2 * 60))
+//     //angle =  (angleInterval[0] + (((angleInterval[1] - angleInterval[0]) / (timeInterval[1] - timeInterval[0])) * (timeposition - timeInterval[0])))
+//     //else angle = 0
 
-    console.log("TIME: ", time)
-    console.log("TIMEPOSITION: ", timeposition)
-    console.log("ANGLE: ", angle)
-    return Math.round(angle)
-}
+//     console.log("TIME: ", time)
+//     console.log("TIMEPOSITION: ", timeposition)
+//     console.log("ANGLE: ", angle)
+//     return Math.round(angle)
+// }
 
 function Exercise(props: ExerciseProps) {
 
@@ -251,23 +311,33 @@ function Exercise(props: ExerciseProps) {
     const timer = useRef<NodeJS.Timeout>()
     const [time, setTime] = useState(0)
     const tiker = useRef<number>(0)
+    const [angle, setAngle] = useState(0)
+
+    const [positions, setPositions] = useState({ current: [] })
+
+    const token = useSelector((state: UserReducer) => state.UserReducer.user?.token) as string
 
     useEffect(() => {
+
+        if (props.id !== undefined) {
+            downloadExercise(token, props.id, setLoading, setPositions)
+        }
+
         setTimeout(() => {
             setLoading(false)
         }, 700)
+
     }, [])
 
 
+
+
     useEffect(() => {
-        if (play && tiker.current <= (30 * 60 - 1)) {
+        if (play && tiker.current <= (5 * 60 - 1)) {
             const id = setInterval(() => {
                 tiker.current += 1
                 setTime(tiker.current)
-                setForearm(DebugAngleGenerator(tiker.current))
-                //DebugAngleGenerator(tiker.current)
-                console.log(time)
-            }, 17);
+            }, 34);
 
             timer.current = id;
         }
@@ -289,7 +359,7 @@ function Exercise(props: ExerciseProps) {
             <div className="h-100 w-100" style={{ position: "absolute" }}>
                 <Row style={{ height: "2%" }}>
                     <Col xs={12}>
-                        <b>Debug Mode</b>
+                        <b>Cotovelo Direito</b>
                     </Col>
                 </Row>
                 <Row style={{ height: "90%" }}>
@@ -302,7 +372,13 @@ function Exercise(props: ExerciseProps) {
                             <pointLight position={[-40, -40, -40]} />
                             <Suspense fallback={null}>
                                 <AngleMarkers forearm={forearm} />
-                                <Model position={[0, 0, 0]} arm={arm} forearm={forearm} />
+                                <Model position={[0, 0, 0]}
+
+                                    positions={positions}
+                                    time={time}
+                                    setAngle={setAngle}
+
+                                />
                             </Suspense>
                         </Canvas>
                     </Col>
@@ -387,25 +463,53 @@ function Exercise(props: ExerciseProps) {
                                 <FontAwesomeIcon icon={faPause} style={{ color: "#6C63FF", width: "25px" }} onClick={() => { setPlay(false) }} />
                         }
                     </Col>
-                    <Col xs={props.fullInterface ? 11 : 9}>
-                        <Slider
-                            valueLabelDisplay="off"
-                            color="secondary"
-                            value={time}
-                            onChange={(event: any, newValue: number | number[]) => {
-                                if (!play) {
-                                    tiker.current = newValue as number;
-                                    setTime(newValue as number);
-                                }
-                                else
-                                    setPlay(false)
-                            }}
-                            step={1}
-                            min={0}
-                            max={30 * 60}
-                            className={"w-100"}
-                        />
+                    <Col xs={props.fullInterface ? 11 : 8}>
+                        {positions.current.length === 0 ?
+                            <Slider
+                                valueLabelDisplay="off"
+                                color="secondary"
+                                value={time}
+                                onChange={(event: any, newValue: number | number[]) => {
+                                    if (!play) {
+                                        tiker.current = newValue as number;
+                                        setTime(newValue as number);
+                                    }
+                                    else
+                                        setPlay(false)
+                                }}
+                                step={1}
+                                min={0}
+                                max={50 * 30}
+                                className={"w-100"}
+                            />
+                            :
+                            <Slider
+                                valueLabelDisplay="off"
+                                color="secondary"
+                                value={time}
+                                onChange={(event: any, newValue: number | number[]) => {
+                                    if (!play) {
+                                        tiker.current = newValue as number;
+                                        setTime(newValue as number);
+                                    }
+                                    else
+                                        setPlay(false)
+                                }}
+                                step={1}
+                                min={0}
+                                max={(positions.current.length * 34) / 1000}
+                                className={"w-100"}
+                            />
+                        }
                     </Col>
+                    {
+                        !props.fullInterface ?
+                            <Col xs={1}>
+                                Angulo: {angle}
+                            </Col>
+                            :
+                            <></>
+                    }
                     {
                         !props.fullInterface ?
                             <Col xs={2}>
