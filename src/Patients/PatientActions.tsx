@@ -97,7 +97,7 @@ export const GetPatientInfoByID = (token: string, id: string) => {
             type: GET_PATIENT_INFO
         });
 
-        axios.get(BE_URL + 'patient/' + id, options)
+        axios.get(BE_URL + 'patient/info/' + id, options)
             .then(function (response) {
 
                 dispatch({
