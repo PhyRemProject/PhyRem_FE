@@ -206,7 +206,8 @@ function Home() {
                             Faça o download da <b>Phy</b>Rem app a partir da loja de aplicações do seu telemóvel
                         </p>
                         <img id="appstore" src={appstore} alt="Apple Store" />
-                        <img id="playstore" src={playstore} alt="Google Play Store" />
+                        <a href="/objects/phyrem_v1.0.0.apk"><img id="playstore" src={playstore} alt="Google Play Store" /></a>
+                        
 
                     </Col>
                     <Col xs={{ span: 12, order: 2 }} md={{ span: 6, order: 2 }} lg={{ span: 6, order: 2 }}>
