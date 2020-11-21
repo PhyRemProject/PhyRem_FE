@@ -12,7 +12,7 @@ import {
 import Store from '../Global/Redux/Store';
 import history from '../Global/components/history'
 
-const BE_URL = "/api/"
+const BE_URL = "http://phyrem.pt/api/"
 
 export const AttemptLogin = (email: string, password: string, setStatus: Function) => {
 

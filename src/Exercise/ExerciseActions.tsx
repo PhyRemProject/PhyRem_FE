@@ -3,7 +3,7 @@ import axios from 'axios'
 import jwt from 'jwt-decode'
 import FileDownload from  "js-file-download"
 
-const BE_URL = "/api/"
+const BE_URL = "http://phyrem.pt/api/"
 
 
 export const downloadExercise = (token: string, exerciseID: string, setStatus: Function, setPositions: Function) => {

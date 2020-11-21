@@ -28,7 +28,7 @@ import history from '../Global/components/history'
 import { PatientInterface } from '../User/components/Patients'
 import { PatientEvalInterface } from '../PatientEvals/PatientEvalsActions'
 
-const BE_URL = "/api/"
+const BE_URL = "http://phyrem.pt/api/"
 
 export const getTodaysAppoints = (token: string) => {
 

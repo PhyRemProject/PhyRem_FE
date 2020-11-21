@@ -95,7 +95,7 @@ function Degrees(props: any) {
     const config = useMemo(() => ({ font, size: 5, height: 1 }), [font])
 
     return (
-        <mesh ref={mesh} rotation={[0, 0, -Math.PI / 2]} position={[-14, 5, 0]}>
+        <mesh ref={mesh} rotation={[0, 0, -Math.PI / 2]} position={[0, 10, 0]}>
             <textGeometry attach="geometry" args={[angle + "°", config]} />
             <meshStandardMaterial attach="material" color={'#a38be8'} side={THREE.DoubleSide} />
         </mesh>
@@ -167,11 +167,13 @@ function AngleMarkers(props: any) {
 
     return (
         <>
-            <group ref={group} dispose={null} position={[position.x, position.y, position.z]} quaternion={[rotation.x, rotation.y, rotation.z, rotation.w]}>
+            {/* <group ref={group} dispose={null} position={[position.x, position.y, position.z]} quaternion={[rotation.x, rotation.y, rotation.z, rotation.w]}> */}
+            <group ref={group} dispose={null} position={[-75 - position.x, position.y, position.z]} rotation={[0,0,Math.PI/2]}>
                 <mesh >
-                    <ringBufferGeometry
+                    <planeBufferGeometry
                         attach="geometry"
-                        args={[innerRadius, outerRadius, thetaSegments, phiSegments, thetaStart, thetaLength]}
+                        // args={[innerRadius, outerRadius, thetaSegments, phiSegments, thetaStart, thetaLength]}
+                        args={[20,25,32]}
                     />
 
 
@@ -201,7 +203,7 @@ function Model({ ...props }) {
     //console.log("> MODEL RENDER")
     const group = useRef()
     const material = useRef()
-    const loaded = useLoader(GLTFLoader, "/objects/BodyRigged.glb")
+    const loaded = useLoader(GLTFLoader, "/objects/BodyRigged_Alt.glb")
     //console.log(loaded)
 
     const [object, bones, skeleton] = useMemo(() => {
@@ -218,24 +220,28 @@ function Model({ ...props }) {
     let tempArmDir = new THREE.Vector3;
     let tempForearmDir = new THREE.Vector3;
 
+
     useFrame((state, delta) => {
 
-        if (props.positions !== undefined && props.time !== undefined) {
+        
 
-            nodes.Arm0.setRotationFromQuaternion(
-                new THREE.Quaternion(props.positions.current[props.time].q1._x,
-                    props.positions.current[props.time].q1._y,
-                    props.positions.current[props.time].q1._z,
-                    props.positions.current[props.time].q1._w
-                ),
-            );
-            nodes.Arm1.setRotationFromQuaternion(
-                new THREE.Quaternion(props.positions.current[props.time].q2._x,
-                    props.positions.current[props.time].q2._y,
-                    props.positions.current[props.time].q2._z,
-                    props.positions.current[props.time].q2._w
-                ),
-            );
+        if (props.positions !== undefined && props.time !== undefined) {
+            if(props.positions.current[props.time] !== undefined) {
+                nodes.Arm0.setRotationFromQuaternion(
+                    new THREE.Quaternion(props.positions.current[props.time].q1._x,
+                        props.positions.current[props.time].q1._y,
+                        props.positions.current[props.time].q1._z,
+                        props.positions.current[props.time].q1._w
+                    ),
+                );
+                nodes.Arm1.setRotationFromQuaternion(
+                    new THREE.Quaternion(props.positions.current[props.time].q2._x,
+                        props.positions.current[props.time].q2._y,
+                        props.positions.current[props.time].q2._z,
+                        props.positions.current[props.time].q2._w
+                    ),
+                );
+            }
         }
         else {
             nodes.Arm0.setRotationFromQuaternion(new THREE.Quaternion);
@@ -255,7 +261,7 @@ function Model({ ...props }) {
             <primitive object={object} />
             <skinnedMesh geometry={nodes["Body_low"].geometry} skeleton={skeleton}>
                 {/* <skeletonHelper args={object} /> */}
-                <meshPhongMaterial ref={material} attach="material" color="#b3720a" skinning />
+                <meshPhongMaterial ref={material} attach="material" color="#b3720a" skinning/>
                 {/* <meshPhongMaterial attach="material" map={texture} map-flipY={false} skinning /> */}
             </skinnedMesh>
             {/* </group> */}
@@ -513,7 +519,7 @@ function Exercise(props: ExerciseProps) {
                     {
                         !props.fullInterface ?
                             <Col xs={2}>
-                                <Link to={"/dashboard/exercise"}>
+                                {/* <Link to={"/dashboard/exercise"}>
                                     <Button
                                         className=""
                                         variant="contained"
@@ -521,7 +527,7 @@ function Exercise(props: ExerciseProps) {
                                     >
                                         Vista Completa
     </Button>
-                                </Link>
+                                </Link> */}
                             </Col>
                             :
                             <></>
