@@ -147,7 +147,7 @@ function SubjectiveExam(props: ExamProps) {
                             />
                             {bodyChat[0] !== -1 ?
                                 <Image
-                                    src={`${process.env.PUBLIC_URL}/images/default_user.png`}
+                                    src={`${process.env.PUBLIC_URL}/images/target.png`}
                                     style={{
                                         top: bodyChat[1],
                                         left: bodyChat[0]
