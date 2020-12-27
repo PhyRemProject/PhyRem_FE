@@ -72,7 +72,7 @@ function Sidebar() {
                         {user?.specialty?.map((specialty) => { return (specialty) + " " })}
                     </span>
                 </div> 
-                <img id="user-image" src={`${process.env.PUBLIC_URL}/api/physician/profileImage/` + user?._id as string} onError={(e) => { e.currentTarget.src = `${process.env.PUBLIC_URL}/images/default_user_icon.png` }}/>
+                <img id="user-image" src={`${process.env.REACT_APP_PUBLIC_URL}/api/physician/profileImage/` + user?._id as string} onError={(e) => { e.currentTarget.src = `${process.env.REACT_APP_PUBLIC_URL}/images/default_user_icon.png` }}/>
             </div>
         </div>
     );

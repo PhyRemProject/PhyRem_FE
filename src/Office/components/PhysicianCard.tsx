@@ -37,7 +37,7 @@ function PhysicianCard(props: PatientCardProps) {
         <div className="patient-card">
             <Row className="h-100">
                 <Col sm={2} className="h-100">
-                    <Image src={`${process.env.PUBLIC_URL}/api/physician/profileImage/${props.data.id}`} roundedCircle fluid id="patient-info-image" onError={(e) => { e.currentTarget.src = `${process.env.PUBLIC_URL}/images/default_user_icon.png` }} />
+                    <Image src={`${process.env.REACT_APP_PUBLIC_URL}/api/physician/profileImage/${props.data.id}`} roundedCircle fluid id="patient-info-image" onError={(e) => { e.currentTarget.src = `${process.env.PUBLIC_URL}/images/default_user_icon.png` }} />
                 </Col>
                 <Col sm={3} className="h-100">
                     <span className="align-middle h-100">

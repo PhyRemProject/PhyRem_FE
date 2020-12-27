@@ -13,6 +13,13 @@ import { PersistGate } from 'redux-persist/integration/react';
 // Importing the Bootstrap CSS
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+// //Configuring the env variables with dotenv
+// import * as dotenv from "dotenv";
+// dotenv.config({ path: __dirname+'.env' });
+
+// console.log(__dirname)
+ console.log(process.env.REACT_APP_API_URL)
+
 ReactDOM.render(
 
   //Wrapping the App in a Provider so it has access to the Redux's store

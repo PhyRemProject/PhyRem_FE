@@ -16,7 +16,7 @@ export interface PhysicianInterface {
 }
 
 
-const BE_URL = "http://phyrem.pt/api/"
+const BE_URL = process.env.REACT_APP_API_URL
 
 
 const uploadImage = (token: string, selectedFile: string, userID: string, userType: string) => {

@@ -126,14 +126,14 @@ function PhysioEvalInfo(props: PhysioEvalInfoProps) {
 
                                                         <div id={"bodyChat-container"} className={"w-100"}>
                                                             <Image
-                                                                src={`${process.env.PUBLIC_URL}/images/bodyChart.svg`}
+                                                                src={`${process.env.REACT_APP_PUBLIC_URL}/images/bodyChart.svg`}
                                                                 id={"bodyChat-image"}
                                                                 className="physioeval-bodychart"
 
                                                             />
                                                             {physioEval.bodyChat.x !== -1 ?
                                                                 <Image
-                                                                    src={`${process.env.PUBLIC_URL}/images/default_user.png`}
+                                                                    src={`${process.env.REACT_APP_PUBLIC_URL}/images/default_user.png`}
                                                                     style={{
                                                                         top: physioEval.bodyChat.y,
                                                                         left: physioEval.bodyChat.x

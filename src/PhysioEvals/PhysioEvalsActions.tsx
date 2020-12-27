@@ -6,7 +6,7 @@ import lodash from "lodash"
 import { PatientInterface } from '../User/components/Patients'
 import { PhysioEvalInterface, CLEAR_PHYSIO_EXAM } from './PhysioEvalsReducer'
 
-const BE_URL = "http://phyrem.pt/api/"
+const BE_URL = process.env.REACT_APP_API_URL
 
 export interface PatientEvalInterface {
     _id?: string,

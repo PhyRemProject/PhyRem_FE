@@ -12,7 +12,7 @@ import {
 import Store from '../Global/Redux/Store';
 import history from '../Global/components/history'
 
-const BE_URL = "http://phyrem.pt/api/"
+const BE_URL = process.env.REACT_APP_API_URL
 
 export const AttemptLogin = (email: string, password: string, setStatus: Function) => {
 

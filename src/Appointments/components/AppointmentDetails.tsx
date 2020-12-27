@@ -80,7 +80,7 @@ function ApoitmentDetails(props: AppointmentDetailsProps) {
 
                                     <div style={{ height: "150px", width: "150px" }}>
                                         <Image
-                                            src={`${process.env.PUBLIC_URL}/api/patient/profileImage/${props.appointment.patientsInfo._id}`}
+                                            src={`${process.env.REACT_APP_PUBLIC_URL}/api/patient/profileImage/${props.appointment.patientsInfo._id}`}
                                             roundedCircle
                                             fluid
                                             onError={(e) => { e.currentTarget.src = `${process.env.PUBLIC_URL}/images/default_user_icon.png` }} />

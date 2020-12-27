@@ -41,7 +41,7 @@ function NewPhysician() {
     const [birthDate, setBirthDate] = useState<Date>(moment(new Date(), "YYYY-MM-DD HH:mm").toDate())
     const [phoneNumber, setPhoneNumber] = useState<string>("")
 
-    const defaultUserPic = process.env.PUBLIC_URL + "/images/default_user_icon.png"
+    const defaultUserPic = process.env.REACT_APP_PUBLIC_URL + "/images/default_user_icon.png"
     const [selectedFile, setSelectedFile] = useState<string | undefined>()
     const [preview, setPreview] = useState<string | undefined>(defaultUserPic)
 

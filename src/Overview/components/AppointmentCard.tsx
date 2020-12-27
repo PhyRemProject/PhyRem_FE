@@ -62,7 +62,7 @@ function AppointmentCard(props: AppointmentCardProps) {
                         <div style={{ height: "150px", width: "150px" }}>
                             <Image
                                 className="user-image"
-                                src={`${process.env.PUBLIC_URL}/api/patient/profileImage/${props.data.patientID}`}
+                                src={`${process.env.REACT_APP_PUBLIC_URL}/api/patient/profileImage/${props.data.patientID}`}
                                 roundedCircle
                                 fluid
                                 onError={(e) => { e.currentTarget.src = `${process.env.PUBLIC_URL}/images/default_user_icon.png` }} />
