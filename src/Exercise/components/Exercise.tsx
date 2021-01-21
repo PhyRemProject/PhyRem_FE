@@ -72,7 +72,7 @@ const CameraControls = (props: any) => {
         else {
             //camera.position.set(object?.position.x, object?.position.y, 100);
             if (prevFocus.current !== props.focus) {
-                camera.position.set(position.x, position.y, 200);
+                camera.position.set(position.x - 120 , position.y-50, 0);
                 (controls.current as any).target.set(position.x, position.y, position.z);
                 prevFocus.current = props.focus;
             } else {
@@ -168,7 +168,7 @@ function AngleMarkers(props: any) {
     return (
         <>
             {/* <group ref={group} dispose={null} position={[position.x, position.y, position.z]} quaternion={[rotation.x, rotation.y, rotation.z, rotation.w]}> */}
-            <group ref={group} dispose={null} position={[-75 - position.x, position.y, position.z]} rotation={[0,0,Math.PI/2]}>
+            <group ref={group} dispose={null} position={[position.x, position.y, -65 - position.z]} rotation={[0,-Math.PI/2,Math.PI/2]}>
                 <mesh >
                     <planeBufferGeometry
                         attach="geometry"
@@ -202,8 +202,9 @@ function moveJoint(amount: number, joint: any, degreeLimit = 40) {
 function Model({ ...props }) {
     //console.log("> MODEL RENDER")
     const group = useRef()
-    const material = useRef()
-    const loaded = useLoader(GLTFLoader, "/objects/BodyRigged_Alt.glb")
+    const materialArm = useRef()
+    const materialBody = useRef()
+    const loaded = useLoader(GLTFLoader, "/objects/BodyRigged_arm_only.glb")
     //console.log(loaded)
 
     const [object, bones, skeleton] = useMemo(() => {
@@ -255,13 +256,18 @@ function Model({ ...props }) {
 
     })
 
+
     return (
         <group ref={group} {...props} dispose={null}>
             {/* <group scale={[0.1, 0.1, 0.1]}> */}
             <primitive object={object} />
+            {/* <skinnedMesh geometry={nodes["Body_low001"].geometry} skeleton={skeleton}>
+                {/* <skeletonHelper args={object} /> 
+                <meshPhongMaterial ref={materialBody} attach="material" color="#efd1a0" skinning opacity={1}/>
+            </skinnedMesh> */}
             <skinnedMesh geometry={nodes["Body_low"].geometry} skeleton={skeleton}>
                 {/* <skeletonHelper args={object} /> */}
-                <meshPhongMaterial ref={material} attach="material" color="#b3720a" skinning/>
+                <meshPhongMaterial ref={materialArm} attach="material" color="#b3720a" skinning/>
                 {/* <meshPhongMaterial attach="material" map={texture} map-flipY={false} skinning /> */}
             </skinnedMesh>
             {/* </group> */}
