@@ -20,6 +20,7 @@ import {
     Typography,
     Slider
 } from '@material-ui/core';
+import { SERVICE_URL } from "../../../constants";
 
 import {
     faSearch
@@ -138,7 +139,7 @@ function SubjectiveExam(props: ExamProps) {
 
                         <div id={"bodyChat-container"} className={"w-100"}>
                             <Image
-                                src={`${process.env.REACT_APP_PUBLIC_URL}/images/bodyChart.svg`}
+                                src={`${SERVICE_URL}/images/bodyChart.svg`}
                                 id={"bodyChat-image"}
                                 className="physioeval-bodychart"
                                 onMouseDown={(event: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
@@ -147,7 +148,7 @@ function SubjectiveExam(props: ExamProps) {
                             />
                             {bodyChat[0] !== -1 ?
                                 <Image
-                                    src={`${process.env.REACT_APP_PUBLIC_URL}/images/target.png`}
+                                    src={`${SERVICE_URL}/images/target.png`}
                                     style={{
                                         top: bodyChat[1],
                                         left: bodyChat[0]

@@ -15,6 +15,7 @@ import UserReducer from '../../User/UserReducer';
 import MapDialog from "../../Global/components/MapDialog"
 import { PatientEvalInterface } from '../../PatientEvals/PatientEvalsActions';
 import { GetAppointPatEval } from '../../Appointments/AppointmentActions';
+import { SERVICE_URL } from "../../constants";
 
 
 interface AppointmentCardProps {
@@ -62,7 +63,7 @@ function AppointmentCard(props: AppointmentCardProps) {
                         <div style={{ height: "150px", width: "150px" }}>
                             <Image
                                 className="user-image"
-                                src={`${process.env.REACT_APP_PUBLIC_URL}/api/patient/profileImage/${props.data.patientID}`}
+                                src={`${SERVICE_URL}/api/patient/profileImage/${props.data.patientID}`}
                                 roundedCircle
                                 fluid
                                 onError={(e) => { e.currentTarget.src = `${process.env.PUBLIC_URL}/images/default_user_icon.png` }} />

@@ -16,6 +16,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import UserReducer from '../../User/UserReducer';
+import { SERVICE_URL } from "../../constants";
 
 interface OptionProps {
     name: string,
@@ -72,7 +73,7 @@ function Sidebar() {
                         {user?.specialty?.map((specialty) => { return (specialty) + " " })}
                     </span>
                 </div> 
-                <img id="user-image" src={`${process.env.REACT_APP_PUBLIC_URL}/api/physician/profileImage/` + user?._id as string} onError={(e) => { e.currentTarget.src = `${process.env.REACT_APP_PUBLIC_URL}/images/default_user_icon.png` }}/>
+                <img id="user-image" src={`${SERVICE_URL}/api/physician/profileImage/` + user?._id as string} onError={(e) => { e.currentTarget.src = `${SERVICE_URL}/images/default_user_icon.png` }}/>
             </div>
         </div>
     );

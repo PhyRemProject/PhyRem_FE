@@ -27,6 +27,8 @@ import {
     faSearch
 } from "@fortawesome/free-solid-svg-icons";
 
+import { SERVICE_URL } from "../../constants";
+
 
 import PatientCard from "./PatientCard"
 import UserReducer from '../../User/UserReducer';
@@ -195,7 +197,7 @@ function PatientInformation(props: PatientInformationProps) {
                                             <div style={{ height: "100px", width: "100px" }}>
                                                 <Image
                                                     className="user-image"
-                                                    src={`${process.env.REACT_APP_PUBLIC_URL}/api/patient/profileImage/${activePatient._id}`}
+                                                    src={`${SERVICE_URL}/api/patient/profileImage/${activePatient._id}`}
                                                     roundedCircle
                                                     fluid
                                                     onError={(e) => { e.currentTarget.src = `${process.env.PUBLIC_URL}/images/default_user_icon.png` }} />

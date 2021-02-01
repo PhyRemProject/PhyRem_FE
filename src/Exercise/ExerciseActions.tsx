@@ -3,7 +3,8 @@ import axios from 'axios'
 import jwt from 'jwt-decode'
 import FileDownload from  "js-file-download"
 
-const BE_URL = process.env.REACT_APP_API_URL
+import { SERVICE_API } from "../constants";
+const BE_URL = SERVICE_API;
 
 
 export const downloadExercise = (token: string, exerciseID: string, setStatus: Function, setPositions: Function) => {

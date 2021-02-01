@@ -5,7 +5,8 @@ import lodash from "lodash"
 
 import { PatientInterface } from '../User/components/Patients'
 
-const BE_URL = process.env.REACT_APP_API_URL
+import { SERVICE_API } from "../constants";
+const BE_URL = SERVICE_API;
 
 export interface PatientEvalInterface {
     _id?: string,

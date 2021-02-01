@@ -18,7 +18,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // dotenv.config({ path: __dirname+'.env' });
 
 // console.log(__dirname)
- console.log(process.env.REACT_APP_API_URL)
 
 ReactDOM.render(
 

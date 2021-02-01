@@ -4,6 +4,7 @@ import jwt from 'jwt-decode'
 import lodash, { reject } from "lodash"
 
 import { PatientInterface } from '../User/components/Patients'
+import { SERVICE_API } from "../constants";
 
 export interface PhysicianInterface {
     _id: string,
@@ -16,7 +17,7 @@ export interface PhysicianInterface {
 }
 
 
-const BE_URL = process.env.REACT_APP_API_URL
+const BE_URL = SERVICE_API;
 
 
 const uploadImage = (token: string, selectedFile: string, userID: string, userType: string) => {

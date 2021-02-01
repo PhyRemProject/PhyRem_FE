@@ -19,6 +19,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import { SERVICE_URL } from "../../constants";
+
 interface PatientCardProps {
     data: {
         id: string,
@@ -42,7 +44,7 @@ function PatientCard(props: PatientCardProps) {
                         <div style={{ height: "100px", width: "100px" }}>
                             <Image
                                 className="user-image"
-                                src={`${process.env.REACT_APP_PUBLIC_URL}/api/patient/profileImage/${props.data.id}`}
+                                src={`${SERVICE_URL}/api/patient/profileImage/${props.data.id}`}
                                 fluid
                                 roundedCircle
                                 onError={(e) => { e.currentTarget.src = `${process.env.PUBLIC_URL}/images/default_user_icon.png` }} />
