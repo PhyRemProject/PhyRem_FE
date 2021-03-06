@@ -7,7 +7,7 @@ App components are split between their own directories with their appropriate re
 ## **Before Start**
 What are you trying to do?
 
-**Deploy the application:** This service should be deployed along with the corresponding backend, it is containerized with docker and setup will deploy it automatically. Visit [PhyRem - Backend](https://github.com/PhyRemProject/Phyrem-Backend) and read the deployment section.
+**Deploy the application:** This service should be deployed along with the corresponding backend, it is containerized with docker and setup will deploy it automatically. Visit [PhyRem - Backend](https://github.com/PhyRemProject/Phyrem_BE) and read the deployment section.
 
 **Develop/Debug the application:** As with any React application execute the following commands:
 `npm install` followed by `npm start`, other React commands may apply.
